@@ -1,3 +1,19 @@
+/*
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+ 
 
 #ifndef __ATOMO_H__
 
@@ -11,7 +27,7 @@ typedef enum   e_classe    uma_classe;
 
 /* e_classe
  *
- * Todas as classes possíveis (incluindo símbolos e palavras reservadas)
+ * Todas as classes possÃ­veis (incluindo sÃ­mbolos e palavras reservadas)
  */
 enum e_classe {
     INVALIDO,
@@ -19,7 +35,7 @@ enum e_classe {
     IDENTIFICADOR,
     INTEIRO,
 
-    // S�mbolos
+    // Símbolos
     S_VIRGULA,
     S_PONTO_E_VIRGULA,
     S_ABRE_CHAVE,    
@@ -61,15 +77,15 @@ struct s_atomo {
 
 /* s_reservado
  *
- * Uma estrutura representando um átomo reservado
- * (palavra reservada ou símbolo)
+ * Uma estrutura representando um Ã¡tomo reservado
+ * (palavra reservada ou sÃ­mbolo)
  */
 struct s_reservado {
     uma_classe classe; 
     char *nome;
 };
 /*
- * Prot�tipos de fun��es
+ * Protótipos de funções
  */
 char * nomeClasse (uma_classe c);
 um_atomo novoAtomo (uma_classe c);

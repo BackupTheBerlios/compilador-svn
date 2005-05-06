@@ -1,3 +1,19 @@
+/*
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+ 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,7 +43,7 @@ int ehDigito (char e)
 
 /* ehSimbolo
  *
- * Retorna verdadeiro se o caracter de entrada for um sÌmbolo
+ * Retorna verdadeiro se o caracter de entrada for um s√≠mbolo
  */
 int ehSimbolo (char e)
 {
@@ -77,10 +93,10 @@ int ehBranco (char e)
 {
     switch (e)
     {
-        case ' ':   // espaÁo
-        case '\n':  // avanÁo de linha
+        case ' ':   // espa√ßo
+        case '\n':  // avan√ßo de linha
         case '\r':  // retorno de carro
-        case '\t':  // tabulaÁ„o
+        case '\t':  // tabula√ß√£o
             return VERDADE;
     }
     return FALSO;
@@ -170,14 +186,14 @@ um_atomo leInteiro(char **entrada)
 }
 
 /*
-  As transiÁıes em vazio do automato s„o representadas por retornos da funÁ„o
-  analisadorLexico. As demais transiÁıes podem ser representadas por devios
-  para partes do programa ou por chamdas de funÁıes internas (estados), e o
-  consumo de caracteres corresponde ao avanÁo do cursor no programa fonte.
+  As transi√ß√µes em vazio do automato s√£o representadas por retornos da fun√ß√£o
+  analisadorLexico. As demais transi√ß√µes podem ser representadas por devios
+  para partes do programa ou por chamdas de fun√ß√µes internas (estados), e o
+  consumo de caracteres corresponde ao avan√ßo do cursor no programa fonte.
   Uma rotina auxiliar chamada "leFonte" encarrega-se de ler novas linhas de dados
-  do programa fonte sempre que necess·rio, informando ao analisador lÈxico qual
-  È o prÛximo caractere ainda n„o analisado ("entrada"). A retornar ao programa
-  chamador, "entrada" esta sempre se referindo ao proximo caractere ainda n„o
+  do programa fonte sempre que necess√°rio, informando ao analisador l√©xico qual
+  √© o pr√≥ximo caractere ainda n√£o analisado ("entrada"). A retornar ao programa
+  chamador, "entrada" esta sempre se referindo ao proximo caractere ainda n√£o
   analisado.
 */
 
@@ -193,7 +209,7 @@ um_atomo analisadorLexico(char **entrada)
         (*entrada)++;
     }
 
-    // PrÛximo estado
+    // Pr√≥ximo estado
     if (ehLetra (**entrada))
     {
         /*
@@ -229,4 +245,3 @@ um_atomo analisadorLexico(char **entrada)
 
     return saida;
 }
-
