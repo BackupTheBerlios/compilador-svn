@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "defs.h"
-#include "teste.h"
+#include "compilador.h"
 #include "atomo.h"
 #include "tabid.h"
 #include "analisadorLexico.h"
