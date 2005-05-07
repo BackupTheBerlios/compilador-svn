@@ -1,5 +1,5 @@
 [Project]
-FileName=Compilador.dev
+FileName=CompilaDOR.dev
 Name=Compilador
 UnitCount=9
 Type=1
@@ -16,21 +16,23 @@ Linker=
 IsCpp=0
 Icon=
 ExeOutput=bin
-ObjectOutput=obj
-OverrideOutput=1
+ObjectOutput=objwin
+OverrideOutput=0
 OverrideOutputName=teste.exe
 HostApplication=
-Folders=
+Folders=Cabeçalhos,Fontes
 CommandLine=teste.prg
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=000000000000000000
+CompilerSettings=0000000000000000000000
+UseCustomMakefile=0
+CustomMakefile=
 
 [Unit1]
-FileName=analisadorLexico.c
+FileName=src\analisadorLexico.c
 CompileCpp=0
-Folder=Compilador
+Folder=Fontes
 Compile=1
 Link=1
 Priority=1000
@@ -38,9 +40,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=analisadorLexico.h
+FileName=src\analisadorLexico.h
 CompileCpp=0
-Folder=Compilador
+Folder=Cabeçalhos
 Compile=1
 Link=1
 Priority=1000
@@ -48,9 +50,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit3]
-FileName=atomo.c
+FileName=src\atomo.c
 CompileCpp=0
-Folder=Compilador
+Folder=Fontes
 Compile=1
 Link=1
 Priority=1000
@@ -58,9 +60,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit4]
-FileName=atomo.h
+FileName=src\atomo.h
 CompileCpp=0
-Folder=Compilador
+Folder=Cabeçalhos
 Compile=1
 Link=1
 Priority=1000
@@ -68,9 +70,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit5]
-FileName=defs.h
+FileName=src\defs.h
 CompileCpp=0
-Folder=Compilador
+Folder=Cabeçalhos
 Compile=1
 Link=1
 Priority=1000
@@ -78,9 +80,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit6]
-FileName=tabid.c
+FileName=src\tabid.c
 CompileCpp=0
-Folder=Compilador
+Folder=Fontes
 Compile=1
 Link=1
 Priority=1000
@@ -88,9 +90,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit7]
-FileName=tabid.h
+FileName=src\tabid.h
 CompileCpp=0
-Folder=Compilador
+Folder=Cabeçalhos
 Compile=1
 Link=1
 Priority=1000
@@ -98,9 +100,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit8]
-FileName=teste.c
+FileName=src\compilador.c
 CompileCpp=0
-Folder=Compilador
+Folder=Fontes
 Compile=1
 Link=1
 Priority=1000
@@ -108,9 +110,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=teste.h
+FileName=src\compilador.h
 CompileCpp=0
-Folder=Compilador
+Folder=Cabeçalhos
 Compile=1
 Link=1
 Priority=1000
