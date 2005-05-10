@@ -22,6 +22,17 @@
 #include "tabid.h"
 #include "analisadorLexico.h"
 
+#define ESPERA_TECLA
+
+void sair (int ret, const char * msg)
+{
+    printf ("%s\n", msg);
+#ifdef ESPERA_TECLA
+    printf ("Pressione algo para continuar...");
+    getchar();
+#endif
+    exit (ret);
+}
 
 int main (int argc, char **argv)
 {
@@ -31,18 +42,12 @@ int main (int argc, char **argv)
     FILE *arq;
 
     if (argc == 1)
-    {
-        printf ("Uso: teste <arquivo>\n");
-        return 1;
-    }
+        sair (1, "Uso: teste <arquivo>\n");
 
     arq = fopen (argv[1], "r");
 
     if (arq == NULL)
-    {
-        printf ("Arquivo nao encontrado!\n");
-        return 2;
-    }
+        sair (2, "Arquivo nao encontrado!\n");
 
     dados = malloc (MAX_BLOCO * sizeof (char));
     tamanho = 0;
@@ -94,8 +99,5 @@ int main (int argc, char **argv)
         printf ("%3d: %s\n", i,  busca_nome_ID (i));
     }
     
-    printf ("\nPressione algo para continuar...");
-    getchar();
-    
-    return 1;
+    sair (0, "\nFim da execução.");
 }
