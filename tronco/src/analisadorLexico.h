@@ -21,8 +21,6 @@
 
 #include "defs.h"
 
-char     *nomeClasse (uma_classe c);
-um_atomo  novoAtomo (uma_classe c);
 um_atomo  analisadorLexico(char **entrada);
 
 #endif // __ANAL_H__
