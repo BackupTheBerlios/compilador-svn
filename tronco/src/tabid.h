@@ -18,11 +18,13 @@
 
 #define __TABID_H__
 
+typedef struct s_id um_id;
+
 // Estrutura que representa um identificador
 struct s_id {
    int cod;
    char * nome;
-//   int linha; // primeira ocorrÃªncia (opcional)
+//   int linha; // primeira ocorrência (opcional)
 };
 
 int adicionaID (char * nome);

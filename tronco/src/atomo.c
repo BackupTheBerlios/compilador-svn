@@ -19,49 +19,78 @@
 #include <stdlib.h>
 #include <string.h>
 #include "atomo.h"
+#include "defs.h"
+
 
 /* SIMBOLOS
  *
- * Tabela "hardcoded" de sÃ­mbolos
+ * Tabela "hardcoded" de símbolos
  */
-#define TOTAL_SIMBOLOS    15
-static struct s_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
-    // SÃ­mmbolos
+#define TOTAL_SIMBOLOS    18
+static um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
+    // Diversos
+    { S_ABRE_PARENTESES,    "("     },
+    { S_FECHA_PARENTESES,   ")"     },
     { S_VIRGULA,            ","     },
-    { S_PONTO_E_VIRGULA,    ";"     },
     { S_ABRE_CHAVE,         "["     },
     { S_FECHA_CHAVE,        "]"     },
+    { S_PONTO_E_VIRGULA,    ";"     },
+    { S_ATRIBUICAO,         ":="    },
+    
+    // Operadores
     { S_ADICAO,             "+"     },
     { S_SUBTRACAO,          "-"     },
     { S_MULTIPLICACAO,      "*"     },
     { S_DIVISAO,            "/"     },
-    { S_IGUAL,              "="     },
-    { S_MAIOR,              ">"     },
+    { S_POTENCIACAO,        "^"     },
+    
+    // Comparadores
     { S_MENOR,              "<"     },
-    { S_MAIOR_OU_IGUAL,     ">="    },
     { S_MENOR_OU_IGUAL,     "<="    },
-    { S_DIFERENTE,          "!="    },
-    { S_ATRIBUICAO,         ":="    }
+    { S_MAIOR,              ">"     },
+    { S_MAIOR_OU_IGUAL,     ">="    },
+    { S_IGUAL,              "="     },
+    { S_DIFERENTE,          "!="    }
 };
 
 /* RESERVADOS
  *
  * Tabela "hardcoded" de palavras reservadas
  */
-#define TOTAL_PALAVRAS_RESERVADAS    11
-static struct s_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
-    // Palavras Reservadas
+#define TOTAL_PALAVRAS_RESERVADAS    23
+static um_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
+    // (Sub)programa
     { PR_PROGRAM,       "program"   },
+    { PR_PROCEDURE,     "procedure" },
+    { PR_FUNCTION,      "function"  },
+    { PR_RETURNS,       "returns"   },
+    
+    // Tipos
+    { PR_REAL,          "real"      },
+    { PR_INTEGER,       "integer"   },
+    { PR_BOOLEAN,       "boolean"   },
+    
+    // Bloco
+    { PR_DECLARE,       "declare"   },
     { PR_BEGIN,         "begin"     },
     { PR_END,           "end"       },
-    { PR_DECLARE,       "declare"   },
+    
+    // Comandos
     { PR_WHILE,         "while"     },
     { PR_LOOP,          "loop"      },
     { PR_IF,            "if"        },
     { PR_THEN,          "then"      },
     { PR_ELSE,          "else"      },
     { PR_INPUT,         "input"     },
-    { PR_OUTPUT,        "output"    }
+    { PR_OUTPUT,        "output"    },
+    
+    // Booleanos
+    { PR_TRUE,          "true"       },
+    { PR_FALSE,         "false"       },
+    { PR_NOT,           "not"       },
+    { PR_AND,           "and"       },
+    { PR_OR,            "or"        },
+    { PR_XOR,           "xor"       }
 };
 
 
@@ -93,7 +122,7 @@ char * nomeClasse (uma_classe c)
             break;
 
         default:
-            strcpy (nome, busca_nome_classe (c));
+            strcpy (nome, busca_nome_da_classe (c));
             if (nome == NULL)
                 strcpy (nome, "DESCONHECIDO");
     }
@@ -103,9 +132,9 @@ char * nomeClasse (uma_classe c)
 
 /* novoAtomo
  * 
- * Aloca memÃƒÂ³ria para um novo atomo
+ * Aloca memória para um novo atomo
  */
-um_atomo novoAtomo (uma_classe c)
+um_atomo novoAtomo (uma_classe c, int v)
 {
     um_atomo a;
 
@@ -114,10 +143,19 @@ um_atomo novoAtomo (uma_classe c)
     if (a != NULL)
     {
         a->classe = c;
-        a->valor  = 0;
+        a->valor  = v;
     }
 
     return a;
+}
+
+/* removeAtomo
+ * 
+ * Desaloca memória de um atomo
+ */
+void removeAtomo (um_atomo a)
+{
+    free (a);
 }
 
 /* busca_palavra_reservada
@@ -158,7 +196,7 @@ uma_classe busca_simbolo (char * nome)
  *
  * Busca pelo nome de uma classe nas tabelas
  */
-char * busca_nome_classe (uma_classe c)
+char * busca_nome_da_classe (uma_classe c)
 {
     int i;
 
@@ -177,4 +215,53 @@ char * busca_nome_classe (uma_classe c)
     }
 
     return NULL;
+}
+
+// Funções com pilha
+
+int pilha_vazia (uma_pilha pilha)
+{
+    return pilha.tamanho == 0;
+}
+
+int pilha_adiciona (uma_pilha pilha, um_atomo atomo)
+{
+    int ultimo;
+    
+    if (pilha.atomo == NULL)
+    {
+        pilha.atomo = (um_atomo *) malloc (sizeof (um_atomo));
+        pilha.tamanho = 1;
+    }
+    else
+        pilha.atomo = (um_atomo *) realloc (pilha.atomo, (++pilha.tamanho) * sizeof (um_atomo));
+
+    if (pilha.atomo == NULL)
+    {
+        pilha.tamanho = 0;
+        ultimo = ERRO;
+    }
+    else
+    {
+        ultimo = pilha.tamanho - 1;
+        pilha.atomo [ultimo] = atomo;
+    }
+    
+    return ultimo;
+}
+
+um_atomo pilha_remove (uma_pilha pilha)
+{
+    um_atomo atomo;
+    int ultimo;
+    
+    if (pilha_vazia (pilha))
+        return (um_atomo) NULL;
+
+    ultimo = pilha.tamanho - 1;    
+    atomo = pilha.atomo[ultimo];
+    
+    pilha.atomo = (um_atomo *) realloc (pilha.atomo, (--pilha.tamanho) * sizeof (um_atomo));
+        
+    return atomo;
 }

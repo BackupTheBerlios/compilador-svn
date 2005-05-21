@@ -22,12 +22,14 @@
 /*
  * Tipos
  */
+typedef struct s_pilha     uma_pilha;
 typedef struct s_atomo     *um_atomo;
+typedef struct s_reservado um_reservado;
 typedef enum   e_classe    uma_classe;
 
 /* e_classe
  *
- * Todas as classes possÃƒÂ­veis (incluindo sÃƒÂ­mbolos e palavras reservadas)
+ * Todas as classes possíveis (incluindo símbolos e palavras reservadas)
  */
 enum e_classe {
     INVALIDO,
@@ -35,15 +37,18 @@ enum e_classe {
     IDENTIFICADOR,
     INTEIRO,
 
-    // SÃ­mbolos
+    // Símbolos
     S_VIRGULA,
     S_PONTO_E_VIRGULA,
     S_ABRE_CHAVE,    
     S_FECHA_CHAVE,  
+    S_ABRE_PARENTESES,
+    S_FECHA_PARENTESES,
     S_ADICAO,      
     S_SUBTRACAO,  
     S_MULTIPLICACAO,
     S_DIVISAO,     
+    S_POTENCIACAO,
     S_IGUAL,      
     S_MAIOR,     
     S_MENOR,    
@@ -63,7 +68,24 @@ enum e_classe {
     PR_THEN,
     PR_ELSE,
     PR_INPUT,
-    PR_OUTPUT
+    PR_OUTPUT,
+    PR_PROCEDURE,
+    PR_FUNCTION,
+    PR_RETURNS,
+    PR_REAL,   
+    PR_INTEGER,
+    PR_BOOLEAN,
+    PR_NOT,
+    PR_AND,
+    PR_OR, 
+    PR_XOR,
+    PR_TRUE,
+    PR_FALSE
+};
+
+struct s_pilha {
+    int tamanho;
+    um_atomo *atomo;
 };
 
 /* s_atomo
@@ -77,21 +99,27 @@ struct s_atomo {
 
 /* s_reservado
  *
- * Uma estrutura representando um ÃƒÂ¡tomo reservado
- * (palavra reservada ou sÃƒÂ­mbolo)
+ * Uma estrutura representando um Átomo reservado
+ * (palavra reservada ou símbolo)
  */
 struct s_reservado {
     uma_classe classe; 
     char *nome;
 };
+
 /*
- * ProtÃ³tipos de funÃ§Ãµes
+ * Protótipos de funções
  */
 char * nomeClasse (uma_classe c);
-um_atomo novoAtomo (uma_classe c);
+um_atomo novoAtomo (uma_classe c, int v);
 uma_classe busca_simbolo (char * nome);
 uma_classe busca_palavra_reservada (char * nome);
-char * busca_nome_classe (uma_classe c);
+char * busca_nome_da_classe (uma_classe c);
 
+// Funções com pilha
+int pilha_tamanho  (uma_pilha pilha);
+int pilha_vazia    (uma_pilha pilha);
+int pilha_adiciona (uma_pilha pilha, um_atomo atomo);
+um_atomo pilha_remove   (uma_pilha pilha);
 
 #endif // __ATOMO_H__

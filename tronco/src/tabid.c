@@ -23,28 +23,36 @@
 #include "tabid.h"
 
 
-// Tabela din√¢mica de identificadores
+// Tabela din‚mica de identificadores
 static int total_IDs = 0;
-static struct s_id *tabelaID;
+static um_id *tabelaID;
 
 
 int adicionaID (char * nome)
 {
+    int ultimo;
+    
     if (tabelaID == NULL)
     {
-        tabelaID = malloc (sizeof (struct s_id));
+        tabelaID = malloc (sizeof (um_id));
         total_IDs = 1;
     }
     else
-        tabelaID = (struct s_id *) realloc (tabelaID, (++total_IDs) * sizeof (struct s_id));
+        tabelaID = (um_id *) realloc (tabelaID, (++total_IDs) * sizeof (um_id));
 
-    if (tabelaID != NULL)
+    if (tabelaID == NULL)
     {
-        tabelaID [total_IDs - 1].cod = total_IDs - 1;
-        tabelaID [total_IDs - 1].nome = malloc ((strlen(nome)+1) * sizeof (char));
-        strcpy (tabelaID [total_IDs - 1].nome, nome);
+        total_IDs = 0;
+        return ERRO;
     }
-    return total_IDs - 1;
+
+    ultimo = total_IDs - 1;
+
+    tabelaID [ultimo].cod  = total_IDs - 1;
+    tabelaID [ultimo].nome = malloc ((strlen(nome)+1) * sizeof (char));
+    strcpy (tabelaID [ultimo].nome, nome);
+    
+    return ultimo;
 }
 
 
@@ -52,12 +60,10 @@ int busca_cod_ID (char * nome)
 {
     int i;
     for (i = 0; i < total_IDs; i++)
-    {
         if (strcmp (tabelaID[i].nome, nome) == 0)
             return tabelaID[i].cod;
-    }
 
-    return BUSCA_NAO_ENCONTRADA;
+    return ERRO;
 }
 
 int tam_tabelaID ()
@@ -69,10 +75,8 @@ char * busca_nome_ID (int cod)
 {
     int i;
     for (i = 0; i < total_IDs; i++)
-    {
         if (tabelaID[i].cod == cod)
             return tabelaID[i].nome;
-    }
 
     return NULL;
 }

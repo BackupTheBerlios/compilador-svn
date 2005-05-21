@@ -68,15 +68,15 @@ int main (int argc, char **argv)
     printf ("%20s %5s\n", "Classe", "Valor");
     printf ("%20s %5s\n", "------", "-----");
     
-    pos = dados;                // PosiÃ§Ã£o inicial de leitura
-    at = novoAtomo (INVALIDO);  // Ãtomo inicial apenas para entrar no while
+    pos = dados;                   // Posição inicial de leitura
+    at = novoAtomo (INVALIDO, 0);  // Átomo inicial apenas para entrar no while
     while (at->classe != FIM)
     {
-        // Limpa Ã¡tomo anterior
-        free (at);
+        // Limpa átomo anterior
+        removeAtomo (at);
 
 
-        // LÃª novo Ã¡tomo
+        // Lê novo átomo
         at = analisadorLexico (&pos);
         if (at != NULL)
         {
@@ -93,11 +93,11 @@ int main (int argc, char **argv)
 
     ids = tam_tabelaID();
         
-    printf ("\nIdentificadores (%d ):\n", ids);
+    printf ("\nIdentificadores (%d):\n", ids);
     for (i = 0; i < ids; i++)
     {
         printf ("%3d: %s\n", i,  busca_nome_ID (i));
     }
     
-    sair (0, "\nFim da execução.");
+    sair (0, "\nFim.");
 }

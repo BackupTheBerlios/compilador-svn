@@ -43,7 +43,7 @@ int ehDigito (char e)
 
 /* ehSimbolo
  *
- * Retorna verdadeiro se o caracter de entrada for um s√≠mbolo
+ * Retorna verdadeiro se o caracter de entrada for um sÌmbolo
  */
 int ehSimbolo (char e)
 {
@@ -70,10 +70,10 @@ int ehSimbolo (char e)
         case '=':
         case '>':
 //        case '?':
-//        case '[':
+        case '[':
 //        case '\\':
-//        case ']':
-//        case '^':
+        case ']':
+        case '^':
 //        case '_':
 //        case '`':
 //        case '{':
@@ -93,10 +93,10 @@ int ehBranco (char e)
 {
     switch (e)
     {
-        case ' ':   // espa√ßo
-        case '\n':  // avan√ßo de linha
+        case ' ':   // espaÁo
+        case '\n':  // avanÁo de linha
         case '\r':  // retorno de carro
-        case '\t':  // tabula√ß√£o
+        case '\t':  // tabulaÁ„o
             return VERDADE;
     }
     return FALSO;
@@ -105,7 +105,6 @@ int ehBranco (char e)
 
 um_atomo leNome (char **entrada) 
 {
-    um_atomo a;
     uma_classe c;
     char * nome;
     int tamanho;
@@ -125,20 +124,13 @@ um_atomo leNome (char **entrada)
 
     c = busca_palavra_reservada (nome);
     if (c != INVALIDO)
-    {
-        return novoAtomo(c);
-    }
+        return novoAtomo(c, 0);
 
     cod = busca_cod_ID (nome);
-
-    if (cod == BUSCA_NAO_ENCONTRADA)
-    {
+    if (cod == ERRO)
         cod = adicionaID (nome);
-    }
 
-    a = novoAtomo(IDENTIFICADOR);
-    a->valor = cod;
-    return a;
+    return novoAtomo (IDENTIFICADOR, cod);
 }
 
 
@@ -162,38 +154,41 @@ um_atomo leSimbolo (char **entrada)
 
     c = busca_simbolo (nome);
     if (c != INVALIDO)
-    {
-        return novoAtomo(c);
-    }
+        return novoAtomo(c, 0);
 
-    return novoAtomo(INVALIDO);
+    return novoAtomo(INVALIDO, 0);
 }
 
 
 um_atomo leInteiro(char **entrada) 
 {
     um_atomo a;
+    int valor;
+    
+    valor = 0;
 
-    a = novoAtomo(INTEIRO);
+    a = novoAtomo(INTEIRO, 0);
 
     while (ehDigito (**entrada))
     {
-        a->valor = (10 * a->valor) + (**entrada - '0');
+        valor = (10 * valor) + (**entrada - '0');
         (*entrada)++;
     }
+    
+    a->valor = valor;
 
     return a;
 }
 
 /*
-  As transi√ß√µes em vazio do automato s√£o representadas por retornos da fun√ß√£o
-  analisadorLexico. As demais transi√ß√µes podem ser representadas por devios
-  para partes do programa ou por chamdas de fun√ß√µes internas (estados), e o
-  consumo de caracteres corresponde ao avan√ßo do cursor no programa fonte.
+  As transiÁıes em vazio do automato s„o representadas por retornos da funÁ„o
+  analisadorLexico. As demais transiÁ√µes podem ser representadas por devios
+  para partes do programa ou por chamdas de funÁ√µes internas (estados), e o
+  consumo de caracteres corresponde ao avanÁo do cursor no programa fonte.
   Uma rotina auxiliar chamada "leFonte" encarrega-se de ler novas linhas de dados
   do programa fonte sempre que necess√°rio, informando ao analisador l√©xico qual
-  √© o pr√≥ximo caractere ainda n√£o analisado ("entrada"). A retornar ao programa
-  chamador, "entrada" esta sempre se referindo ao proximo caractere ainda n√£o
+  √© o pr√≥ximo caractere ainda n„o analisado ("entrada"). A retornar ao programa
+  chamador, "entrada" esta sempre se referindo ao proximo caractere ainda n„o
   analisado.
 */
 
@@ -239,9 +234,9 @@ um_atomo analisadorLexico(char **entrada)
 //        saida = leComentario (entrada);
     }
     else if (**entrada == '\0')
-        saida = novoAtomo (FIM);
+        saida = novoAtomo (FIM, 0);
     else
-        saida = novoAtomo (INVALIDO);
+        saida = novoAtomo (INVALIDO, 0);
 
     return saida;
 }

@@ -20,7 +20,7 @@ ObjectOutput=objwin
 OverrideOutput=0
 OverrideOutputName=teste.exe
 HostApplication=
-Folders=Cabeçalhos,Fontes
+Folders="Analisador Léxico"
 CommandLine=teste.prg
 IncludeVersionInfo=0
 SupportXPThemes=0
@@ -32,7 +32,7 @@ CustomMakefile=
 [Unit1]
 FileName=src\analisadorLexico.c
 CompileCpp=0
-Folder=Fontes
+Folder=Analisador Léxico
 Compile=1
 Link=1
 Priority=1000
@@ -42,7 +42,7 @@ BuildCmd=
 [Unit2]
 FileName=src\analisadorLexico.h
 CompileCpp=0
-Folder=Cabeçalhos
+Folder=Analisador Léxico
 Compile=1
 Link=1
 Priority=1000
@@ -52,7 +52,7 @@ BuildCmd=
 [Unit3]
 FileName=src\atomo.c
 CompileCpp=0
-Folder=Fontes
+Folder=Analisador Léxico
 Compile=1
 Link=1
 Priority=1000
@@ -62,27 +62,7 @@ BuildCmd=
 [Unit4]
 FileName=src\atomo.h
 CompileCpp=0
-Folder=Cabeçalhos
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit5]
-FileName=src\defs.h
-CompileCpp=0
-Folder=Cabeçalhos
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
-FileName=src\tabid.c
-CompileCpp=0
-Folder=Fontes
+Folder=Analisador Léxico
 Compile=1
 Link=1
 Priority=1000
@@ -90,9 +70,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit7]
-FileName=src\tabid.h
+FileName=src\compilador.h
 CompileCpp=0
-Folder=Cabeçalhos
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -100,19 +80,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit8]
-FileName=src\compilador.c
+FileName=src\defs.h
 CompileCpp=0
-Folder=Fontes
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit9]
-FileName=src\compilador.h
-CompileCpp=0
-Folder=Cabeçalhos
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -136,4 +106,34 @@ OriginalFilename=
 ProductName=
 ProductVersion=
 AutoIncBuildNr=0
+
+[Unit5]
+FileName=src\tabid.c
+CompileCpp=0
+Folder=Analisador Léxico
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit6]
+FileName=src\compilador.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit9]
+FileName=src\tabid.h
+CompileCpp=0
+Folder=Analisador Léxico
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 
