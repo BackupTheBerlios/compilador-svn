@@ -8,11 +8,6 @@ DIRS=src
 # NÃO MEXER A PARTIR DAQUI
 #
 
-#all clean distclean:
-#	@for d in $(DIRS); do \
-#   	  $(MAKE) -C $$d $@; \
-#	done
-
 all clean distclean: $(DIRS)
 
 all: alvo = all
@@ -25,5 +20,11 @@ $(DIRS):
 	$(MAKE) -C $@ $(alvo)
 
 
+# Compila objetos individualmente
 
-.PHONY: all clean distclean $(DIRS)
+%.o:
+	@for d in $(DIRS); do \
+	  $(MAKE) -C $$d ../$@ ; \
+	done
+
+.PHONY: all clean distclean $(DIRS) %.o
