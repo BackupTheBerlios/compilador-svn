@@ -29,6 +29,7 @@ void sair (int ret, const char * msg)
     printf ("%s\n", msg);
 #ifdef ESPERA_TECLA
     printf ("Pressione algo para continuar...");
+    fflush(stdout);
     getchar();
 #endif
     exit (ret);
@@ -100,4 +101,6 @@ int main (int argc, char **argv)
     }
     
     sair (0, "\nFim.");
+    
+    return 0;
 }

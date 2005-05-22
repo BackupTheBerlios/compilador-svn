@@ -112,6 +112,7 @@ struct s_reservado {
  */
 char * nomeClasse (uma_classe c);
 um_atomo novoAtomo (uma_classe c, int v);
+void removeAtomo (um_atomo a);
 uma_classe busca_simbolo (char * nome);
 uma_classe busca_palavra_reservada (char * nome);
 char * busca_nome_da_classe (uma_classe c);
