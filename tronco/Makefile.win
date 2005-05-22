@@ -1,0 +1,39 @@
+# Project: CompilaDOR
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe -D__DEBUG__
+CC   = gcc.exe -D__DEBUG__
+WINDRES = windres.exe
+RES  = 
+OBJ  = obj/analisadorLexico.o obj/atomo.o obj/tabid.o obj/compilador.o $(RES)
+LINKOBJ  = obj/analisadorLexico.o obj/atomo.o obj/tabid.o obj/compilador.o $(RES)
+LIBS =   -g3 
+INCS = 
+CXXINCS = 
+BIN  = bin/compilaDOR.exe
+CXXFLAGS = $(CXXINCS)   -g3
+CFLAGS = $(INCS)   -g3
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before bin/compilaDOR.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o "bin\compilaDOR.exe" $(LIBS)
+
+obj/analisadorLexico.o: src/analisadorLexico.c
+	$(CC) -c src/analisadorLexico.c -o obj/analisadorLexico.o $(CFLAGS)
+
+obj/atomo.o: src/atomo.c
+	$(CC) -c src/atomo.c -o obj/atomo.o $(CFLAGS)
+
+obj/tabid.o: src/tabid.c
+	$(CC) -c src/tabid.c -o obj/tabid.o $(CFLAGS)
+
+obj/compilador.o: src/compilador.c
+	$(CC) -c src/compilador.c -o obj/compilador.o $(CFLAGS)
