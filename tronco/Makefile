@@ -8,16 +8,12 @@ DIRS=src
 # NÃO MEXER A PARTIR DAQUI
 #
 
-all clean distclean: $(DIRS)
+all: .DEFAULT
 
-all: alvo = all
-
-clean: alvo = clean
-
-distclean: alvo = distclean
-
-$(DIRS):
-	$(MAKE) -C $@ $(alvo)
+.DEFAULT:
+	@for d in $(DIRS); do \
+	  $(MAKE) -C $$d $(MAKECMDGOALS) ; \
+	done
 
 
 # Compila objetos individualmente
@@ -27,4 +23,4 @@ $(DIRS):
 	  $(MAKE) -C $$d ../$@ ; \
 	done
 
-.PHONY: all clean distclean $(DIRS) %.o
+.PHONY: all clean distclean run makerun %.o
