@@ -16,6 +16,7 @@
  
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 #include "defs.h"
 #include "compilador.h"
 #include "atomo.h"
@@ -28,7 +29,7 @@ void sair (int ret, const char * msg)
 {
     printf ("%s\n", msg);
 #ifdef ESPERA_TECLA
-    printf ("Pressione algo para continuar...");
+    printf ("Pressione algo para continuar...\n");
     fflush(stdout);
     getchar();
 #endif
@@ -38,7 +39,8 @@ void sair (int ret, const char * msg)
 int main (int argc, char **argv)
 {
     um_atomo at;
-    char *dados, *pos, *nome;
+    uma_pilha pilha;
+    char *dados, *pos;
     int i, ids, tamanho, lido;
     FILE *arq;
 
@@ -48,7 +50,12 @@ int main (int argc, char **argv)
     arq = fopen (argv[1], "r");
 
     if (arq == NULL)
-        sair (2, "Arquivo nao encontrado!\n");
+	{
+		char msg[50]="";
+		strcat (msg, argv[1]);
+		strcat (msg, " nao encontrado!\n");
+        sair (2, msg);
+	}
 
     dados = malloc (MAX_BLOCO * sizeof (char));
     tamanho = 0;
@@ -70,26 +77,31 @@ int main (int argc, char **argv)
     printf ("%20s %5s\n", "------", "-----");
     
     pos = dados;                   // Posição inicial de leitura
-    at = novoAtomo (INVALIDO, 0);  // Átomo inicial apenas para entrar no while
-    while (at->classe != FIM)
+    pilha_inicia (&pilha);
+    at = NULL;
+    do
     {
         // Limpa átomo anterior
-        removeAtomo (at);
-
+        if (at)
+            free (at);
 
         // Lê novo átomo
-        at = analisadorLexico (&pos);
-        if (at != NULL)
-        {
-            nome = nomeClasse (at->classe);
-            printf ("%20s %5d", nome,  at->valor);
-            free (nome);
-            if (at->classe == IDENTIFICADOR)
-                printf (" (%s)", busca_nome_ID (at->valor));
+        at = analisadorLexico (&pos, &pilha);
+        
+        printf ("%20s %5d", nomeClasse (at->classe),  at->valor);
 
-            printf ("\n");
-        }
+        if (at->classe == C_IDENTIFICADOR)
+            printf (" (%s)", busca_nome_ID (at->valor));
+
+        printf ("\n");
     }
+    while ((at->classe != C_FIM) && (at->classe != C_INVALIDA));
+    
+    if (at->classe == C_INVALIDA)
+    {
+        printf ("\nToken invalido na linha %d, coluna %d\n", linha_atual(), coluna_atual());
+    }
+
     free (at);
 
     ids = tam_tabelaID();

@@ -22,6 +22,8 @@
 #include "tabid.h"
 #include "analisadorLexico.h"
 
+static int linha = 1;
+static int coluna = 0;
 
 /* ehLetra
  *
@@ -93,10 +95,16 @@ int ehBranco (char e)
 {
     switch (e)
     {
-        case ' ':   // espaço
         case '\n':  // avanço de linha
+            linha++;
         case '\r':  // retorno de carro
+            coluna = 0;
+            return VERDADE;
+            
         case '\t':  // tabulação
+            coluna += 3;
+        case ' ':   // espaço
+            coluna ++;        
             return VERDADE;
     }
     return FALSO;
@@ -117,20 +125,21 @@ um_atomo leNome (char **entrada)
     {
         nome [tamanho-1] = **entrada;
         (*entrada)++;
+        coluna++;
         nome = realloc (nome, (++tamanho) * sizeof (char));
     }
 
     nome [tamanho-1] = '\0';
 
     c = busca_palavra_reservada (nome);
-    if (c != INVALIDO)
+    if (c != C_INVALIDA)
         return novoAtomo(c, 0);
 
     cod = busca_cod_ID (nome);
     if (cod == ERRO)
         cod = adicionaID (nome);
 
-    return novoAtomo (IDENTIFICADOR, cod);
+    return novoAtomo (C_IDENTIFICADOR, cod);
 }
 
 
@@ -147,16 +156,17 @@ um_atomo leSimbolo (char **entrada)
     {
         nome [tamanho-1] = **entrada;
         (*entrada)++;
+        coluna++;
         nome = realloc (nome, (++tamanho) * sizeof (char));
     }
 
     nome [tamanho-1] = '\0';
 
     c = busca_simbolo (nome);
-    if (c != INVALIDO)
+    if (c != C_INVALIDA)
         return novoAtomo(c, 0);
 
-    return novoAtomo(INVALIDO, 0);
+    return novoAtomo(C_INVALIDA, linha);
 }
 
 
@@ -167,7 +177,7 @@ um_atomo leInteiro(char **entrada)
     
     valor = 0;
 
-    a = novoAtomo(INTEIRO, 0);
+    a = novoAtomo(C_INTEIRO, 0);
 
     while (ehDigito (**entrada))
     {
@@ -192,9 +202,12 @@ um_atomo leInteiro(char **entrada)
   analisado.
 */
 
-um_atomo analisadorLexico(char **entrada)
+um_atomo analisadorLexico(char **entrada, uma_pilha *pilha)
 {
-    um_atomo saida = NULL;
+    um_atomo saida = (um_atomo) NULL;
+    
+    if (! pilha_vazia (pilha))
+        return pilha_retira (pilha);
 
     /*
      * Estado 1
@@ -234,9 +247,19 @@ um_atomo analisadorLexico(char **entrada)
 //        saida = leComentario (entrada);
     }
     else if (**entrada == '\0')
-        saida = novoAtomo (FIM, 0);
+        saida = novoAtomo (C_FIM, linha);
     else
-        saida = novoAtomo (INVALIDO, 0);
+        saida = novoAtomo (C_INVALIDA, linha);
 
     return saida;
+}
+
+int linha_atual ()
+{
+    return linha;
+}
+
+int coluna_atual ()
+{
+    return coluna;
 }

@@ -32,10 +32,10 @@ typedef enum   e_classe    uma_classe;
  * Todas as classes possíveis (incluindo símbolos e palavras reservadas)
  */
 enum e_classe {
-    INVALIDO,
-    FIM,
-    IDENTIFICADOR,
-    INTEIRO,
+    C_INVALIDA,
+    C_FIM,
+    C_IDENTIFICADOR,
+    C_INTEIRO,
 
     // Símbolos
     S_VIRGULA,
@@ -112,15 +112,14 @@ struct s_reservado {
  */
 char * nomeClasse (uma_classe c);
 um_atomo novoAtomo (uma_classe c, int v);
-void removeAtomo (um_atomo a);
 uma_classe busca_simbolo (char * nome);
 uma_classe busca_palavra_reservada (char * nome);
 char * busca_nome_da_classe (uma_classe c);
 
 // Funções com pilha
-int pilha_tamanho  (uma_pilha pilha);
-int pilha_vazia    (uma_pilha pilha);
-int pilha_adiciona (uma_pilha pilha, um_atomo atomo);
-um_atomo pilha_remove   (uma_pilha pilha);
+void pilha_inicia  (uma_pilha *pilha);
+int pilha_vazia    (uma_pilha *pilha);
+int pilha_adiciona (uma_pilha *pilha, um_atomo atomo);
+um_atomo pilha_retira   (uma_pilha *pilha);
 
 #endif // __ATOMO_H__

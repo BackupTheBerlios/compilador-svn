@@ -21,6 +21,8 @@
 
 #include "defs.h"
 
-um_atomo  analisadorLexico(char **entrada);
+um_atomo  analisadorLexico(char **entrada, uma_pilha *pilha);
+int linha_atual ();
+int coluna_atual ();
 
 #endif // __ANAL_H__

@@ -78,5 +78,5 @@ char * busca_nome_ID (int cod)
         if (tabelaID[i].cod == cod)
             return tabelaID[i].nome;
 
-    return NULL;
+    return (char *) NULL;
 }

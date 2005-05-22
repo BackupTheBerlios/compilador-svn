@@ -101,30 +101,30 @@ char * nomeClasse (uma_classe c)
 {
     char *nome;
 
-    nome = malloc (50 * sizeof (char));
+//    nome = malloc (50 * sizeof (char));
     
     switch (c)
     {
-        case INVALIDO:
-            strcpy (nome, "INVALIDO");
+        case C_INVALIDA:
+            nome = "INVALIDO";
             break;
 
-        case FIM:
-            strcpy (nome, "FIM");
+        case C_FIM:
+            nome = "FIM";
             break;
 
-        case IDENTIFICADOR:
-            strcpy (nome, "IDENTIFICADOR");
+        case C_IDENTIFICADOR:
+            nome = "IDENTIFICADOR";
             break;
 
-        case INTEIRO:
-            strcpy (nome, "INTEIRO");
+        case C_INTEIRO:
+            nome = "INTEIRO";
             break;
 
         default:
-            strcpy (nome, busca_nome_da_classe (c));
+            nome = busca_nome_da_classe (c);
             if (nome == NULL)
-                strcpy (nome, "DESCONHECIDO");
+                nome = "DESCONHECIDO";
     }
     return nome;
 }
@@ -149,15 +149,6 @@ um_atomo novoAtomo (uma_classe c, int v)
     return a;
 }
 
-/* removeAtomo
- * 
- * Desaloca memória de um atomo
- */
-void removeAtomo (um_atomo a)
-{
-    free (a);
-}
-
 /* busca_palavra_reservada
  *
  * Busca por uma palavra reservada na tabela
@@ -172,7 +163,7 @@ uma_classe busca_palavra_reservada (char * nome)
             return PALAVRAS_RESERVADAS[i].classe;
     }
 
-    return INVALIDO;
+    return C_INVALIDA;
 }
 
 /* busca_simbolo
@@ -189,7 +180,7 @@ uma_classe busca_simbolo (char * nome)
             return SIMBOLOS[i].classe;
     }
 
-    return INVALIDO;
+    return C_INVALIDA;
 }
 
 /* busca_nome_classe
@@ -214,43 +205,49 @@ char * busca_nome_da_classe (uma_classe c)
             return PALAVRAS_RESERVADAS[i].nome;
     }
 
-    return NULL;
+    return (char *) NULL;
 }
 
 // Funções com pilha
 
-int pilha_vazia (uma_pilha pilha)
+void pilha_inicia  (uma_pilha *pilha)
 {
-    return pilha.tamanho == 0;
+    pilha->atomo = (um_atomo *) NULL;
+    pilha->tamanho = 0;
 }
 
-int pilha_adiciona (uma_pilha pilha, um_atomo atomo)
+int pilha_vazia (uma_pilha *pilha)
+{
+    return pilha->tamanho == 0;
+}
+
+int pilha_adiciona (uma_pilha *pilha, um_atomo atomo)
 {
     int ultimo;
     
-    if (pilha.atomo == NULL)
+    if (pilha->atomo == NULL)
     {
-        pilha.atomo = (um_atomo *) malloc (sizeof (um_atomo));
-        pilha.tamanho = 1;
+        pilha->atomo = (um_atomo *) malloc (sizeof (um_atomo));
+        pilha->tamanho = 1;
     }
     else
-        pilha.atomo = (um_atomo *) realloc (pilha.atomo, (++pilha.tamanho) * sizeof (um_atomo));
+        pilha->atomo = (um_atomo *) realloc (pilha->atomo, (++pilha->tamanho) * sizeof (um_atomo));
 
-    if (pilha.atomo == NULL)
+    if (pilha->atomo == NULL)
     {
-        pilha.tamanho = 0;
+        pilha->tamanho = 0;
         ultimo = ERRO;
     }
     else
     {
-        ultimo = pilha.tamanho - 1;
-        pilha.atomo [ultimo] = atomo;
+        ultimo = pilha->tamanho - 1;
+        pilha->atomo [ultimo] = atomo;
     }
     
     return ultimo;
 }
 
-um_atomo pilha_remove (uma_pilha pilha)
+um_atomo pilha_retira (uma_pilha *pilha)
 {
     um_atomo atomo;
     int ultimo;
@@ -258,10 +255,10 @@ um_atomo pilha_remove (uma_pilha pilha)
     if (pilha_vazia (pilha))
         return (um_atomo) NULL;
 
-    ultimo = pilha.tamanho - 1;    
-    atomo = pilha.atomo[ultimo];
+    ultimo = pilha->tamanho - 1;    
+    atomo = pilha->atomo[ultimo];
     
-    pilha.atomo = (um_atomo *) realloc (pilha.atomo, (--pilha.tamanho) * sizeof (um_atomo));
+    pilha->atomo = (um_atomo *) realloc (pilha->atomo, (--pilha->tamanho) * sizeof (um_atomo));
         
     return atomo;
 }

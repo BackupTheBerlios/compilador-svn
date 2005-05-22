@@ -26,7 +26,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000001000000
-UseCustomMakefile=1
+UseCustomMakefile=0
 CustomMakefile=Makefile
 
 [Unit1]
