@@ -1,5 +1,5 @@
 [Project]
-FileName=CompilaDOR.dev
+FileName=compilaDOR.dev
 Name=CompilaDOR
 UnitCount=9
 Type=1
@@ -16,18 +16,18 @@ Linker=
 IsCpp=0
 Icon=
 ExeOutput=bin
-ObjectOutput=objwin
+ObjectOutput=obj
 OverrideOutput=0
 OverrideOutputName=teste.exe
 HostApplication=
 Folders="Analisador Léxico"
-CommandLine=teste.prg
+CommandLine=bin\teste.prg
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000000000000000000000
-UseCustomMakefile=0
-CustomMakefile=
+CompilerSettings=0000000000000001000000
+UseCustomMakefile=1
+CustomMakefile=Makefile
 
 [Unit1]
 FileName=src\analisadorLexico.c
