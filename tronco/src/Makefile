@@ -17,7 +17,7 @@
 # 	por este `makefile´.
 #
 # Histórico:
-#	22/05/2005	André Pinto		Cria e remove pastas automaticamente
+#	22/05/2005	André Pinto		Cria pastas automaticamente, executa
 # 	05/05/2005	André Pinto		Dependências
 # 	21/11/2004	André Pinto		Versão inicial adaptado da versão SDCC
 #
@@ -56,12 +56,16 @@ FONTES    := $(wildcard $(SRCDIR)/*.c)
 OBJS      := $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(FONTES))
 DEPS      := $(patsubst $(SRCDIR)/%.c,$(SRCDIR)/.%.d,$(FONTES))
 OBJS2     := $(patsubst %.c,%.o,$(FONTES))
+PARAM     := $(MAKECMDGOALS:makerun=)
+PARAM     := $(PARAM:run=)
 #OBJS2     := $(patsubst %.c,%.o,$(wildcard *.c))
 
 
 all: $(EXE)
 
+ifneq ($(MAKECMDGOALS),distclean)
 include $(DEPS)
+endif
 
 # Gera executável
 
@@ -86,7 +90,7 @@ $(OBJS2): %.o: $(OBJDIR)/%.o
 # Gera dependências de cada .c
 
 .%.d: %.c
-	@echo Calculando dependências de $<
+	@echo make: Calculando dependências de $<
 	@$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
@@ -97,13 +101,19 @@ $(OBJS2): %.o: $(OBJDIR)/%.o
 distclean: clean
 	@echo Removendo dependências
 	@rm -f $(DEPS)
-	@rmdir $(OBJDIR)
 
 clean:
 	@echo Removendo executável
-	@rm -f $(EXE)
+	@rm -f $(EXE) $(EXE).exe
 	@echo Removendo objetos
 	@rm -f $(OBJS)
 
-.PHONY: all clean distclean $(OBJS2)
+run:
+	@echo Executando $(projeto) $(PARAM)
+	@cd $(BINDIR) && \
+	$(EXE) $(PARAM)
+
+makerun: $(EXE) run
+
+.PHONY: all clean distclean run makerun $(OBJS2)
 
