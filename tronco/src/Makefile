@@ -10,10 +10,14 @@
 # 	arquivo com essa extensão não fizer parte do projeto, mova-o para
 # 	outro diretório ou renomeie-o para .c.fora, por exemplo.
 #
+#	As dependências são calculadas automaticamente, através dos
+#       includes dos fontes.
+#
 # 	O alvo (`target´) ``clean´´ remove todos os arquivos gerados
 # 	por este `makefile´.
 #
 # Histórico:
+#	22/05/2005	André Pinto		Cria e remove pastas automaticamente
 # 	05/05/2005	André Pinto		Dependências
 # 	21/11/2004	André Pinto		Versão inicial adaptado da versão SDCC
 #
@@ -21,13 +25,13 @@
 ################
 # Projeto (.exe)
 ################
-projeto=compilador
+projeto=compilaDOR
 
 ############
 # Diretórios
 ############
 BINDIR=../bin
-OBJDIR=../objlin
+OBJDIR=../obj
 SRCDIR=.
 
 ###################
@@ -63,6 +67,7 @@ include $(DEPS)
 
 $(EXE): $(OBJS)
 	@echo Linkando tudo em $(EXE)
+	@mkdir -p $(BINDIR)
 	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(EXE)
 
 
@@ -70,6 +75,7 @@ $(EXE): $(OBJS)
 
 $(OBJS): $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo Compilando $<
+	@mkdir -p $(OBJDIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Previne a criação de objetos na pasta atual
@@ -91,6 +97,7 @@ $(OBJS2): %.o: $(OBJDIR)/%.o
 distclean: clean
 	@echo Removendo dependências
 	@rm -f $(DEPS)
+	@rmdir $(OBJDIR)
 
 clean:
 	@echo Removendo executável
@@ -98,5 +105,5 @@ clean:
 	@echo Removendo objetos
 	@rm -f $(OBJS)
 
-.PHONY: all clean $(OBJS2)
+.PHONY: all clean distclean $(OBJS2)
 
