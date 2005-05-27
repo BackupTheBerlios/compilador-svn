@@ -41,7 +41,7 @@ int main (int argc, char **argv)
     um_atomo at;
     uma_pilha pilha;
     char *dados, *pos;
-    int i, ids, tamanho, lido;
+    int i, ids, tamanho, lido, fim;
     FILE *arq;
 
     if (argc == 1)
@@ -62,7 +62,7 @@ int main (int argc, char **argv)
 
     while (! feof (arq))
     {
-        lido = fread (dados, sizeof (char), MAX_BLOCO, arq);
+        lido = fread (dados+tamanho, sizeof (char), MAX_BLOCO, arq);
         tamanho += lido;
         if (lido == MAX_BLOCO)
             dados = realloc (dados, (tamanho + MAX_BLOCO) * sizeof (char));
@@ -78,41 +78,68 @@ int main (int argc, char **argv)
     
     pos = dados;                   // Posição inicial de leitura
     pilha_inicia (&pilha);
-    at = NULL;
+    fim = 0;
+    i = 0;
     do
     {
-        // Limpa átomo anterior
-        if (at)
-            free (at);
-
         // Lê novo átomo
         at = analisadorLexico (&pos, &pilha);
         
-        printf ("%20s %5d", nomeClasse (at->classe),  at->valor);
-
-        if (at->classe == C_IDENTIFICADOR)
-            printf (" (%s)", busca_nome_ID (at->valor));
-
-        printf ("\n");
-    }
-    while ((at->classe != C_FIM) && (at->classe != C_INVALIDA));
+        if (i==3)
+        {
+            pilha_adiciona (&pilha, at);
+            printf ("O atomo %s (%d) foi pra pilha!\n", nomeClasse (at->classe),  at->valor);
+        }
+        else
+        {
+            printf ("%20s %5d", nomeClasse (at->classe),  at->valor);
     
-    if (at->classe == C_INVALIDA)
+            if (at->classe == C_IDENTIFICADOR)
+                printf (" (%s)", busca_nome_ID (at->valor));
+    
+            printf ("\n");
+            
+            if (at->classe == C_FIM)
+                fim = 1;
+            if (at->classe == C_INVALIDA)
+                fim = 2;
+
+            // Limpa átomo
+            free (at);
+        }
+        i++;
+    }
+    while (! fim);
+    
+    // Mostra linha do erro, quando ocorrer
+    if (fim == 2)
     {
-        printf ("\nToken invalido na linha %d, coluna %d\n", linha_atual(), coluna_atual());
+        int col = coluna_atual();
+        
+        printf ("\nErro na seguinte linha:\n");
+        
+        for (pos -= col, i=0; pos[i] != '\n'; i++)
+            printf ("%c", pos[i]);
+        printf ("\n");
+        
+        for (i=0; i < col; i++)
+            if (pos[i] == '\t')
+                printf ("--------");
+            else
+                printf ("-");
+        printf ("^\n");
     }
 
-    free (at);
-
+    // Mostra tabela de identificadores
     ids = tam_tabelaID();
-        
     printf ("\nIdentificadores (%d):\n", ids);
     for (i = 0; i < ids; i++)
     {
         printf ("%3d: %s\n", i,  busca_nome_ID (i));
     }
     
-    sair (0, "\nFim.");
     
+    
+    sair (0, "\nFim.");
     return 0;
 }

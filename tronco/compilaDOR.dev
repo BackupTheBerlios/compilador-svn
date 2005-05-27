@@ -1,7 +1,7 @@
 [Project]
 FileName=compilaDOR.dev
 Name=CompilaDOR
-UnitCount=9
+UnitCount=11
 Type=1
 Ver=1
 ObjFiles=
@@ -18,9 +18,9 @@ Icon=
 ExeOutput=bin
 ObjectOutput=obj
 OverrideOutput=0
-OverrideOutputName=teste.exe
+OverrideOutputName=compilaDOR.exe
 HostApplication=
-Folders="Analisador Léxico"
+Folders="Analisador Léxico",Exemplos
 CommandLine=bin\teste.prg
 IncludeVersionInfo=0
 SupportXPThemes=0
@@ -133,6 +133,24 @@ CompileCpp=0
 Folder=Analisador Léxico
 Compile=1
 Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit10]
+FileName=bin\teste.prg
+Folder=Exemplos
+Compile=0
+Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit11]
+FileName=bin\errado.prg
+Folder=Exemplos
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

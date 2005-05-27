@@ -66,7 +66,7 @@ int ehSimbolo (char e)
         case '-':
         case '.':
         case '/':
-//        case ':':
+        case ':':
         case ';':
         case '<':
         case '=':
@@ -102,7 +102,7 @@ int ehBranco (char e)
             return VERDADE;
             
         case '\t':  // tabulação
-            coluna += 3;
+//            coluna += 3;
         case ' ':   // espaço
             coluna ++;        
             return VERDADE;
@@ -145,28 +145,51 @@ um_atomo leNome (char **entrada)
 
 um_atomo leSimbolo (char **entrada) 
 {
-    uma_classe c;
-    char * nome;
-    int tamanho;
+    uma_classe c, classe;
+    char *nome, *valido, e;
+    int tamanho, i;
 
-    tamanho = 0;
-    nome = malloc ((++tamanho) * sizeof (char));
+    i = 0;
+    nome = malloc ((i+1) * sizeof (char));
+    valido = NULL;
 
-    while (ehSimbolo (**entrada))
+    while (ehSimbolo (*(*entrada+i)))
     {
-        nome [tamanho-1] = **entrada;
-        (*entrada)++;
-        coluna++;
-        nome = realloc (nome, (++tamanho) * sizeof (char));
+        e = (*entrada)[i];
+//        printf ("e [%c]", e);
+        nome = realloc (nome, ((++i) + 1) * sizeof (char));
+
+        nome [i-1] = e;
+        nome [i] = '\0';
+//        printf (" nome [%s]", nome);
+        c=busca_simbolo(nome);        
+        if (c != C_INVALIDA)
+        {
+            if (valido)
+                free (valido);
+            valido = malloc ((i+1) * sizeof (char));
+            strncpy (valido, nome, i);
+            valido [i] = '\0';
+            classe = c;
+//            printf (" valido [%s] ", valido);
+        }
+        
+//        printf ("\n");
+            
     }
 
-    nome [tamanho-1] = '\0';
+    free (nome);
 
-    c = busca_simbolo (nome);
-    if (c != C_INVALIDA)
-        return novoAtomo(c, 0);
-
-    return novoAtomo(C_INVALIDA, linha);
+    if (valido != NULL)
+    {
+        i = strlen (valido);
+        (*entrada) += i;
+        coluna += i;
+        free (valido);
+        return novoAtomo(classe, 0);
+    }
+    else
+        return novoAtomo(C_INVALIDA, linha);
 }
 
 

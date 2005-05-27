@@ -1,7 +1,6 @@
 program nada;
-
-banana=;0123;
-
-fruta=banana;
-
+begin
+    num:=10;
+    output quadrado(num):=30;
+end;
 
