@@ -2,7 +2,7 @@
 Compatibility Level: 1 
 
 <PROJECT_DESCRIPTION_START>
-Compilador didático<PROJECT_DESCRIPTION_END>
+Um compilador didático para a disciplina do JJ.<PROJECT_DESCRIPTION_END>
 <CONFIG_PROGS_START>
 <CONFIG_PROGS_END>
 <CONFIG_LIBS_START>
@@ -16,7 +16,7 @@ Compilador didático<PROJECT_DESCRIPTION_END>
 <CONFIG_ADDITIONAL_START>
 <CONFIG_ADDITIONAL_END>
 <CONFIG_FILES_START>
-bin/compilaDOR<CONFIG_FILES_END>
+<CONFIG_FILES_END>
 <MAKEFILE_AM_START>
 <MAKEFILE_AM_END>
 
@@ -28,7 +28,7 @@ anjuta.compatibility.level=1
 project.name=compilaDOR
 project.type=GENERIC
 project.target.type=EXECUTABLE
-project.version=tronco
+project.version=0.99
 project.author=André e Igor
 project.source.target=bin/compilaDOR
 project.has.gettext=0
@@ -41,9 +41,9 @@ project.config.extra.modules.after=
 project.config.blocked=1
 project.config.disable.overwriting=1 1 1 1 1 1 1 1 1 
 
-project.menu.entry=CompilaDOR Version 0.2
+project.menu.entry=compilaDOR Version 0.99
 project.menu.group=Application
-project.menu.comment=CompilaDOR Version 0.2
+project.menu.comment=compilaDOR Version 0.99
 project.menu.icon=
 project.menu.need.terminal=0
 
@@ -51,7 +51,7 @@ project.configure.options=
 anjuta.program.arguments=
 preferences.build.option.jobs=0
 preferences.build.option.silent=0
-preferences.build.option.autosave=1
+preferences.build.option.autosave=0
 preferences.make=make
 preferences.build.option.keep.going=1
 preferences.build.option.warn.undef=0
@@ -64,22 +64,24 @@ preferences.indent.size=4
 preferences.tabsize=4
 preferences.indent.closing=0
 
-module.include.name=src
+module.include.name=.
 module.include.type=
 module.include.files=\
-	analisadorLexico.h\
-	atomo.h\
-	defs.h\
-	tabid.h\
-	compilador.h
+	src/compilador.h\
+	src/atomo.h\
+	src/defs.h\
+	src/tabid.h\
+	src/analisadorLexico.h\
+	src/arquivo.h
 
-module.source.name=src
+module.source.name=.
 module.source.type=
 module.source.files=\
-	analisadorLexico.c\
-	atomo.c\
-	tabid.c\
-	compilador.c
+	src/compilador.c\
+	src/atomo.c\
+	src/tabid.c\
+	src/analisadorLexico.c\
+	src/arquivo.c
 
 module.pixmap.name=.
 module.pixmap.type=
@@ -116,5 +118,4 @@ compiler.options.other.c.flags=
 compiler.options.other.l.flags=
 compiler.options.other.l.libs=
 
-project.src.paths=/home/acdcp/projetos/compilador/src
-
+project.src.paths=

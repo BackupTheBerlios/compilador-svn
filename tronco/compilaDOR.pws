@@ -5,27 +5,37 @@ RunInTerminal=true
 [Project State]
 clean before build=false
 
+[filelist]
+0=/home/acdcp/programas/compilador/src/defs.h
+1=/home/acdcp/programas/compilador/src/compilador.c
+2=/home/acdcp/programas/compilador/src/arquivo.c
+3=/home/acdcp/programas/compilador/src/analisadorLexico.c
+
 [filenumbers]
-0=35
+0=1
+1=70
+2=56
+3=115
 
 [filemarkers]
 0=
+1=
+2=
+3=
 
 [File View]
 filter.file.unmatch=*.so *.o *.a *.la
 filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
 
-[filelist]
-0=/home/acdcp/projetos/compilador/src/teste.c
-
 [Project Tree]
 0=0
 1=0:0
 2=0:1
 
-[Symbol Tree]
-0=5
-
 [File Tree]
 0=0
+
+[executer args]
+0=bin/teste.prg
+1=teste.prg

@@ -31,9 +31,5 @@
 // Erro de busca ou adição
 #define ERRO                    -1
 
-// Limitações
-#define MAX_LINHA               200
-#define MAX_BLOCO               200
-
 
 #endif // __DEFS_H__

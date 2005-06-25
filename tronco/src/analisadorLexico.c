@@ -17,13 +17,294 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "defs.h"
 #include "atomo.h"
 #include "tabid.h"
 #include "analisadorLexico.h"
 
+enum estados_lexico
+{
+	BRANCO,
+	IDENTIFICADOR,
+	INTEIRO,
+	SIMBOLO,
+	COMENTARIO
+};
+
 static int linha = 1;
 static int coluna = 0;
+static enum estados_lexico estado_lexico = BRANCO;
+static char **entrada;
+
+// ProtÃ³tipo das funÃ§Ãµes utilizadas nesse arquivo
+um_atomo maquina_lexico ();
+um_atomo estado_branco ();
+um_atomo estado_identificador ();
+um_atomo estado_inteiro ();
+um_atomo estado_simbolo ();
+um_atomo estado_comentario ();
+void consome_entrada(int total);
+int ehLetra (char e);
+int ehDigito (char e);
+int ehSimbolo (char e);
+int ehFimDeLinha (char e);
+int ehBranco (char e);
+
+// As funÃ§Ãµes
+
+um_atomo analisadorLexico(char **ent, uma_pilha *pilha)
+{
+    um_atomo a;
+    
+    if (! pilha_vazia (pilha))
+        return pilha_retira (pilha);
+
+    entrada = ent;
+    estado_lexico = BRANCO;
+    
+    do
+        a = maquina_lexico();
+    while (!a);
+
+    return a;
+}
+
+
+um_atomo maquina_lexico ()
+{
+    um_atomo a;
+    
+	switch (estado_lexico)
+	{
+		case BRANCO:
+            a = estado_branco ();
+			break;
+		
+		case IDENTIFICADOR:
+            a = estado_identificador ();
+			break;
+		
+		case INTEIRO:
+            a = estado_inteiro ();
+			break;
+		
+		case SIMBOLO:
+            a = estado_simbolo ();
+			break;
+		
+		case COMENTARIO:
+            a = estado_comentario ();
+			break;
+		
+		default:
+			a = novoAtomo (C_INVALIDA, linha);
+			break;
+	}
+    
+	return a;
+}
+
+
+/* As funÃ§Ãµes estado_xxx retornam um Ã¡tomo */
+
+um_atomo estado_branco ()
+{
+    um_atomo a = NULL;
+    
+    if (ehBranco(**entrada))
+        consome_entrada(1);
+    else if (ehLetra (**entrada))
+        estado_lexico = IDENTIFICADOR;
+    else if (ehDigito (**entrada))
+        estado_lexico = INTEIRO;
+    else if (ehSimbolo (**entrada))
+        estado_lexico = SIMBOLO;
+    else if (**entrada == '%')
+        estado_lexico = COMENTARIO;
+    else if (**entrada == '\0')
+        a = novoAtomo (C_FIM, linha);
+    else
+        a = novoAtomo (C_INVALIDA, linha);
+    
+    return a;
+}
+
+um_atomo estado_identificador () 
+{
+    uma_classe c;
+    um_atomo a;
+    static char * nome;
+    static int tamanho=0, max=0;
+    int cod;
+
+    if (tamanho == 0)
+        nome = malloc (sizeof (char));
+
+    if (ehDigito (**entrada) || ehLetra (**entrada))
+    {
+        if (++tamanho > max)
+        {
+            max += 10;
+            nome = realloc (nome, (max+1) * sizeof (char));
+        }
+        
+        nome [tamanho-1] = **entrada;
+        consome_entrada(1);
+        return NULL;
+    }
+
+    nome [tamanho-1] = '\0';
+
+    tamanho = 0;
+    
+    c = busca_palavra_reservada (nome);
+    if (c != C_INVALIDA)
+    {
+        free (nome);
+        a = novoAtomo(c, 0);
+    }
+    else
+    {
+        cod = busca_cod_ID (nome);
+        if (cod == ERRO)
+            cod = adicionaID (nome);
+        a = novoAtomo (C_IDENTIFICADOR, cod);
+    }
+
+    return a;
+}
+
+
+um_atomo estado_simbolo () 
+{
+    uma_classe c;
+    char e;
+    static uma_classe classe_valida;
+    static char *nome, *simbolo_valido;
+    static int i=0, max=0;
+
+    if (i == 0)
+    {
+        nome = malloc (sizeof (char));
+        simbolo_valido = NULL;
+    }
+
+    if (ehSimbolo ((*entrada)[i]))
+    {
+        if (++i > max)
+        {
+            max += 5;
+            nome = realloc (nome, (max+1) * sizeof (char));
+        }
+        
+        e = (*entrada)[i];
+//        printf ("e [%c]", e);
+
+        nome [i-1] = e;
+        nome [i] = '\0';
+//        printf (" nome [%s]", nome);
+        
+        c = busca_simbolo(nome);     
+        
+        if (c != C_INVALIDA)
+        {
+            if (simbolo_valido)
+                free (simbolo_valido);
+            simbolo_valido = malloc ((i+1) * sizeof (char));
+            strncpy (simbolo_valido, nome, i+1);
+            classe_valida = c;
+//            printf (" simbolo_valido [%s] ", simbolo_valido);
+        }
+        
+//        printf ("\n");
+            
+        return NULL;
+    }
+
+    free (nome);
+
+    if (simbolo_valido)
+    {
+        consome_entrada (strlen (simbolo_valido));
+        free (simbolo_valido);
+        return novoAtomo(classe_valida, 0);
+    }
+    else
+        return novoAtomo(C_INVALIDA, linha);
+}
+
+um_atomo estado_inteiro () 
+{
+    um_atomo a;
+    static int valor = 0;
+    
+    if (ehDigito (**entrada))
+    {
+        valor = (10 * valor) + (**entrada - '0');
+        consome_entrada(1);
+        return NULL;
+    }
+
+    a = novoAtomo(C_INTEIRO, 0);    
+    a->valor = valor;
+    valor = 0;    
+    
+    return a;
+}
+
+um_atomo estado_comentario ()
+{
+    if (ehFimDeLinha (**entrada))
+        estado_lexico = BRANCO;
+    else
+        consome_entrada(1);
+    
+    return NULL;
+}
+
+
+void consome_entrada(int total)
+{
+    static int mudanca=0;
+    
+    while (total)
+    {        
+        switch (**entrada)
+        {
+            case '\n':  // avanÃ§o de linha
+            case '\r':  // retorno de carro
+                if (!mudanca)
+                {
+                    linha++;
+                    coluna = 0;
+                    mudanca = VERDADE;
+                }
+                break;
+    
+            case '\t':  // tabulaÃ§Ã£o
+                coluna += 3;
+            default:
+                coluna ++;        
+                mudanca = FALSO;
+                break;
+        }
+        
+        (*entrada)++;
+        total--;
+    }
+}
+
+int linha_atual ()
+{
+    return linha;
+}
+
+int coluna_atual ()
+{
+    return coluna;
+}
+
 
 /* ehLetra
  *
@@ -45,7 +326,7 @@ int ehDigito (char e)
 
 /* ehSimbolo
  *
- * Retorna verdadeiro se o caracter de entrada for um símbolo
+ * Retorna verdadeiro se o caracter de entrada for um sÃ­mbolo
  */
 int ehSimbolo (char e)
 {
@@ -87,6 +368,22 @@ int ehSimbolo (char e)
     return FALSO;
 }
 
+
+/* ehFimDeLinha
+ *
+ * Retorna verdadeiro se o caracter de entrada for um fim-de-linha
+ */
+int ehFimDeLinha (char e)
+{
+    switch (e)
+    {
+        case '\n':  // avanÃ§o de linha
+        case '\r':  // retorno de carro
+            return VERDADE;
+    }
+    return FALSO;
+}
+
 /* ehBranco
  *
  * Retorna verdadeiro se o caracter de entrada for um espaco em branco
@@ -95,23 +392,17 @@ int ehBranco (char e)
 {
     switch (e)
     {
-        case '\n':  // avanço de linha
-            linha++;
+        case '\n':  // avanÃ§o de linha
         case '\r':  // retorno de carro
-            coluna = 0;
-            return VERDADE;
-            
-        case '\t':  // tabulação
-//            coluna += 3;
-        case ' ':   // espaço
-            coluna ++;        
+        case '\t':  // tabulaÃ§Ã£o
+        case ' ':   // espaÃ§o
             return VERDADE;
     }
     return FALSO;
 }
 
 
-um_atomo leNome (char **entrada) 
+um_atomo leNome () 
 {
     uma_classe c;
     char * nome;
@@ -143,11 +434,11 @@ um_atomo leNome (char **entrada)
 }
 
 
-um_atomo leSimbolo (char **entrada) 
+um_atomo leSimbolo () 
 {
     uma_classe c, classe;
     char *nome, *valido, e;
-    int tamanho, i;
+    int i;
 
     i = 0;
     nome = malloc ((i+1) * sizeof (char));
@@ -190,99 +481,4 @@ um_atomo leSimbolo (char **entrada)
     }
     else
         return novoAtomo(C_INVALIDA, linha);
-}
-
-
-um_atomo leInteiro(char **entrada) 
-{
-    um_atomo a;
-    int valor;
-    
-    valor = 0;
-
-    a = novoAtomo(C_INTEIRO, 0);
-
-    while (ehDigito (**entrada))
-    {
-        valor = (10 * valor) + (**entrada - '0');
-        (*entrada)++;
-    }
-    
-    a->valor = valor;
-
-    return a;
-}
-
-/*
-  As transições em vazio do automato são representadas por retornos da função
-  analisadorLexico. As demais transiçÃµes podem ser representadas por devios
-  para partes do programa ou por chamdas de funçÃµes internas (estados), e o
-  consumo de caracteres corresponde ao avanço do cursor no programa fonte.
-  Uma rotina auxiliar chamada "leFonte" encarrega-se de ler novas linhas de dados
-  do programa fonte sempre que necessÃ¡rio, informando ao analisador lÃ©xico qual
-  Ã© o prÃ³ximo caractere ainda não analisado ("entrada"). A retornar ao programa
-  chamador, "entrada" esta sempre se referindo ao proximo caractere ainda não
-  analisado.
-*/
-
-um_atomo analisadorLexico(char **entrada, uma_pilha *pilha)
-{
-    um_atomo saida = (um_atomo) NULL;
-    
-    if (! pilha_vazia (pilha))
-        return pilha_retira (pilha);
-
-    /*
-     * Estado 1
-     */
-    while (ehBranco(**entrada))
-    {
-        (*entrada)++;
-    }
-
-    // PrÃ³ximo estado
-    if (ehLetra (**entrada))
-    {
-        /*
-         * Estado 2
-         */
-        saida = leNome (entrada);
-    }
-    else if (ehDigito (**entrada))
-    {
-        /*
-         * Estado 3
-         */
-        saida = leInteiro (entrada);
-    }
-    else if (ehSimbolo (**entrada))
-    {
-        /*
-         * Estados 4,5
-         */
-        saida = leSimbolo (entrada);
-    }
-    else if (**entrada == '%')
-    {
-        /*
-         * Estado 6
-         */
-//        saida = leComentario (entrada);
-    }
-    else if (**entrada == '\0')
-        saida = novoAtomo (C_FIM, linha);
-    else
-        saida = novoAtomo (C_INVALIDA, linha);
-
-    return saida;
-}
-
-int linha_atual ()
-{
-    return linha;
-}
-
-int coluna_atual ()
-{
-    return coluna;
 }

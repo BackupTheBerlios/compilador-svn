@@ -19,9 +19,9 @@
 
 #define __ANAL_H__
 
-#include "defs.h"
+#include "atomo.h"
 
-um_atomo  analisadorLexico(char **entrada, uma_pilha *pilha);
+um_atomo  analisadorLexico(char **ent, uma_pilha *pil);
 int linha_atual ();
 int coluna_atual ();
 

@@ -18,12 +18,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "defs.h"
-#include "compilador.h"
+#include "arquivo.h"
 #include "atomo.h"
 #include "tabid.h"
 #include "analisadorLexico.h"
 
-#define ESPERA_TECLA
+// #define ESPERA_TECLA
 
 void sair (int ret, const char * msg)
 {
@@ -40,38 +40,22 @@ int main (int argc, char **argv)
 {
     um_atomo at;
     uma_pilha pilha;
-    char *dados, *pos;
-    int i, ids, tamanho, lido, fim;
-    FILE *arq;
+    char *pos, *dados;
+    int i, ids, fim;
 
     if (argc == 1)
         sair (1, "Uso: teste <arquivo>\n");
 
-    arq = fopen (argv[1], "r");
-
-    if (arq == NULL)
+    dados = le_arquivo (argv[1]);
+    
+    if (dados == NULL)
 	{
-		char msg[50]="";
+		char msg[100]="";
 		strcat (msg, argv[1]);
 		strcat (msg, " nao encontrado!\n");
         sair (2, msg);
 	}
-
-    dados = malloc (MAX_BLOCO * sizeof (char));
-    tamanho = 0;
-
-    while (! feof (arq))
-    {
-        lido = fread (dados+tamanho, sizeof (char), MAX_BLOCO, arq);
-        tamanho += lido;
-        if (lido == MAX_BLOCO)
-            dados = realloc (dados, (tamanho + MAX_BLOCO) * sizeof (char));
-    }
     
-    dados [tamanho] = '\0';
-    
-    fclose (arq);
-
     printf ("Atomos:\n");
     printf ("%20s %5s\n", "Classe", "Valor");
     printf ("%20s %5s\n", "------", "-----");
@@ -104,7 +88,7 @@ int main (int argc, char **argv)
             if (at->classe == C_INVALIDA)
                 fim = 2;
 
-            // Limpa átomo
+            // Limpa Ã¡tomo
             free (at);
         }
         i++;

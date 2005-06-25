@@ -23,7 +23,7 @@
 #include "tabid.h"
 
 
-// Tabela din‚mica de identificadores
+// Tabela din√¢mica de identificadores
 static int total_IDs = 0;
 static um_id *tabelaID;
 
@@ -49,8 +49,11 @@ int adicionaID (char * nome)
     ultimo = total_IDs - 1;
 
     tabelaID [ultimo].cod  = total_IDs - 1;
+    tabelaID [ultimo].nome = nome;
+    /*
     tabelaID [ultimo].nome = malloc ((strlen(nome)+1) * sizeof (char));
     strcpy (tabelaID [ultimo].nome, nome);
+    */
     
     return ultimo;
 }

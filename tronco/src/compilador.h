@@ -15,17 +15,17 @@
  */
  
 /*
- * teste.h
+ * arquivo.h
  *
  * Definições de tipos, constantes etc.
  */
 
-#ifndef __TESTE_H__
-
-#define __TESTE_H__
+#ifndef __ARQUIVO_H__
+#define __ARQUIVO_H__
 
 
 #define MAX_BLOCO               200
+char * le_arquivo (char *nome);
 
 
-#endif // __TESTE_H__
+#endif // __ARQUIVO_H__
