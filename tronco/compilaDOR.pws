@@ -5,37 +5,52 @@ RunInTerminal=true
 [Project State]
 clean before build=false
 
-[filelist]
-0=/home/acdcp/programas/compilador/src/defs.h
-1=/home/acdcp/programas/compilador/src/compilador.c
-2=/home/acdcp/programas/compilador/src/arquivo.c
-3=/home/acdcp/programas/compilador/src/analisadorLexico.c
-
 [filenumbers]
-0=1
-1=70
-2=56
-3=115
+0=31
+1=34
+2=20
+3=106
+4=175
+5=119
+6=307
+7=267
 
 [filemarkers]
 0=
 1=
 2=
 3=
+4=
+5=
+6=
+7=
 
 [File View]
 filter.file.unmatch=*.so *.o *.a *.la
 filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
 
+[filelist]
+0=/home/andre/projetos/compilaDOR/src/erro.h
+1=/home/andre/projetos/compilaDOR/src/erro.c
+2=/home/andre/projetos/compilaDOR/bin/errado.prg
+3=/home/andre/projetos/compilaDOR/src/compilador.c
+4=/home/andre/projetos/compilaDOR/src/atomo.c
+5=/home/andre/projetos/compilaDOR/src/atomo.h
+6=/home/andre/projetos/compilaDOR/src/analisadorLexico.c
+
 [Project Tree]
 0=0
-1=0:0
-2=0:1
+1=0:1
+2=0:2
+
+[Symbol Tree]
+0=3
 
 [File Tree]
 0=0
 
 [executer args]
-0=bin/teste.prg
-1=teste.prg
+0=bin/errado.prg
+1=bin/teste.prg
+2=teste.prg

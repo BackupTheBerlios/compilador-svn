@@ -36,6 +36,8 @@ enum e_classe {
     C_FIM,
     C_IDENTIFICADOR,
     C_INTEIRO,
+    C_REAL,
+/*    C_BOOLEANO, */
 
     // Símbolos
     S_VIRGULA,
@@ -94,7 +96,10 @@ struct s_pilha {
  */
 struct s_atomo {
     uma_classe classe;
-    int valor;
+	union {
+    	int valor;
+		double real;
+	};
 };
 
 /* s_reservado
@@ -111,7 +116,9 @@ struct s_reservado {
  * Protótipos de funções
  */
 char * nomeClasse (uma_classe c);
-um_atomo novoAtomo (uma_classe c, int v);
+um_atomo novoAtomo (uma_classe c);
+um_atomo novoAtomoInteiro (uma_classe c, int v);
+um_atomo novoAtomoReal (uma_classe c, double v);
 uma_classe busca_simbolo (char * nome);
 uma_classe busca_palavra_reservada (char * nome);
 char * busca_nome_da_classe (uma_classe c);

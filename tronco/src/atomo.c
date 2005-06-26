@@ -121,6 +121,10 @@ char * nomeClasse (uma_classe c)
             nome = "INTEIRO";
             break;
 
+        case C_REAL:
+            nome = "REAL";
+            break;
+
         default:
             nome = busca_nome_da_classe (c);
             if (nome == NULL)
@@ -134,19 +138,45 @@ char * nomeClasse (uma_classe c)
  * 
  * Aloca memória para um novo atomo
  */
-um_atomo novoAtomo (uma_classe c, int v)
+um_atomo novoAtomo (uma_classe c)
 {
     um_atomo a;
 
     a = (um_atomo) malloc (sizeof (struct s_atomo));
 
     if (a != NULL)
-    {
         a->classe = c;
-        a->valor  = v;
-    }
 
     return a;
+}
+
+/* novoAtomoInteiro
+ * 
+ * Aloca memória para um novo atomo com parâmetro inteiro
+ */
+um_atomo novoAtomoInteiro (uma_classe c, int v)
+{
+    um_atomo a = novoAtomo (c);
+	
+    if (a != NULL)
+        a->valor  = v;
+
+    return a;
+}
+
+/* novoAtomoReal
+ * 
+ * Aloca memória para um novo atomo com parâmetro real
+ */
+um_atomo novoAtomoReal (uma_classe c, double v)
+{
+    um_atomo a = novoAtomo (c);
+	
+    if (a != NULL)
+        a->real  = v;
+
+    return a;
+
 }
 
 /* busca_palavra_reservada

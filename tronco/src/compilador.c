@@ -21,6 +21,7 @@
 #include "arquivo.h"
 #include "atomo.h"
 #include "tabid.h"
+#include "erro.h"
 #include "analisadorLexico.h"
 
 // #define ESPERA_TECLA
@@ -76,7 +77,11 @@ int main (int argc, char **argv)
         }
         else
         {
-            printf ("%20s %5d", nomeClasse (at->classe),  at->valor);
+           	printf ("%20s ", nomeClasse (at->classe));
+			if (at->classe == C_REAL)
+            	printf ("%5.10g", at->real);
+			else
+            	printf ("%5d", at->valor);
     
             if (at->classe == C_IDENTIFICADOR)
                 printf (" (%s)", busca_nome_ID (at->valor));
@@ -98,20 +103,10 @@ int main (int argc, char **argv)
     // Mostra linha do erro, quando ocorrer
     if (fim == 2)
     {
-        int col = coluna_atual();
+        printf ("\nToken desconhecido na seguinte linha:\n");
         
-        printf ("\nErro na seguinte linha:\n");
-        
-        for (pos -= col, i=0; pos[i] != '\n'; i++)
-            printf ("%c", pos[i]);
-        printf ("\n");
-        
-        for (i=0; i < col; i++)
-            if (pos[i] == '\t')
-                printf ("--------");
-            else
-                printf ("-");
-        printf ("^\n");
+        mostra_linha_atual (pos);
+        mostra_posicao_erro (pos);
     }
 
     // Mostra tabela de identificadores

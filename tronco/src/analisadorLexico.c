@@ -27,7 +27,7 @@ enum estados_lexico
 {
 	BRANCO,
 	IDENTIFICADOR,
-	INTEIRO,
+	NUMERO,
 	SIMBOLO,
 	COMENTARIO
 };
@@ -41,7 +41,7 @@ static char **entrada;
 um_atomo maquina_lexico ();
 um_atomo estado_branco ();
 um_atomo estado_identificador ();
-um_atomo estado_inteiro ();
+um_atomo estado_numero ();
 um_atomo estado_simbolo ();
 um_atomo estado_comentario ();
 void consome_entrada(int total);
@@ -85,8 +85,8 @@ um_atomo maquina_lexico ()
             a = estado_identificador ();
 			break;
 		
-		case INTEIRO:
-            a = estado_inteiro ();
+		case NUMERO:
+            a = estado_numero ();
 			break;
 		
 		case SIMBOLO:
@@ -98,7 +98,7 @@ um_atomo maquina_lexico ()
 			break;
 		
 		default:
-			a = novoAtomo (C_INVALIDA, linha);
+			a = novoAtomoInteiro (C_INVALIDA, linha);
 			break;
 	}
     
@@ -116,16 +116,16 @@ um_atomo estado_branco ()
         consome_entrada(1);
     else if (ehLetra (**entrada))
         estado_lexico = IDENTIFICADOR;
-    else if (ehDigito (**entrada))
-        estado_lexico = INTEIRO;
+    else if (ehDigito (**entrada) || **entrada == '.')
+        estado_lexico = NUMERO;
     else if (ehSimbolo (**entrada))
         estado_lexico = SIMBOLO;
     else if (**entrada == '%')
         estado_lexico = COMENTARIO;
     else if (**entrada == '\0')
-        a = novoAtomo (C_FIM, linha);
+        a = novoAtomoInteiro (C_FIM, linha);
     else
-        a = novoAtomo (C_INVALIDA, linha);
+        a = novoAtomoInteiro (C_INVALIDA, linha);
     
     return a;
 }
@@ -162,14 +162,14 @@ um_atomo estado_identificador ()
     if (c != C_INVALIDA)
     {
         free (nome);
-        a = novoAtomo(c, 0);
+        a = novoAtomoInteiro (c, 0);
     }
     else
     {
         cod = busca_cod_ID (nome);
         if (cod == ERRO)
             cod = adicionaID (nome);
-        a = novoAtomo (C_IDENTIFICADOR, cod);
+        a = novoAtomoInteiro (C_IDENTIFICADOR, cod);
     }
 
     return a;
@@ -229,28 +229,48 @@ um_atomo estado_simbolo ()
     {
         consome_entrada (strlen (simbolo_valido));
         free (simbolo_valido);
-        return novoAtomo(classe_valida, 0);
+        return novoAtomoInteiro (classe_valida, 0);
     }
     else
-        return novoAtomo(C_INVALIDA, linha);
+        return novoAtomoInteiro (C_INVALIDA, linha);
 }
 
-um_atomo estado_inteiro () 
+um_atomo estado_numero () 
 {
     um_atomo a;
-    static int valor = 0;
+    static int inteiro = 0;
+    static double real = 0.0;
+    static double decimal = 1.0;
+	static enum { INTEIRO, REAL } tipo = INTEIRO;
     
     if (ehDigito (**entrada))
     {
-        valor = (10 * valor) + (**entrada - '0');
+		if (tipo == INTEIRO)
+	        inteiro = (10 * inteiro) + (**entrada - '0');
+		else
+			real += (decimal /= 10) * (**entrada - '0');
+		
         consome_entrada(1);
         return NULL;
     }
+	if ((**entrada == '.') && (tipo == INTEIRO))
+	{
+		tipo = REAL;
+		real = inteiro;
+        consome_entrada(1);
+        return NULL;
+	}
 
-    a = novoAtomo(C_INTEIRO, 0);    
-    a->valor = valor;
-    valor = 0;    
+	if (tipo == INTEIRO)		
+	    a = novoAtomoInteiro (C_INTEIRO, inteiro);    
+	else
+	    a = novoAtomoReal (C_REAL, real);    
     
+	inteiro = 0;
+	decimal = 1;
+    tipo = INTEIRO;
+	
+	
     return a;
 }
 
@@ -284,7 +304,7 @@ void consome_entrada(int total)
                 break;
     
             case '\t':  // tabulação
-                coluna += 3;
+//                coluna += 3;
             default:
                 coluna ++;        
                 mudanca = FALSO;
