@@ -67,7 +67,6 @@ preferences.indent.closing=0
 module.include.name=.
 module.include.type=
 module.include.files=\
-	src/compilador.h\
 	src/atomo.h\
 	src/defs.h\
 	src/tabid.h\
@@ -89,7 +88,9 @@ module.pixmap.files=
 
 module.data.name=.
 module.data.type=
-module.data.files=
+module.data.files=\
+	bin/teste.prg\
+	bin/errado.prg
 
 module.help.name=.
 module.help.type=
