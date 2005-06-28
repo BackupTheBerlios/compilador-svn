@@ -1,1 +1,1 @@
-analisadorSintatico.o .analisadorSintatico.d : analisadorSintatico.c
+analisadorSintatico.o .analisadorSintatico.d : analisadorSintatico.c defs.h atomo.h

@@ -32,19 +32,19 @@ enum estados_lexico
 	COMENTARIO
 };
 
+static enum estados_lexico estado_lexico = BRANCO; // Estado Inicial
+
 static int linha = 1;
 static int coluna = 0;
-static enum estados_lexico estado_lexico = BRANCO;
-static char **entrada;
 
 // Protótipo das funções utilizadas nesse arquivo
-um_atomo maquina_lexico ();
-um_atomo estado_branco ();
-um_atomo estado_identificador ();
-um_atomo estado_numero ();
-um_atomo estado_simbolo ();
-um_atomo estado_comentario ();
-void consome_entrada(int total);
+um_atomo maquina_lexico (char **entrada);
+um_atomo estado_branco (char **entrada);
+um_atomo estado_identificador (char **entrada);
+um_atomo estado_numero (char **entrada);
+um_atomo estado_simbolo (char **entrada);
+um_atomo estado_comentario (char **entrada);
+void consome_entrada(char **entrada, int total);
 int ehLetra (char e);
 int ehDigito (char e);
 int ehSimbolo (char e);
@@ -53,18 +53,17 @@ int ehBranco (char e);
 
 // As funções
 
-um_atomo analisadorLexico(char **ent, uma_pilha *pilha)
+um_atomo analisadorLexico(char **entrada, uma_pilha *pilha)
 {
     um_atomo a;
-    
+
+    // Se houver um átomo na pilha, retorna esse átomo
     if (! pilha_vazia (pilha))
         return pilha_retira (pilha);
 
-    entrada = ent;
-    estado_lexico = BRANCO;
-    
+    // Roda a máquina de estados até pegar um átomo
     do
-        a = maquina_lexico();
+        a = maquina_lexico(entrada);
     while (!a);
 
     return a;
@@ -101,48 +100,55 @@ um_atomo maquina_lexico ()
 			a = novoAtomoInteiro (C_INVALIDA, linha);
 			break;
 	}
-    
 	return a;
 }
 
 
 /* As funções estado_xxx retornam um átomo */
 
-um_atomo estado_branco ()
+um_atomo estado_branco (char **entrada)
 {
     um_atomo a = NULL;
     
+    // Excetuando o caso de brancos, as entradas só serão consumidas dentro
+    // de seus respectivos estados
     if (ehBranco(**entrada))
         consome_entrada(1);
-    else if (ehLetra (**entrada))
+    
+    else if (ehLetra (**entrada) || **entrada == '_')
         estado_lexico = IDENTIFICADOR;
+    
     else if (ehDigito (**entrada) || **entrada == '.')
         estado_lexico = NUMERO;
+    
     else if (ehSimbolo (**entrada))
         estado_lexico = SIMBOLO;
+    
     else if (**entrada == '%')
         estado_lexico = COMENTARIO;
+    
     else if (**entrada == '\0')
         a = novoAtomoInteiro (C_FIM, linha);
+    
     else
         a = novoAtomoInteiro (C_INVALIDA, linha);
     
     return a;
 }
 
-um_atomo estado_identificador () 
+um_atomo estado_identificador (char **entrada) 
 {
-    uma_classe c;
-    um_atomo a;
+    um_atomo a = NULL;
     static char * nome;
     static int tamanho=0, max=0;
-    int cod;
 
+    // Verifica se acabou de entrar nesse estado
     if (tamanho == 0)
         nome = malloc (sizeof (char));
 
-    if (ehDigito (**entrada) || ehLetra (**entrada))
+    if (ehDigito (**entrada) || ehLetra (**entrada) || **entrada == '_')
     {
+        // Realoca mais 10 bytes ao nome, caso este estoure
         if (++tamanho > max)
         {
             max += 10;
@@ -150,94 +156,103 @@ um_atomo estado_identificador ()
         }
         
         nome [tamanho-1] = **entrada;
-        consome_entrada(1);
-        return NULL;
+        consome_entrada (entrada, 1);
     }
-
-    nome [tamanho] = '\0';
-
-    tamanho = 0;
-    
-    c = busca_palavra_reservada (nome);
-    if (c != C_INVALIDA)
+    else // Transição vazia
     {
-        free (nome);
-        a = novoAtomoInteiro (c, 0);
+        uma_classe c;
+        
+        estado_lexico = BRANCO;    
+        nome [tamanho] = '\0';
+        tamanho = 0;
+        
+        // Procura nome na tabela de palavras reservadas
+        c = busca_palavra_reservada (nome);
+        if (c != C_INVALIDA)
+        {
+            free (nome);
+            a = novoAtomoInteiro (c, 0);
+        }
+        else // Não é palavra reservada
+        {
+            int cod;
+            
+            cod = busca_cod_ID (nome);
+            if (cod == ERRO)
+                cod = adicionaID (nome);
+            a = novoAtomoInteiro (C_IDENTIFICADOR, cod);
+        }
     }
-    else
-    {
-        cod = busca_cod_ID (nome);
-        if (cod == ERRO)
-            cod = adicionaID (nome);
-        a = novoAtomoInteiro (C_IDENTIFICADOR, cod);
-    }
-
     return a;
 }
 
 
-um_atomo estado_simbolo () 
+um_atomo estado_simbolo (char **entrada) 
 {
+    um_atomo a = NULL;
     uma_classe c;
-    char e;
     static uma_classe classe_valida;
     static char *nome, *simbolo_valido;
-    static int i=0, max=0;
+    static int pos=0, max=0;
 
-    if (i == 0)
+    // Verifica se acabou de entrar nesse estado
+    if (pos == 0)
     {
         nome = malloc (sizeof (char));
         simbolo_valido = NULL;
     }
-
-    if (ehSimbolo ((*entrada)[i]))
+    
+    if (ehSimbolo ((*entrada)[pos]))
     {
-        if (++i > max)
+        // Realoca mais 5 bytes ao símbolo, caso este estoure
+        if (++pos > max)
         {
             max += 5;
             nome = realloc (nome, (max+1) * sizeof (char));
         }
         
-        e = (*entrada)[i-1];
-//        printf ("e [%c]", e);
-
-        nome [i-1] = e;
-        nome [i] = '\0';
-//        printf (" nome [%s]", nome);
+        nome [pos-1] = (*entrada)[pos-1];
+        nome [pos] = '\0';
         
-        c = busca_simbolo(nome);     
-        
+        // Se o nome atual já for um símbolo, considera como válido
+        c = busca_simbolo(nome);             
         if (c != C_INVALIDA)
         {
+            // Se já existia um símbolo válido, detona ele
             if (simbolo_valido)
                 free (simbolo_valido);
-            simbolo_valido = malloc ((i+1) * sizeof (char));
-            strncpy (simbolo_valido, nome, i+1);
-            classe_valida = c;
-//            printf (" simbolo_valido [%s] ", simbolo_valido);
-        }
-        
-//        printf ("\n");
             
-        return NULL;
-    }
-
-    free (nome);
-	i = 0;
-
-    if (simbolo_valido)
-    {
-        consome_entrada (strlen (simbolo_valido));
-        free (simbolo_valido);
-        return novoAtomoInteiro (classe_valida, 0);
+            simbolo_valido = malloc ((pos+1) * sizeof (char));
+            strncpy (simbolo_valido, nome, pos+1);
+            classe_valida = c;
+        }
     }
     else
-        return novoAtomoInteiro (C_INVALIDA, linha);
+    {
+        // Transição vazia
+        estado_lexico = BRANCO;    
+        
+        free (nome);
+        pos = 0;
+    
+        // Retorna o maior símbolo encontrado, ou C_INVALIDA
+        if (simbolo_valido)
+        {
+            // Antes, consome entrada e libera memória
+            consome_entrada (entrada, strlen (simbolo_valido));
+            free (simbolo_valido);
+            
+            a = novoAtomoInteiro (classe_valida, 0);
+        }
+        else
+            a = novoAtomoInteiro (C_INVALIDA, linha);
+    }
+    return a;
 }
 
-um_atomo estado_numero () 
+um_atomo estado_numero (char **entrada) 
 {
-    um_atomo a;
+    um_atomo a = NULL;
     static int inteiro = 0;
     static double real = 0.0;
     static double decimal = 1.0;
@@ -250,31 +265,32 @@ um_atomo estado_numero ()
 		else
 			real += (decimal /= 10) * (**entrada - '0');
 		
-        consome_entrada(1);
-        return NULL;
+        consome_entrada(entrada, 1);
     }
-	if ((**entrada == '.') && (tipo == INTEIRO))
+    else if ((**entrada == '.') && (tipo == INTEIRO))
 	{
 		tipo = REAL;
 		real = inteiro;
-        consome_entrada(1);
-        return NULL;
+        consome_entrada(entrada, 1);
 	}
-
-	if (tipo == INTEIRO)		
-	    a = novoAtomoInteiro (C_INTEIRO, inteiro);    
-	else
-	    a = novoAtomoReal (C_REAL, real);    
-    
-	inteiro = 0;
-	decimal = 1;
-    tipo = INTEIRO;
-	
-	
+    else // Transição vazia
+    {
+        estado_lexico = BRANCO;    
+        
+        if (tipo == INTEIRO)		
+            a = novoAtomoInteiro (C_INTEIRO, inteiro);    
+        else
+            a = novoAtomoReal (C_REAL, real);    
+        
+        // Zera variáveis
+        inteiro = 0;
+        decimal = 1.0;
+        tipo = INTEIRO;
+    }
     return a;
 }
 
-um_atomo estado_comentario ()
+um_atomo estado_comentario (char **entrada)
 {
     if (ehFimDeLinha (**entrada))
         estado_lexico = BRANCO;
@@ -378,7 +394,6 @@ int ehSimbolo (char e)
 //        case '\\':
         case ']':
         case '^':
-//        case '_':
 //        case '`':
 //        case '{':
 //        case '|':

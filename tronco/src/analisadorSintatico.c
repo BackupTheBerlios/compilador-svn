@@ -21,3 +21,24 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
+#include "defs.h"
+#include "atomo.h"
+
+uma_classe transicoes_cabecalho[] = {
+    C_INVALIDA,         // A primeira classe será ignorada
+    C_FIM,
+	C_IDENTIFICADOR,
+    C_INTEIRO,
+    C_REAL
+};
+
+struct s_transicoes {
+	int proximo_estado;
+	void func*();	
+};
+
+struct s_transicoes transicoes[][] = {
+	{ {0, programa},        {1, funcao} },
+	{ {1, procedimento},    {2, algo}   }
+};
