@@ -33,6 +33,7 @@ uma_classe transicoes_cabecalho[] = {
     C_REAL
 };
 
+/*
 struct s_transicoes {
 	int proximo_estado;
 	void func*();	
@@ -42,3 +43,4 @@ struct s_transicoes transicoes[][] = {
 	{ {0, programa},        {1, funcao} },
 	{ {1, procedimento},    {2, algo}   }
 };
+*/

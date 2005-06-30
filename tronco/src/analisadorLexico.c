@@ -70,30 +70,30 @@ um_atomo analisadorLexico(char **entrada, uma_pilha *pilha)
 }
 
 
-um_atomo maquina_lexico ()
+um_atomo maquina_lexico (char **entrada)
 {
     um_atomo a;
     
 	switch (estado_lexico)
 	{
 		case BRANCO:
-            a = estado_branco ();
+            a = estado_branco (entrada);
 			break;
 		
 		case IDENTIFICADOR:
-            a = estado_identificador ();
+            a = estado_identificador (entrada);
 			break;
 		
 		case NUMERO:
-            a = estado_numero ();
+            a = estado_numero (entrada);
 			break;
 		
 		case SIMBOLO:
-            a = estado_simbolo ();
+            a = estado_simbolo (entrada);
 			break;
 		
 		case COMENTARIO:
-            a = estado_comentario ();
+            a = estado_comentario (entrada);
 			break;
 		
 		default:
@@ -113,7 +113,7 @@ um_atomo estado_branco (char **entrada)
     // Excetuando o caso de brancos, as entradas só serão consumidas dentro
     // de seus respectivos estados
     if (ehBranco(**entrada))
-        consome_entrada(1);
+        consome_entrada(entrada, 1);
     
     else if (ehLetra (**entrada) || **entrada == '_')
         estado_lexico = IDENTIFICADOR;
@@ -295,13 +295,13 @@ um_atomo estado_comentario (char **entrada)
     if (ehFimDeLinha (**entrada))
         estado_lexico = BRANCO;
     else
-        consome_entrada(1);
+        consome_entrada(entrada, 1);
     
     return NULL;
 }
 
 
-void consome_entrada(int total)
+void consome_entrada(char **entrada, int total)
 {
     static int mudanca=0;
     
