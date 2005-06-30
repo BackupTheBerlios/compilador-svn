@@ -677,7 +677,7 @@
         <dia:point val="14,6"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="13.775,5.2775;14.2475,6.545"/>
+        <dia:rectangle val="13.775,5.3;14.225,6.5"/>
       </dia:attribute>
       <dia:attribute name="text">
         <dia:composite type="text">
@@ -701,6 +701,33 @@
           </dia:attribute>
         </dia:composite>
       </dia:attribute>
+    </dia:object>
+    <dia:object type="Standard - Line" version="0" id="O19">
+      <dia:attribute name="obj_pos">
+        <dia:point val="-7.15,5.05"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="-7.20115,4.49897;-4.93839,5.50103"/>
+      </dia:attribute>
+      <dia:attribute name="conn_endpoints">
+        <dia:point val="-7.15,5.05"/>
+        <dia:point val="-5,5"/>
+      </dia:attribute>
+      <dia:attribute name="numcp">
+        <dia:int val="1"/>
+      </dia:attribute>
+      <dia:attribute name="end_arrow">
+        <dia:enum val="22"/>
+      </dia:attribute>
+      <dia:attribute name="end_arrow_length">
+        <dia:real val="0.5"/>
+      </dia:attribute>
+      <dia:attribute name="end_arrow_width">
+        <dia:real val="0.5"/>
+      </dia:attribute>
+      <dia:connections>
+        <dia:connection handle="1" to="O0" connection="8"/>
+      </dia:connections>
     </dia:object>
   </dia:layer>
 </dia:diagram>
