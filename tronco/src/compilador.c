@@ -24,7 +24,7 @@
 #include "erro.h"
 #include "analisadorLexico.h"
 
-// #define ESPERA_TECLA
+#define ESPERA_TECLA
 
 void sair (int ret, const char * msg)
 {

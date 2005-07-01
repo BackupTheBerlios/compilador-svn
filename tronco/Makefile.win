@@ -5,8 +5,8 @@ CPP  = g++.exe -D__DEBUG__
 CC   = gcc.exe -D__DEBUG__
 WINDRES = windres.exe
 RES  = 
-OBJ  = obj/analisadorLexico.o obj/atomo.o obj/tabid.o obj/compilador.o $(RES)
-LINKOBJ  = obj/analisadorLexico.o obj/atomo.o obj/tabid.o obj/compilador.o $(RES)
+OBJ  = obj/analisadorLexico.o obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o $(RES)
+LINKOBJ  = obj/analisadorLexico.o obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o $(RES)
 LIBS =   -g3 
 INCS = 
 CXXINCS = 
@@ -37,3 +37,9 @@ obj/tabid.o: src/tabid.c
 
 obj/compilador.o: src/compilador.c
 	$(CC) -c src/compilador.c -o obj/compilador.o $(CFLAGS)
+
+obj/arquivo.o: src/arquivo.c
+	$(CC) -c src/arquivo.c -o obj/arquivo.o $(CFLAGS)
+
+obj/erro.o: src/erro.c
+	$(CC) -c src/erro.c -o obj/erro.o $(CFLAGS)
