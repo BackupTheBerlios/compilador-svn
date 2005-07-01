@@ -27,7 +27,7 @@ SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000001000000
 UseCustomMakefile=0
-CustomMakefile=Makefile
+CustomMakefile=Makefile.win
 
 [Unit1]
 FileName=src\analisadorLexico.c
@@ -155,6 +155,48 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< .mine
+[Unit12]
+FileName=src\erro.h
+CompileCpp=0
+Folder=CompilaDOR
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit13]
+FileName=src\erro.c
+CompileCpp=0
+Folder=CompilaDOR
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit14]
+FileName=src\arquivo.h
+CompileCpp=0
+Folder=CompilaDOR
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit15]
+FileName=src\arquivo.c
+CompileCpp=0
+Folder=CompilaDOR
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+=======
 [Unit12]
 FileName=src\arquivo.c
 CompileCpp=0
@@ -195,3 +237,4 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+>>>>>>> .r43
