@@ -17,7 +17,7 @@
 /*
  * arquivo.h
  *
- * DefiniÃ§Ãµes de tipos, constantes etc.
+ * Definições de tipos, constantes etc.
  */
 
 #ifndef __ARQUIVO_H__

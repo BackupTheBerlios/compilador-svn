@@ -61,13 +61,13 @@ int main (int argc, char **argv)
     printf ("%20s %5s\n", "Classe", "Valor");
     printf ("%20s %5s\n", "------", "-----");
     
-    pos = dados;                   // PosiÃ§Ã£o inicial de leitura
+    pos = dados;                   // Posição inicial de leitura
     pilha_inicia (&pilha);
     fim = 0;
     i = 0;
     do
     {
-        // LÃª novo Ã¡tomo
+        // Lê novo Átomo
         at = analisadorLexico (&pos, &pilha);
         
         if (i==3)

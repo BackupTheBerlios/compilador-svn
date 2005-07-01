@@ -24,7 +24,7 @@
 
 /* SIMBOLOS
  *
- * Tabela "hardcoded" de símbolos
+ * Tabela "hardcoded" de s�mbolos
  */
 #define TOTAL_SIMBOLOS    18
 static um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
@@ -101,8 +101,6 @@ char * nomeClasse (uma_classe c)
 {
     char *nome;
 
-//    nome = malloc (50 * sizeof (char));
-    
     switch (c)
     {
         case C_INVALIDA:
@@ -136,7 +134,7 @@ char * nomeClasse (uma_classe c)
 
 /* novoAtomo
  * 
- * Aloca memória para um novo atomo
+ * Aloca mem�ria para um novo atomo
  */
 um_atomo novoAtomo (uma_classe c)
 {
@@ -152,7 +150,7 @@ um_atomo novoAtomo (uma_classe c)
 
 /* novoAtomoInteiro
  * 
- * Aloca memória para um novo atomo com parâmetro inteiro
+ * Aloca mem�ria para um novo atomo com par�metro inteiro
  */
 um_atomo novoAtomoInteiro (uma_classe c, int v)
 {
@@ -166,7 +164,7 @@ um_atomo novoAtomoInteiro (uma_classe c, int v)
 
 /* novoAtomoReal
  * 
- * Aloca memória para um novo atomo com parâmetro real
+ * Aloca mem�ria para um novo atomo com par�metro real
  */
 um_atomo novoAtomoReal (uma_classe c, double v)
 {
@@ -221,7 +219,7 @@ char * busca_nome_da_classe (uma_classe c)
 {
     int i;
 
-    // Tabela de sÃÂ­mbolos
+    // Tabela de s�mbolos
     for (i=0; i < TOTAL_SIMBOLOS; i++)
     {
         if (c == SIMBOLOS[i].classe)
@@ -238,7 +236,7 @@ char * busca_nome_da_classe (uma_classe c)
     return (char *) NULL;
 }
 
-// Funções com pilha
+// Fun��es de manipula��o da pilha
 
 void pilha_inicia  (uma_pilha *pilha)
 {

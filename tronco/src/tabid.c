@@ -23,7 +23,7 @@
 #include "tabid.h"
 
 
-// Tabela din√¢mica de identificadores
+// Tabela din‚mica de identificadores
 static int total_IDs = 0;
 static um_id *tabelaID;
 
