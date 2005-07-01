@@ -1,7 +1,7 @@
 [Project]
 FileName=compilaDOR.dev
 Name=CompilaDOR
-UnitCount=15
+UnitCount=14
 Type=1
 Ver=1
 ObjFiles=
@@ -20,7 +20,7 @@ ObjectOutput=obj
 OverrideOutput=0
 OverrideOutputName=compilaDOR.exe
 HostApplication=
-Folders="Analisador Léxico",Exemplos
+Folders="Analisador Léxico",Diversos,Exemplos
 CommandLine=teste.prg
 IncludeVersionInfo=0
 SupportXPThemes=0
@@ -69,20 +69,10 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit7]
-FileName=src\compilador.h
-CompileCpp=0
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit8]
-FileName=src\defs.h
+FileName=src\tabid.h
 CompileCpp=0
-Folder=
+Folder=Analisador Léxico
 Compile=1
 Link=1
 Priority=1000
@@ -128,17 +118,8 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=src\tabid.h
-CompileCpp=0
-Folder=Analisador Léxico
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit10]
 FileName=bin\teste.prg
+CompileCpp=0
 Folder=Exemplos
 Compile=0
 Link=0
@@ -146,7 +127,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit11]
+[Unit10]
 FileName=bin\errado.prg
 Folder=Exemplos
 Compile=0
@@ -155,7 +136,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit11]
+FileName=src\arquivo.c
+Folder=Diversos
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 <<<<<<< .mine
+CompileCpp=0
+
 [Unit12]
 FileName=src\erro.h
 CompileCpp=0
@@ -195,12 +186,12 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-
 =======
+
 [Unit12]
-FileName=src\arquivo.c
+FileName=src\arquivo.h
 CompileCpp=0
-Folder=Analisador Léxico
+Folder=Diversos
 Compile=1
 Link=1
 Priority=1000
@@ -208,9 +199,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit13]
-FileName=src\arquivo.h
+FileName=src\erro.c
 CompileCpp=0
-Folder=Analisador Léxico
+Folder=Diversos
 Compile=1
 Link=1
 Priority=1000
@@ -218,9 +209,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit14]
-FileName=src\erro.c
+FileName=src\erro.h
 CompileCpp=0
-Folder=CompilaDOR
+Folder=Diversos
 Compile=1
 Link=1
 Priority=1000
@@ -236,5 +227,15 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-
 >>>>>>> .r43
+
+[Unit7]
+FileName=src\defs.h
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
