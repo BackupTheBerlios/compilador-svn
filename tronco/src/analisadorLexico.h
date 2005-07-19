@@ -15,9 +15,9 @@
  */
  
 
-#ifndef __ANAL_H__
+#ifndef __ANALISADOR_LEXICO_H__
 
-#define __ANAL_H__
+#define __ANALISADOR_LEXICO_H__
 
 #include "atomo.h"
 
@@ -25,4 +25,4 @@ um_atomo  analisadorLexico(char **ent, uma_pilha *pil);
 int linha_atual ();
 int coluna_atual ();
 
-#endif // __ANAL_H__
+#endif // __ANALISADOR_LEXICO_H__

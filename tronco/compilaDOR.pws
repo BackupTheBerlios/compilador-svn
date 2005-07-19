@@ -6,12 +6,12 @@ RunInTerminal=true
 clean before build=false
 
 [filenumbers]
-0=37
-1=304
-2=46
-3=1
-4=175
-5=119
+0=1
+1=7
+2=14
+3=52
+4=74
+5=107
 6=307
 7=267
 
@@ -32,9 +32,11 @@ filter.dir.ignore.hidden=0
 
 [filelist]
 0=/home/acdcp/projetos/compilador/src/atomo.h
-1=/home/acdcp/projetos/compilador/src/analisadorLexico.c
-2=/home/acdcp/projetos/compilador/src/analisadorSintatico.c
-3=/home/acdcp/projetos/compilador/src/compilador.c
+1=/home/acdcp/projetos/compilador/src/atomo.c
+2=/home/acdcp/projetos/compilador/src/analisadorLexico.h
+3=/home/acdcp/projetos/compilador/src/analisadorLexico.c
+4=/home/acdcp/projetos/compilador/src/analisadorSintatico.c
+5=/home/acdcp/projetos/compilador/src/compilador.c
 
 [Project Tree]
 0=0

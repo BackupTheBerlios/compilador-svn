@@ -25,22 +25,52 @@
 #include "defs.h"
 #include "atomo.h"
 
-uma_classe transicoes_cabecalho[] = {
-    C_INVALIDA,         // A primeira classe será ignorada
-    C_FIM,
-	C_IDENTIFICADOR,
-    C_INTEIRO,
-    C_REAL
+typedef struct s_transicao transicao;
+struct s_transicao {
+	int estado;
+	void (*maq)();	
 };
 
-/*
-struct s_transicoes {
-	int proximo_estado;
-	void func*();	
-};
+static int estado_atual;
+static void *maq_atual();	
 
-struct s_transicoes transicoes[][] = {
-	{ {0, programa},        {1, funcao} },
-	{ {1, procedimento},    {2, algo}   }
-};
+static int retornos;
+transicao * pilha_retornos;
+
+
+/* Tipo (T):
+
+Estado	Entrada	
+        real	integer	boolean	[	]	,	N
+0	1	1	1				
+1				3			
+2							
+3							4
+4					2	3	
 */
+uma_classe cab_tipo [] = {
+    C_INVALIDA,         // A primeira classe será ignorada
+    PR_REAL,
+    PR_INTEGER,
+    PR_BOOLEAN,
+    S_ABRE_CHAVE,
+    S_FECHA_CHAVE,
+    S_VIRGULA,
+    C_INTEIRO
+};
+
+void funcao ()
+{
+}
+
+void algo ()
+{
+}
+
+transicao transicoes[5][2] = {
+	{ {0, funcao},        {1, funcao} },
+	{ {0, funcao},        {1, funcao} },
+	{ {0, funcao},        {1, funcao} },
+	{ {0, funcao},        {1, funcao} },
+	{ {1, funcao},    {2, algo}   }
+};

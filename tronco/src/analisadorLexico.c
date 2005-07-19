@@ -37,21 +37,21 @@ static enum estados_lexico estado_lexico = BRANCO; // Estado Inicial
 static int linha = 1;
 static int coluna = 0;
 
-// Protótipo das funções utilizadas nesse arquivo
-um_atomo maquina_lexico (char **entrada);
-um_atomo estado_branco (char **entrada);
-um_atomo estado_identificador (char **entrada);
-um_atomo estado_numero (char **entrada);
-um_atomo estado_simbolo (char **entrada);
-um_atomo estado_comentario (char **entrada);
-void consome_entrada(char **entrada, int total);
-int ehLetra (char e);
-int ehDigito (char e);
-int ehSimbolo (char e);
-int ehFimDeLinha (char e);
-int ehBranco (char e);
+// ProtÃ³tipo das funÃ§Ãµes utilizadas nesse arquivo
+um_atomo maquina_lexico (char **);
+um_atomo estado_branco (char **);
+um_atomo estado_identificador (char **);
+um_atomo estado_numero (char **);
+um_atomo estado_simbolo (char **);
+um_atomo estado_comentario (char **);
+void consome_entrada(char **, int);
+int ehLetra (char);
+int ehDigito (char);
+int ehSimbolo (char);
+int ehFimDeLinha (char);
+int ehBranco (char);
 
-// As funções
+// As funÃ§Ãµes
 
 um_atomo analisadorLexico(char **entrada, uma_pilha *pilha)
 {
