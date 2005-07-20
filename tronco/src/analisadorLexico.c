@@ -53,13 +53,13 @@ int ehBranco (char);
 
 // As funções
 
-um_atomo analisadorLexico(char **entrada, uma_pilha *pilha)
+um_atomo analisadorLexico(char **entrada, int look_ahead, uma_fila *fila)
 {
     um_atomo a;
 
-    // Se houver um átomo na pilha, retorna esse átomo
-    if (! pilha_vazia (pilha))
-        return pilha_retira (pilha);
+    // Se houver um átomo na fila, retorna esse átomo
+    if (! (fila_eh_vazia (fila) || look_ahead))
+        return fila_retira (fila);
 
     // Roda a máquina de estados até pegar um átomo
     do

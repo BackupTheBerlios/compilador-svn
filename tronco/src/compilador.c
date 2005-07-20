@@ -40,7 +40,7 @@ void sair (int ret, const char * msg)
 int main (int argc, char **argv)
 {
     um_atomo at;
-    uma_pilha pilha;
+    uma_fila fila;
     char *pos, *dados;
     int i, ids, fim;
 
@@ -62,26 +62,29 @@ int main (int argc, char **argv)
     printf ("%20s %5s\n", "------", "-----");
     
     pos = dados;                   // Posição inicial de leitura
-    pilha_inicia (&pilha);
+    fila_inicia (&fila);
     fim = 0;
     i = 0;
     do
     {
-        // Lê novo átomo
-        at = analisadorLexico (&pos, &pilha);
-        
-        if (i==3)
+        if (i>=3 && i<=5)
         {
-            pilha_adiciona (&pilha, at);
-            printf ("O atomo %s (%d) foi pra pilha!\n", nomeClasse (at->classe),  at->valor);
+            // Lê novo átomo com look-ahead
+            at = analisadorLexico (&pos, VERDADE, &fila);
+        
+            fila_adiciona (&fila, at);
+            printf ("O atomo '%s' (%d) foi pra fila!\n", nomeClasse (at->classe),  at->valor);
         }
         else
         {
-           	printf ("%20s ", nomeClasse (at->classe));
-			if (at->classe == C_REAL)
-            	printf ("%5.10g", at->real);
-			else
-            	printf ("%5d", at->valor);
+            // Lê novo átomo sem look-ahead
+            at = analisadorLexico (&pos, FALSO, &fila);
+
+            printf ("%20s ", nomeClasse (at->classe));
+            if (at->classe == C_REAL)
+                printf ("%5.10g", at->real);
+            else
+                printf ("%5d", at->valor);
     
             if (at->classe == C_IDENTIFICADOR)
                 printf (" (%s)", busca_nome_ID (at->valor));

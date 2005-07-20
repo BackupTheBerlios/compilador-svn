@@ -37,6 +37,13 @@ static void *maq_atual();
 static int retornos;
 transicao * pilha_retornos;
 
+void funcao ()
+{
+}
+
+void nulo() {}
+
+
 
 /* Tipo (T):
 
@@ -49,28 +56,13 @@ Estado	Entrada
 4					2	3	
 */
 uma_classe cab_tipo [] = {
-    C_INVALIDA,         // A primeira classe será ignorada
-    PR_REAL,
-    PR_INTEGER,
-    PR_BOOLEAN,
-    S_ABRE_CHAVE,
-    S_FECHA_CHAVE,
-    S_VIRGULA,
-    C_INTEIRO
+    C_INVALIDA, PR_REAL, PR_INTEGER, PR_BOOLEAN, S_ABRE_CHAVE, S_FECHA_CHAVE, S_VIRGULA, C_INTEIRO
 };
-
-void funcao ()
-{
-}
-
-void algo ()
-{
-}
-
-transicao transicoes[5][2] = {
-	{ {0, funcao},        {1, funcao} },
-	{ {0, funcao},        {1, funcao} },
-	{ {0, funcao},        {1, funcao} },
-	{ {0, funcao},        {1, funcao} },
-	{ {1, funcao},    {2, algo}   }
+transicao transicoes[5][8] = {
+    { {-1, nulo}, { 1, nulo}, { 1, nulo}, { 1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo} },
+    { {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, { 3, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo} },
+    { {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo} },
+    { {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, { 4, nulo} },
+    { {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, {-1, nulo}, { 2, nulo}, { 3, nulo}, {-1, nulo} }
 };
+int estados_finais[] = { 2 };

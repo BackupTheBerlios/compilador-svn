@@ -24,7 +24,7 @@
 
 /* SIMBOLOS
  *
- * Tabela "hardcoded" de símbolos
+ * Tabela "hardcoded" de sÃ­mbolos
  */
 #define TOTAL_SIMBOLOS    18
 static um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
@@ -85,14 +85,38 @@ static um_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
     { PR_OUTPUT,        "output"    },
     
     // Booleanos
-    { PR_TRUE,          "true"       },
-    { PR_FALSE,         "false"       },
+    { PR_TRUE,          "true"      },
+    { PR_FALSE,         "false"     },
     { PR_NOT,           "not"       },
     { PR_AND,           "and"       },
     { PR_OR,            "or"        },
     { PR_XOR,           "xor"       }
 };
 
+/* busca_nome_nas_tabelas
+ *
+ * Busca pelo nome de uma classe nas tabelas
+ */
+char * busca_nome_nas_tabelas (uma_classe c)
+{
+    int i;
+
+    // Tabela de sÃ­mbolos
+    for (i=0; i < TOTAL_SIMBOLOS; i++)
+    {
+        if (c == SIMBOLOS[i].classe)
+            return SIMBOLOS[i].nome;
+    }
+
+    // Tabela de palavras reservadas
+    for (i=0; i < TOTAL_PALAVRAS_RESERVADAS; i++)
+    {
+        if (c == PALAVRAS_RESERVADAS[i].classe)
+            return PALAVRAS_RESERVADAS[i].nome;
+    }
+
+    return (char *) NULL;
+}
 
 /* nomeClasse
  *
@@ -124,7 +148,7 @@ char * nomeClasse (uma_classe c)
             break;
 
         default:
-            nome = busca_nome_da_classe (c);
+            nome = busca_nome_nas_tabelas (c);
             if (nome == NULL)
                 nome = "DESCONHECIDO";
     }
@@ -134,7 +158,7 @@ char * nomeClasse (uma_classe c)
 
 /* novoAtomo
  * 
- * Aloca memória para um novo atomo
+ * Aloca memÃ³ria para um novo atomo
  */
 um_atomo novoAtomo (uma_classe c)
 {
@@ -150,7 +174,7 @@ um_atomo novoAtomo (uma_classe c)
 
 /* novoAtomoInteiro
  * 
- * Aloca memória para um novo atomo com parâmetro inteiro
+ * Aloca memÃ³ria para um novo atomo com parÃ¢metro inteiro
  */
 um_atomo novoAtomoInteiro (uma_classe c, int v)
 {
@@ -164,7 +188,7 @@ um_atomo novoAtomoInteiro (uma_classe c, int v)
 
 /* novoAtomoReal
  * 
- * Aloca memória para um novo atomo com parâmetro real
+ * Aloca memÃ³ria para um novo atomo com parÃ¢metro real
  */
 um_atomo novoAtomoReal (uma_classe c, double v)
 {
@@ -211,82 +235,66 @@ uma_classe busca_simbolo (char * nome)
     return C_INVALIDA;
 }
 
-/* busca_nome_classe
- *
- * Busca pelo nome de uma classe nas tabelas
- */
-char * busca_nome_da_classe (uma_classe c)
+
+//
+// FunÃ§Ãµes de manipulaÃ§Ã£o da fila
+//
+
+void fila_inicia  (uma_fila *fila)
 {
-    int i;
-
-    // Tabela de símbolos
-    for (i=0; i < TOTAL_SIMBOLOS; i++)
-    {
-        if (c == SIMBOLOS[i].classe)
-            return SIMBOLOS[i].nome;
-    }
-
-    // Tabela de palavras reservadas
-    for (i=0; i < TOTAL_PALAVRAS_RESERVADAS; i++)
-    {
-        if (c == PALAVRAS_RESERVADAS[i].classe)
-            return PALAVRAS_RESERVADAS[i].nome;
-    }
-
-    return (char *) NULL;
+    fila->atomo = (um_atomo *) NULL;
+    fila->tamanho = 0;
 }
 
-// Funções de manipulação da pilha
-
-void pilha_inicia  (uma_pilha *pilha)
+int fila_eh_vazia (uma_fila *fila)
 {
-    pilha->atomo = (um_atomo *) NULL;
-    pilha->tamanho = 0;
+    return fila->tamanho == 0;
 }
 
-int pilha_vazia (uma_pilha *pilha)
-{
-    return pilha->tamanho == 0;
-}
-
-int pilha_adiciona (uma_pilha *pilha, um_atomo atomo)
+int fila_adiciona (uma_fila *fila, um_atomo atomo)
 {
     int ultimo;
     
-    if (pilha->atomo == NULL)
+    if (fila->atomo == NULL)
     {
-        pilha->atomo = (um_atomo *) malloc (sizeof (um_atomo));
-        pilha->tamanho = 1;
+        fila->atomo = (um_atomo *) malloc (sizeof (um_atomo));
+        fila->tamanho = 1;
     }
     else
-        pilha->atomo = (um_atomo *) realloc (pilha->atomo, (++pilha->tamanho) * sizeof (um_atomo));
+        fila->atomo = (um_atomo *) realloc (fila->atomo, (++fila->tamanho) * sizeof (um_atomo));
 
-    if (pilha->atomo == NULL)
+    if (fila->atomo == NULL)
     {
-        pilha->tamanho = 0;
+        fila->tamanho = 0;
         ultimo = ERRO;
     }
     else
     {
-        ultimo = pilha->tamanho - 1;
-        pilha->atomo [ultimo] = atomo;
+        ultimo = fila->tamanho - 1;
+        fila->atomo [ultimo] = atomo;
     }
     
     return ultimo;
 }
 
-um_atomo pilha_retira (uma_pilha *pilha)
+um_atomo fila_retira (uma_fila *fila)
 {
     um_atomo atomo;
-    int ultimo;
+    int i;
     
-    if (pilha_vazia (pilha))
+    if (fila_eh_vazia (fila))
         return (um_atomo) NULL;
 
-    ultimo = pilha->tamanho - 1;    
-    atomo = pilha->atomo[ultimo];
+/*    
+    ultimo = fila->tamanho - 1;    
+    atomo = fila->atomo[ultimo];
+*/
+    atomo = fila->atomo[0];
     
-    pilha->atomo = (um_atomo *) realloc (pilha->atomo, (--pilha->tamanho) * sizeof (um_atomo));
-        
+    for (i=0; i < fila->tamanho-1; i++)
+        fila->atomo[i] = fila->atomo[i+1];
+    
+    fila->atomo = (um_atomo *) realloc (fila->atomo, (--fila->tamanho) * sizeof (um_atomo));
+    
     return atomo;
 }

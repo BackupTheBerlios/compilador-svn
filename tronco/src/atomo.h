@@ -22,14 +22,14 @@
 /*
  * Tipos
  */
-typedef struct s_pilha     uma_pilha;
+typedef struct s_fila       uma_fila;
 typedef struct s_atomo     *um_atomo;
-typedef struct s_reservado um_reservado;
-typedef enum   e_classe    uma_classe;
+typedef struct s_reservado  um_reservado;
+typedef enum   e_classe     uma_classe;
 
 /* e_classe
  *
- * Todas as classes possÌveis (incluindo sÌmbolos e palavras reservadas)
+ * Todas as classes poss√≠veis (incluindo s√≠mbolos e palavras reservadas)
  */
 enum e_classe {
     C_INVALIDA,
@@ -39,7 +39,7 @@ enum e_classe {
     C_REAL,
 /*    C_BOOLEANO, */
 
-    // SÌmbolos
+    // S√≠mbolos
     S_VIRGULA,
     S_PONTO_E_VIRGULA,
     S_ABRE_CHAVE,    
@@ -85,7 +85,7 @@ enum e_classe {
     PR_FALSE
 };
 
-struct s_pilha {
+struct s_fila {
     int tamanho;
     um_atomo *atomo;
 };
@@ -96,16 +96,16 @@ struct s_pilha {
  */
 struct s_atomo {
     uma_classe classe;
-	union {
-    	int valor;
-		double real;
-	};
+    union {
+        int valor;
+        double real;
+    };
 };
 
 /* s_reservado
  *
- * Uma estrutura representando um ¡tomo reservado
- * (palavra reservada ou sÌmbolo)
+ * Uma estrutura representando um √Åtomo reservado
+ * (palavra reservada ou s√≠mbolo)
  */
 struct s_reservado {
     uma_classe classe; 
@@ -113,20 +113,20 @@ struct s_reservado {
 };
 
 /*
- * ProtÛtipos de funÁıes
+ * Prot√≥tipos de fun√ß√µes
  */
-char * nomeClasse (uma_classe c);
-um_atomo novoAtomo (uma_classe c);
-um_atomo novoAtomoInteiro (uma_classe c, int v);
-um_atomo novoAtomoReal (uma_classe c, double v);
-uma_classe busca_simbolo (char * nome);
-uma_classe busca_palavra_reservada (char * nome);
-char * busca_nome_da_classe (uma_classe c);
+char * nomeClasse (uma_classe);
+um_atomo novoAtomo (uma_classe);
+um_atomo novoAtomoInteiro (uma_classe, int);
+um_atomo novoAtomoReal (uma_classe, double);
+uma_classe busca_simbolo (char *);
+uma_classe busca_palavra_reservada (char *);
+// char * busca_nome_da_classe (uma_classe);
 
-// FunÁıes com pilha
-void pilha_inicia  (uma_pilha *pilha);
-int pilha_vazia    (uma_pilha *pilha);
-int pilha_adiciona (uma_pilha *pilha, um_atomo atomo);
-um_atomo pilha_retira   (uma_pilha *pilha);
+// Fun√ß√µes com fila (para look-ahead)
+void fila_inicia  (uma_fila *);
+int fila_eh_vazia (uma_fila *);
+int fila_adiciona (uma_fila *, um_atomo);
+um_atomo fila_retira   (uma_fila *);
 
 #endif // __ATOMO_H__

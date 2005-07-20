@@ -72,7 +72,8 @@ module.include.files=\
 	src/tabid.h\
 	src/analisadorLexico.h\
 	src/arquivo.h\
-	src/analisadorSintatico.h
+	src/analisadorSintatico.h\
+	src/erro.h
 
 module.source.name=.
 module.source.type=
@@ -82,7 +83,8 @@ module.source.files=\
 	src/tabid.c\
 	src/analisadorLexico.c\
 	src/arquivo.c\
-	src/analisadorSintatico.c
+	src/analisadorSintatico.c\
+	src/erro.c
 
 module.pixmap.name=.
 module.pixmap.type=
@@ -123,4 +125,5 @@ compiler.options.other.c.flags=
 compiler.options.other.l.flags=
 compiler.options.other.l.libs=
 
-project.src.paths=
+project.src.paths=/home/acdcp/projetos/compilador/src
+

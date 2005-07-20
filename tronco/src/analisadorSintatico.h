@@ -22,9 +22,9 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#ifndef _ANALISADORSINTATICO_H
-#define _ANALISADORSINTATICO_H
+#ifndef __ANALISADORSINTATICO_H__
+#define __ANALISADORSINTATICO_H__
 
 
 
-#endif /* _ANALISADORSINTATICO_H */
+#endif /* __ANALISADORSINTATICO_H__ */

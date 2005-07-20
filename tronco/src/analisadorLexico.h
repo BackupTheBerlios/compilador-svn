@@ -21,7 +21,7 @@
 
 #include "atomo.h"
 
-um_atomo  analisadorLexico(char **ent, uma_pilha *pil);
+um_atomo  analisadorLexico(char **, int, uma_fila *);
 int linha_atual ();
 int coluna_atual ();
 
