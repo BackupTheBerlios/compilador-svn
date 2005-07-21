@@ -1,4 +1,8 @@
 /*
+ * arquivo.h
+ *
+ */
+/*
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -13,19 +17,12 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
-/*
- * arquivo.h
- *
- * Definições de tipos, constantes etc.
- */
 
 #ifndef __ARQUIVO_H__
 #define __ARQUIVO_H__
 
-
 #define MAX_BLOCO               200
-char * le_arquivo (char *nome);
 
+char * le_arquivo (char *);
 
 #endif // __ARQUIVO_H__

@@ -21,7 +21,7 @@
 #include "defs.h"
 #include "atomo.h"
 #include "tabid.h"
-#include "analisadorLexico.h"
+#include "lexico.h"
 
 enum estados_lexico
 {

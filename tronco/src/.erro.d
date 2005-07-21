@@ -1,1 +1,1 @@
-erro.o .erro.d : erro.c analisadorLexico.h atomo.h
+erro.o .erro.d : erro.c

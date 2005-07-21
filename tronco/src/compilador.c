@@ -22,9 +22,9 @@
 #include "atomo.h"
 #include "tabid.h"
 #include "erro.h"
-#include "analisadorLexico.h"
+#include "lexico.h"
 
-#define ESPERA_TECLA
+//#define ESPERA_TECLA
 
 void sair (int ret, const char * msg)
 {
@@ -108,8 +108,8 @@ int main (int argc, char **argv)
     {
         printf ("\nToken desconhecido na seguinte linha:\n");
         
-        mostra_linha_atual (pos);
-        mostra_posicao_erro (pos);
+        mostra_linha_atual (pos, coluna_atual());
+        mostra_posicao_erro (pos, coluna_atual());
     }
 
     // Mostra tabela de identificadores

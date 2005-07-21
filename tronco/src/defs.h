@@ -17,7 +17,7 @@
 /*
  * defs.h
  *
- * Definições de tipos, constantes etc.
+ * Definiï¿½ï¿½es de tipos, constantes etc.
  */
 
 #ifndef __DEFS_H__
@@ -28,8 +28,7 @@
 #define VERDADE                 1
 #define FALSO                   0
 
-// Erro de busca ou adição
+// CÃ³digos de erro (busca, adiÃ§Ãµes etc.)
 #define ERRO                    -1
-
 
 #endif // __DEFS_H__

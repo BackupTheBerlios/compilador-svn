@@ -2,8 +2,8 @@
  *            erro.c
  *
  *  Sun Jun 26 19:34:41 2005
- *  Copyright  2005  User
- *  Email
+ *  Copyright  2005  André e Igor
+ *  andredsp@gmail.com
  ****************************************************************************/
 
 /*
@@ -23,12 +23,9 @@
  */
  
 #include <stdio.h>
-#include "analisadorLexico.h"
  
-void mostra_linha_atual (char * pos)
+void mostra_linha_atual (char * pos, int col)
 {
-    int col = coluna_atual();
-    
     for (pos -= col; *pos != '\n'; pos++)
         if (*pos == '\t')
             printf ("    ");
@@ -38,11 +35,9 @@ void mostra_linha_atual (char * pos)
     
 }
 
-void mostra_posicao_erro (char * pos)
+void mostra_posicao_erro (char * pos, int col)
 {
-    int col;
-    
-    for (col = coluna_atual(); col > 0; col--)
+    for (; col > 0; col--)
         if (*(pos-col) == '\t')
             printf ("----");
         else

@@ -16,7 +16,6 @@
  
 
 #ifndef __ATOMO_H__
-
 #define __ATOMO_H__
 
 /*
@@ -82,9 +81,15 @@ enum e_classe {
     PR_OR, 
     PR_XOR,
     PR_TRUE,
-    PR_FALSE
+    PR_FALSE,
+    
+    TOTAL_CLASSES
 };
 
+/* s_fila
+ * 
+ * Estrutura que representa uma fila de átomos
+ */
 struct s_fila {
     int tamanho;
     um_atomo *atomo;
@@ -92,7 +97,7 @@ struct s_fila {
 
 /* s_atomo
  *
- * Estrutura que representa um atomo
+ * Estrutura que representa um átomo
  */
 struct s_atomo {
     uma_classe classe;
@@ -124,9 +129,9 @@ uma_classe busca_palavra_reservada (char *);
 // char * busca_nome_da_classe (uma_classe);
 
 // Funções com fila (para look-ahead)
-void fila_inicia  (uma_fila *);
-int fila_eh_vazia (uma_fila *);
-int fila_adiciona (uma_fila *, um_atomo);
-um_atomo fila_retira   (uma_fila *);
+void fila_inicia        (uma_fila *);
+int fila_eh_vazia       (uma_fila *);
+int fila_adiciona       (uma_fila *, um_atomo);
+um_atomo fila_retira    (uma_fila *);
 
 #endif // __ATOMO_H__
