@@ -1,7 +1,7 @@
 [Project]
 FileName=compilaDOR.dev
 Name=CompilaDOR
-UnitCount=14
+UnitCount=16
 Type=1
 Ver=1
 ObjFiles=
@@ -20,7 +20,7 @@ ObjectOutput=obj
 OverrideOutput=0
 OverrideOutputName=compilaDOR.exe
 HostApplication=
-Folders="Analisador Léxico",Diversos,Exemplos
+Folders="Analisador Léxico","Analisador Sintático",Diversos,Exemplos
 CommandLine=teste.prg
 IncludeVersionInfo=0
 SupportXPThemes=0
@@ -30,26 +30,6 @@ UseCustomMakefile=0
 CustomMakefile=Makefile.win
 
 [Unit1]
-FileName=src\analisadorLexico.c
-CompileCpp=0
-Folder=Analisador Léxico
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit2]
-FileName=src\analisadorLexico.h
-CompileCpp=0
-Folder=Analisador Léxico
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit3]
 FileName=src\atomo.c
 CompileCpp=0
 Folder=Analisador Léxico
@@ -59,7 +39,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit4]
+[Unit2]
 FileName=src\atomo.h
 CompileCpp=0
 Folder=Analisador Léxico
@@ -69,12 +49,32 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit8]
-FileName=src\tabid.h
+[Unit3]
+FileName=src\tabid.c
 CompileCpp=0
 Folder=Analisador Léxico
 Compile=1
 Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=src\compilador.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit8]
+FileName=bin\errado.prg
+CompileCpp=0
+Folder=Exemplos
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
@@ -98,17 +98,7 @@ ProductVersion=
 AutoIncBuildNr=0
 
 [Unit5]
-FileName=src\tabid.c
-CompileCpp=0
-Folder=Analisador Léxico
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
-FileName=src\compilador.c
+FileName=src\defs.h
 CompileCpp=0
 Folder=
 Compile=1
@@ -117,27 +107,38 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit9]
-FileName=bin\teste.prg
+[Unit6]
+FileName=src\tabid.h
 CompileCpp=0
-Folder=Exemplos
-Compile=0
-Link=0
+Folder=Analisador Léxico
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit9]
+FileName=src\arquivo.c
+CompileCpp=0
+Folder=Diversos
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
 [Unit10]
-FileName=bin\errado.prg
-Folder=Exemplos
-Compile=0
-Link=0
+FileName=src\arquivo.h
+Folder=Diversos
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=0
 
 [Unit11]
-FileName=src\arquivo.c
+FileName=src\erro.c
 Folder=Diversos
 Compile=1
 Link=1
@@ -189,7 +190,7 @@ BuildCmd=
 =======
 
 [Unit12]
-FileName=src\arquivo.h
+FileName=src\erro.h
 CompileCpp=0
 Folder=Diversos
 Compile=1
@@ -199,9 +200,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit13]
-FileName=src\erro.c
+FileName=src\lexico.c
 CompileCpp=0
-Folder=Diversos
+Folder=Analisador Léxico
 Compile=1
 Link=1
 Priority=1000
@@ -209,9 +210,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit14]
-FileName=src\erro.h
+FileName=src\lexico.h
 CompileCpp=0
-Folder=Diversos
+Folder=Analisador Léxico
 Compile=1
 Link=1
 Priority=1000
@@ -219,9 +220,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit15]
-FileName=src\erro.h
+FileName=src\sintatico.h
 CompileCpp=0
-Folder=CompilaDOR
+Folder=Analisador Sintático
 Compile=1
 Link=1
 Priority=1000
@@ -230,9 +231,19 @@ BuildCmd=
 >>>>>>> .r43
 
 [Unit7]
-FileName=src\defs.h
+FileName=bin\teste.prg
 CompileCpp=0
-Folder=
+Folder=Exemplos
+Compile=0
+Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit16]
+FileName=src\sintatico.c
+CompileCpp=0
+Folder=Analisador Sintático
 Compile=1
 Link=1
 Priority=1000

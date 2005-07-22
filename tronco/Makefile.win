@@ -5,8 +5,8 @@ CPP  = g++.exe -D__DEBUG__
 CC   = gcc.exe -D__DEBUG__
 WINDRES = windres.exe
 RES  = 
-OBJ  = obj/analisadorLexico.o obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o $(RES)
-LINKOBJ  = obj/analisadorLexico.o obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o $(RES)
+OBJ  = obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o obj/lexico.o obj/sintatico.o $(RES)
+LINKOBJ  = obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o obj/lexico.o obj/sintatico.o $(RES)
 LIBS =  -L"C:/Dev-Cpp/lib"  -g3 
 INCS =  -I"C:/Dev-Cpp/include" 
 CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
@@ -26,9 +26,6 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CC) $(LINKOBJ) -o "bin\compilaDOR.exe" $(LIBS)
 
-obj/analisadorLexico.o: src/analisadorLexico.c
-	$(CC) -c src/analisadorLexico.c -o obj/analisadorLexico.o $(CFLAGS)
-
 obj/atomo.o: src/atomo.c
 	$(CC) -c src/atomo.c -o obj/atomo.o $(CFLAGS)
 
@@ -43,3 +40,9 @@ obj/arquivo.o: src/arquivo.c
 
 obj/erro.o: src/erro.c
 	$(CC) -c src/erro.c -o obj/erro.o $(CFLAGS)
+
+obj/lexico.o: src/lexico.c
+	$(CC) -c src/lexico.c -o obj/lexico.o $(CFLAGS)
+
+obj/sintatico.o: src/sintatico.c
+	$(CC) -c src/sintatico.c -o obj/sintatico.o $(CFLAGS)

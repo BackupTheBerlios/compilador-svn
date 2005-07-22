@@ -2,8 +2,10 @@
  *            sintatico.c
  *
  *  Sun Jun 26 17:49:39 2005
- *  Copyright  2005  AndrÔøΩ e Igor
+ *  Copyright  2005  AndrÈ e Igor
  *  andredsp@gmail.com
+ *  igor_arouca@yahoo.com.br
+ *
  ****************************************************************************/
 
 /*
@@ -27,46 +29,52 @@
 #include "defs.h"
 #include "sintatico.h"
 
-// Numera√ß√£o das sub-m√°quinas
-enum submaquinas {SM_PROGRAMA, SM_TIPO, SM_COMANDO, SM_EXPRESSAO,
-    SM_FATOR, SM_EXP_BOOLEANA, TOTAL_SUBMAQUINAS};
+// NumeraÁ„o das sub-m·quinas
+enum submaquinas {
+	 			  SM_PROGRAMA,
+	 			  SM_TIPO,
+				  SM_COMANDO,
+				  SM_EXPRESSAO,
+				  SM_FATOR,
+				  SM_EXP_BOOLEANA,
+				  TOTAL_SUBMAQUINAS
+				 };
 
-// Vetor com todas as m√°quinas
+// Vetor com todas as m·quinas
 static automato maquinas[TOTAL_SUBMAQUINAS];
 
-// Estado e m√°quina atuais
+// Estado e m·quina atuais
 static estado atual; 
 
-// Quantidade e pilha de retornos de sub-m√°quina
+// Quantidade e pilha de retornos de sub-m·quina
 static int retornos;
 static estado *pilha_retornos;
 
-//
-// A√ß√µes Sem√¢nticas
-//
+// AÁıes Sem‚nticas
 void nada() {}
 
 /* inicia_submaquinas
  * 
- * Fun√ß√£o que define o vetor de m√°quinas, bem como a m√°quina e estado iniciais
+ * FunÁ„o que define o vetor de m·quinas, bem como a m·quina e estado iniciais
  */
 void inicia_submaquinas (void)
 {
-    //
-    // Defini√ß√£o das M√°quinas
-    //
-
-	/* M√°quina programa (P): */
+     // DefiniÁ„o das M·quinas
+ 
+	/* M·quina programa (P): */
 	#define P_ENTRADAS   12
 	#define P_ESTADOS    1
     static const int P_entradas[P_ENTRADAS] = 
-        { C_INVALIDA, PR_PROGRAM, PR_PROCEDURE, PR_FUNCTION, PR_RETURNS, S_ABRE_PARENTESES, S_FECHA_PARENTESES, S_VIRGULA, S_PONTO_E_VIRGULA, -SM_TIPO, C_IDENTIFICADOR, -SM_COMANDO};
+     	   { C_INVALIDA, PR_PROGRAM, PR_PROCEDURE, PR_FUNCTION, PR_RETURNS, 
+			 S_ABRE_PARENTESES, S_FECHA_PARENTESES, S_VIRGULA, S_PONTO_E_VIRGULA,
+			 -SM_TIPO, C_IDENTIFICADOR, -SM_COMANDO};
     static const transicao P_transicoes[P_ESTADOS][P_ENTRADAS] = {
-        {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}}
+        {{ND, NULL}, {1, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL},
+		 {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}}
     };
-    static const int P_finais[] = { 3 };
+    static const int P_finais[] = {3};
         
-	/* Sub-m√°quina tipo (T): */
+	/* Sub-m·quina tipo (T): */
 	#define T_ENTRADAS   8
 	#define T_ESTADOS    5
 	static const int T_entradas[T_ENTRADAS] = 
@@ -80,12 +88,8 @@ void inicia_submaquinas (void)
 	};
     static const int T_finais[] = { 2 };
     
-    
-    
-    
-	//
-    // Cria√ß√£o das m√°quinas no vetor
-    //
+
+    // CriaÁ„o das m·quinas no vetor
     
     maquinas[SM_PROGRAMA].entradas          = P_ENTRADAS;
     maquinas[SM_PROGRAMA].estados           = P_ESTADOS;
@@ -102,11 +106,11 @@ void inicia_submaquinas (void)
     
     
     
-    // M√Åquina e estado iniciais
+    // M·quina e estado iniciais
 	atual.estado = 0;
     atual.maquina = SM_PROGRAMA;
     
-    // No in√≠cio, n√£o h√° retornos
+    // No inÌcio, n„o h· retornos
     retornos = 0;
     pilha_retornos = (estado *) NULL;
 }
