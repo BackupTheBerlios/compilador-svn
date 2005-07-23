@@ -39,11 +39,11 @@ typedef struct s_automato   automato;
 
 /* s_transicao
  * 
- * Estrutura que representa uma transiÃ§Ã£o de estados
+ * Estrutura que representa uma transição de estados
  */
 struct s_transicao {
-    int estado;         // PrÃ³ximo estado
-    void (*acao)();     // AÃ§Ã£o semÃ¢ntica
+    int estado;         // Próximo estado
+    void (*acao)();     // Ação semântica
 };
 
 /* s_estado
@@ -52,23 +52,23 @@ struct s_transicao {
  */
 struct s_estado {
     int estado;         // Estado atual
-    int maquina;        // MÃ¡quina atual
+    int maquina;        // Máquina atual
 };
 
 /* s_automato
  * 
- * Estrutura que representa um autÃ´mato
+ * Estrutura que representa um autômato
  */
 struct s_automato {
     int entradas;           // Qtde de entradas
     int estados;            // Qtd de estados
-    int *tipo_entradas;     // Tipos de entradas (classes ou sub-mÃ¡quinas)
-    transicao **transicoes; // Tabela de transiÃ§Ãµes
+    int *tipo_entradas;     // Tipos de entradas (classes ou sub-máquinas)
+    transicao **transicoes; // Tabela de transições
     int *estados_finais;    // Estados Finais
 };
 
 //
-// ProtÃ³tipos
+// Protótipos
 //
 void inicia_submaquinas (void);
 

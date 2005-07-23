@@ -32,20 +32,20 @@ char * le_arquivo (char *nome)
     int tamanho, lido;
     FILE *arq;
     
-    arq = fopen (nome, "r");
+    arq = fopen(nome, "r");
 
     if (arq == NULL)
         return NULL;
 
-    dados = malloc (MAX_BLOCO * sizeof (char));
+    dados = malloc(MAX_BLOCO * sizeof (char));
     tamanho = 0;
 
-    while (! feof (arq))
+    while (! feof(arq))
     {
-        lido = fread (dados+tamanho, sizeof (char), MAX_BLOCO, arq);
+        lido = fread(dados + tamanho, sizeof (char), MAX_BLOCO, arq);
         tamanho += lido;
         if (lido == MAX_BLOCO)
-            dados = realloc (dados, (tamanho + MAX_BLOCO) * sizeof (char));
+            dados = realloc(dados, (tamanho + MAX_BLOCO) * sizeof (char));
     }
     
     dados [tamanho] = '\0';

@@ -28,13 +28,13 @@
 
 void sair (int ret, const char * msg)
 {
-    printf ("%s\n", msg);
+    printf("%s\n", msg);
 #ifdef ESPERA_TECLA
-    printf ("Pressione algo para continuar...\n");
+    printf("Pressione algo para continuar...\n");
     fflush(stdout);
     getchar();
 #endif
-    exit (ret);
+    exit(ret);
 }
 
 int main (int argc, char **argv)
@@ -45,63 +45,60 @@ int main (int argc, char **argv)
     int i, ids, fim;
 
     if (argc == 1)
-        sair (1, "Uso: teste <arquivo>\n");
+        sair(1, "Uso: teste <arquivo>\n");
 
     dados = le_arquivo (argv[1]);
     
     if (dados == NULL)
 	{
 		char msg[100]="";
-		strcat (msg, argv[1]);
-		strcat (msg, " nao encontrado!\n");
-        sair (2, msg);
+		strcat(msg, argv[1]);
+		strcat(msg, " nao encontrado!\n");
+        sair(2, msg);
 	}
     
-    printf ("Atomos:\n");
-    printf ("%20s %5s\n", "Classe", "Valor");
-    printf ("%20s %5s\n", "------", "-----");
+    printf("Atomos:\n");
+    printf("%20s %5s\n", "Classe", "Valor");
+    printf("%20s %5s\n", "------", "-----");
     
-    pos = dados;                   // PosiÃ§Ã£o inicial de leitura
-    fila_inicia (&fila);
+    pos = dados;                   // Posição inicial de leitura
+    fila_inicia(&fila);
     fim = 0;
     i = 0;
-    do
-    {
-        if (i>=3 && i<=5)
+
+    do {
+        if (i >= 3 && i <= 5)
         {
-            // LÃª novo Ã¡tomo com look-ahead
-            at = analisadorLexico (&pos, VERDADE, &fila);
+            // Lê novo átomo com look-ahead
+            at = analisadorLexico(&pos, VERDADE, &fila);
         
-            fila_adiciona (&fila, at);
-            printf ("O atomo '%s' (%d) foi pra fila!\n", nomeClasse (at->classe),  at->valor);
-        }
-        else
-        {
-            // LÃª novo Ã¡tomo sem look-ahead
-            at = analisadorLexico (&pos, FALSO, &fila);
+            fila_adiciona(&fila, at);
+            printf("O atomo '%s' (%d) foi pra fila!\n", nomeClasse (at->classe),  at->valor);
+        } else {
+            // Lê novo átomo sem look-ahead
+            at = analisadorLexico(&pos, FALSO, &fila);
 
             printf ("%20s ", nomeClasse (at->classe));
             if (at->classe == C_REAL)
-                printf ("%5.10g", at->real);
+                printf("%5.10g", at->real);
             else
-                printf ("%5d", at->valor);
+                printf("%5d", at->valor);
     
             if (at->classe == C_IDENTIFICADOR)
-                printf (" (%s)", busca_nome_ID (at->valor));
+                printf(" (%s)", busca_nome_ID (at->valor));
     
-            printf ("\n");
+            printf("\n");
             
             if (at->classe == C_FIM)
                 fim = 1;
             if (at->classe == C_INVALIDA)
                 fim = 2;
 
-            // Limpa Ã¡tomo
-            free (at);
+            // Limpa átomo
+            free(at);
         }
         i++;
-    }
-    while (! fim);
+    } while (!fim);
     
     // Mostra linha do erro, quando ocorrer
     if (fim == 2)

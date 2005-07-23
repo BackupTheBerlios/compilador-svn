@@ -57,11 +57,11 @@ um_atomo analisadorLexico(char **entrada, int look_ahead, uma_fila *fila)
 {
     um_atomo a;
 
-    // Se houver um √°tomo na fila, retorna esse √°tomo
+    // Se houver um ·tomo na fila, retorna esse √°tomo
     if (! (fila_eh_vazia (fila) || look_ahead))
         return fila_retira (fila);
 
-    // Roda a m√°quina de estados at√© pegar um √°tomo
+    // Roda a m·quina de estados atÈ pegar um ·tomo
     do
         a = maquina_lexico(entrada);
     while (!a);
@@ -77,40 +77,40 @@ um_atomo maquina_lexico (char **entrada)
 	switch (estado_lexico)
 	{
 		case BRANCO:
-            a = estado_branco (entrada);
+            a = estado_branco(entrada);
 			break;
 		
 		case IDENTIFICADOR:
-            a = estado_identificador (entrada);
+            a = estado_identificador(entrada);
 			break;
 		
 		case NUMERO:
-            a = estado_numero (entrada);
+            a = estado_numero(entrada);
 			break;
 		
 		case SIMBOLO:
-            a = estado_simbolo (entrada);
+            a = estado_simbolo(entrada);
 			break;
 		
 		case COMENTARIO:
-            a = estado_comentario (entrada);
+            a = estado_comentario(entrada);
 			break;
 		
 		default:
-			a = novoAtomoInteiro (C_INVALIDA, linha);
+			a = novoAtomoInteiro(C_INVALIDA, linha);
 			break;
 	}
 	return a;
 }
 
 
-/* As fun√ß√µes estado_xxx retornam um √°tomo */
+/* As funÁıes estado_xxx retornam um ·tomo */
 
 um_atomo estado_branco (char **entrada)
 {
     um_atomo a = NULL;
     
-    // Excetuando o caso de brancos, as entradas s√≥ ser√£o consumidas dentro
+    // Excetuando o caso de brancos, as entradas sÛ ser„o consumidas dentro
     // de seus respectivos estados
     if (ehBranco(**entrada))
         consome_entrada(entrada, 1);

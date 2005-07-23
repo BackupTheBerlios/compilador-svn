@@ -31,13 +31,13 @@
 
 // Numeração das sub-máquinas
 enum submaquinas {
-	 			  SM_PROGRAMA,
-	 			  SM_TIPO,
-				  SM_COMANDO,
-				  SM_EXPRESSAO,
-				  SM_FATOR,
-				  SM_EXP_BOOLEANA,
-				  TOTAL_SUBMAQUINAS
+	 			  SM_PROGRAMA,		/* 0 */
+	 			  SM_TIPO,			/* 1 */
+				  SM_COMANDO,		/* 2 */
+				  SM_EXPRESSAO,		/* 3 */
+				  SM_FATOR,			/* 4 */
+				  SM_EXP_BOOLEANA,	/* 5 */
+				  TOTAL_SUBMAQUINAS /* 6 */
 				 };
 
 // Vetor com todas as máquinas
@@ -53,59 +53,117 @@ static estado *pilha_retornos;
 // Ações Semânticas
 void nada() {}
 
+void converteCodigoFuncao(int codigo, void (*funcao)()) {
+
+   switch(codigo) {
+      case 0:
+	  	 funcao = NULL;  
+   	     break;
+      
+	  case 1:
+	  	 funcao = NULL;
+   	     break;
+   
+      case 2:
+	  	 funcao = NULL;
+   	     break;
+      
+      case 3:
+   	     funcao = NULL;
+		 break;
+   
+      default:
+	  	 funcao = NULL;
+	     break;
+   }
+}
+
+void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
+	FILE* arqSM;
+
+	if ((arqSM = fopen(arqTabelaDeTransicoes, "r")) == NULL) {
+ 	   printf("Erro ao tentar abrir arquivo contendo tabela de transicoes!\n\n");
+ 	   return;
+ 	
+	 } else {
+  	   int entradas;
+  	   int estados;
+  	   int estadosFinais;
+  	   int funcao;
+  	   int i, j;
+  	   // Lê numero de entradas e estados (dimensões da tabela), 
+	   // além do número de estados finais.
+	   fscanf(arqSM, "%d\n", entradas);
+	   fscanf(arqSM, "%d\n", estados);
+	   fscanf(arqSM, "%d\n", estadosFinais);
+
+	   // Lê tipos de entradas
+	   int* SM_entradas = (int*) calloc(entradas, sizeof(int));
+	   for (i = 0; i < entradas; ++i) {
+	      fscanf(arqSM, "%d ", SM_entradas[i]);
+	   }
+	   fscanf(arqSM, "\n");
+
+	   // Lê transições 
+	   transicao** SM_transicoes = (transicao**) calloc(estados, sizeof (transicao*));
+	   for (i = 0; i < estados; ++i) {
+	      SM_transicoes[i] = (transicao*) calloc(entradas, sizeof(transicao));
+	      for (j = 0; j < entradas; ++j) {
+		     fscanf(arqSM, "%d, %d ", (SM_transicoes[i][j]).estado, funcao);
+		     converteCodigoFuncao(funcao, SM_transicoes[i][j].acao);
+		  }
+		  fscanf(arqSM, "\n");
+	   }
+
+	   // Lê estados finais
+	   int* SM_finais = (int*) malloc(estadosFinais);
+	   for (i = 0; i < estadosFinais; ++i) {
+	      fscanf(arqSM, "%d ", SM_finais[i]);
+	   }
+  	   maquinas[SM].entradas          = entradas;
+       maquinas[SM].estados           = estados;
+       maquinas[SM].tipo_entradas     = (int *) &SM_entradas;
+       maquinas[SM].transicoes        = (transicao **) &SM_transicoes;
+       maquinas[SM].estados_finais    = (int *) &SM_finais;
+       
+       fclose(arqSM);
+   }
+}
+
 /* inicia_submaquinas
  * 
  * Função que define o vetor de máquinas, bem como a máquina e estado iniciais
  */
-void inicia_submaquinas (void)
+void inicia_submaquinas()
 {
-     // Definição das Máquinas
- 
-	/* Máquina programa (P): */
-	#define P_ENTRADAS   12
-	#define P_ESTADOS    1
-    static const int P_entradas[P_ENTRADAS] = 
-     	   { C_INVALIDA, PR_PROGRAM, PR_PROCEDURE, PR_FUNCTION, PR_RETURNS, 
-			 S_ABRE_PARENTESES, S_FECHA_PARENTESES, S_VIRGULA, S_PONTO_E_VIRGULA,
-			 -SM_TIPO, C_IDENTIFICADOR, -SM_COMANDO};
-    static const transicao P_transicoes[P_ESTADOS][P_ENTRADAS] = {
-        {{ND, NULL}, {1, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL},
-		 {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}}
-    };
-    static const int P_finais[] = {3};
-        
-	/* Sub-máquina tipo (T): */
-	#define T_ENTRADAS   8
-	#define T_ESTADOS    5
-	static const int T_entradas[T_ENTRADAS] = 
-        { C_INVALIDA, PR_REAL, PR_INTEGER, PR_BOOLEAN, S_ABRE_CHAVE, S_FECHA_CHAVE, S_VIRGULA, C_INTEIRO };
-	static const transicao T_transicoes[T_ESTADOS][T_ENTRADAS] = {
-	    {{ND, NULL}, { 1, NULL}, { 1, NULL}, { 1, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-	    {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 3, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-	    {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-	    {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 4, NULL}},
-	    {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 2, NULL}, { 3, NULL}, {ND, NULL}}
-	};
-    static const int T_finais[] = { 2 };
-    
+ 	char* arqSM;
 
-    // Criação das máquinas no vetor
-    
-    maquinas[SM_PROGRAMA].entradas          = P_ENTRADAS;
-    maquinas[SM_PROGRAMA].estados           = P_ESTADOS;
-    maquinas[SM_PROGRAMA].tipo_entradas     = (int *) &P_entradas;
-    maquinas[SM_PROGRAMA].transicoes        = (transicao **) &P_transicoes;
-    maquinas[SM_PROGRAMA].estados_finais    = (int *) &P_finais;
-    
-    maquinas[SM_TIPO].entradas          = T_ENTRADAS;
-    maquinas[SM_TIPO].estados           = T_ESTADOS;
-    maquinas[SM_TIPO].tipo_entradas     = (int *) &T_entradas;
-    maquinas[SM_TIPO].transicoes        = (transicao **) &T_transicoes;
-    maquinas[SM_TIPO].estados_finais    = (int *) &T_finais;
+	// Definição das Máquinas:
+
+	// Sub-máquina programa (P):
+	arqSM = "subMaquina_Programa.dat";
+	defineSubMaquina(arqSM, SM_PROGRAMA);
 	
-    
-    
-    
+	// Sub-máquina tipo (T):
+	arqSM = "subMaquina_Tipo.dat";
+	defineSubMaquina(arqSM, SM_TIPO);
+
+	// Sub-máquina comando (C):
+	arqSM = "subMaquina_Comando.dat";
+	defineSubMaquina(arqSM, SM_COMANDO);
+
+	// Sub-máquina expressão (E):
+	arqSM = "subMaquina_Expressao.dat";
+	defineSubMaquina(arqSM, SM_EXPRESSAO);
+	
+	// Sub-máquina fator (F):
+	arqSM = "subMaquina_Fator.dat";
+	defineSubMaquina(arqSM, SM_FATOR);
+	
+	// Sub-máquina expressão booleana (O):
+	arqSM = "subMaquina_ExpressaoBooleana.dat";
+	defineSubMaquina(arqSM, SM_EXP_BOOLEANA);
+
     // Máquina e estado iniciais
 	atual.estado = 0;
     atual.maquina = SM_PROGRAMA;
@@ -114,4 +172,3 @@ void inicia_submaquinas (void)
     retornos = 0;
     pilha_retornos = (estado *) NULL;
 }
-
