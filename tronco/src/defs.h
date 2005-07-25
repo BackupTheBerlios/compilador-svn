@@ -24,11 +24,26 @@
 
 #define __DEFS_H__
 
+// Versão de depuração
+#define DEBUG
+
 // Booleanos
 #define VERDADE                 1
 #define FALSO                   0
 
 // Códigos de erro (busca, adições etc.)
 #define ERRO                    -1
+
+// Modos de encerramento
+enum fins {
+    FIM_OK,
+    
+    FIM_ERRO_PARAMETRO,
+    FIM_ERRO_ARQUIVO,
+    
+    FIM_ERRO_LEXICO,
+    FIM_ERRO_SINTATICO,
+    FIM_ERRO_MAQUINAS
+};
 
 #endif // __DEFS_H__

@@ -65,6 +65,9 @@ um_atomo analisadorLexico(char **entrada, int look_ahead, uma_fila *fila)
     do
         a = maquina_lexico(entrada);
     while (!a);
+        
+    if (look_ahead)
+        fila_adiciona (fila, a);
 
     return a;
 }

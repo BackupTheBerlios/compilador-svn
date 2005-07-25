@@ -285,10 +285,6 @@ um_atomo fila_retira (uma_fila *fila)
     if (fila_eh_vazia (fila))
         return (um_atomo) NULL;
 
-/*    
-    ultimo = fila->tamanho - 1;    
-    atomo = fila->atomo[ultimo];
-*/
     atomo = fila->atomo[0];
     
     for (i=0; i < fila->tamanho-1; i++)

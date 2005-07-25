@@ -62,14 +62,15 @@ struct s_estado {
 struct s_automato {
     int entradas;           // Qtde de entradas
     int estados;            // Qtd de estados
-    int *tipo_entradas;     // Tipos de entradas (classes ou sub-máquinas)
-    transicao **transicoes; // Tabela de transições
-    int *estados_finais;    // Estados Finais
+    int estados_finais;     // Qtd de estados finais
+    int *tipo_entradas;     // Tipos de entradas (classes ou sub-mÃ¡quinas)
+    transicao **transicoes; // Tabela de transiÃ§Ãµes
+    int *estado_final;      // Estados Finais
 };
 
 //
 // Protótipos
 //
-void inicia_submaquinas (void);
+int analisadorSintatico (char **entrada);
 
 #endif /* __SINTATICO_H__ */

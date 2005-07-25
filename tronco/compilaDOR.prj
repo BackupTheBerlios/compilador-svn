@@ -61,7 +61,7 @@ preferences.autoformat.disable=1
 preferences.indent.automatic=1
 preferences.use.tabs=0
 preferences.indent.size=4
-preferences.tabsize=8
+preferences.tabsize=4
 preferences.indent.closing=0
 
 module.include.name=.
@@ -70,10 +70,10 @@ module.include.files=\
 	src/atomo.h\
 	src/defs.h\
 	src/tabid.h\
-	src/analisadorLexico.h\
 	src/arquivo.h\
-	src/analisadorSintatico.h\
-	src/erro.h
+	src/erro.h\
+	src/lexico.h\
+	src/sintatico.h
 
 module.source.name=.
 module.source.type=
@@ -81,10 +81,10 @@ module.source.files=\
 	src/compilador.c\
 	src/atomo.c\
 	src/tabid.c\
-	src/analisadorLexico.c\
 	src/arquivo.c\
-	src/analisadorSintatico.c\
-	src/erro.c
+	src/erro.c\
+	src/lexico.c\
+	src/sintatico.c
 
 module.pixmap.name=.
 module.pixmap.type=
@@ -125,5 +125,4 @@ compiler.options.other.c.flags=
 compiler.options.other.l.flags=
 compiler.options.other.l.libs=
 
-project.src.paths=/home/acdcp/projetos/compilador/src
-
+project.src.paths=

@@ -24,19 +24,38 @@
  
 #include <stdio.h>
  
-void mostra_linha_atual (char * pos, int col)
+int mostra_linha_atual (char * pos)
 {
-    for (pos -= col; *pos != '\n'; pos++)
+    int col;
+    
+    // Acha fim-de-linha anterior
+    col = 0;
+    while (*(pos-1) != '\n')
+    {
+        col++;
+        pos--;
+    }
+    
+    while (*pos != '\n')
+    {
         if (*pos == '\t')
             printf ("    ");
         else
 			printf ("%c", *pos);
+        
+        pos++;
+    }
+        
     printf ("\n");
     
+    return col;
 }
 
-void mostra_posicao_erro (char * pos, int col)
+void mostra_posicao_erro (char * pos)
 {
+    int col;
+    
+    col = mostra_linha_atual (pos);
     for (; col > 0; col--)
         if (*(pos-col) == '\t')
             printf ("----");

@@ -25,7 +25,7 @@
 #ifndef _ERRO_H
 #define _ERRO_H
 
-void mostra_linha_atual  (char *, int);
-void mostra_posicao_erro (char *, int);
+void mostra_linha_atual  (char *);
+void mostra_posicao_erro (char *);
 
 #endif /* _ERRO_H */

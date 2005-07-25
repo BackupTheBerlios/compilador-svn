@@ -1,3 +1,11 @@
+/***************************************************************************
+ *            compilador.c
+ *
+ *  Fri Jul 22 12:12:09 2005
+ *  Copyright  2005  André Pinto e Igor Arouca
+ *  andre.pinto@poli.usp.br
+ ****************************************************************************/
+
 /*
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,39 +25,66 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "defs.h"
 #include "arquivo.h"
-#include "atomo.h"
-#include "tabid.h"
+#include "sintatico.h"
 #include "erro.h"
-#include "lexico.h"
 
 //#define ESPERA_TECLA
 
-void sair (int ret, const char * msg)
+void sair (int ret)
 {
+<<<<<<< .trabalho
     printf("%s\n", msg);
+=======
+    char *msg[] = {
+        "Execução bem sucedida!", 
+
+        "Uso: teste <arquivo>",
+        "Arquivo nao encontrado!", 
+
+        "Token desconhecido!", 
+        "Erro de sintaxe.", 
+        "Erro interno na construção das máquinas!"
+    };
+        
+    printf ("%s\n", msg[ret]);
+
+>>>>>>> .mesclagem-direita.r67
 #ifdef ESPERA_TECLA
+<<<<<<< .trabalho
     printf("Pressione algo para continuar...\n");
+=======
+    printf ("\nPressione algo para continuar...\n");
+>>>>>>> .mesclagem-direita.r67
     fflush(stdout);
     getchar();
 #endif
+<<<<<<< .trabalho
     exit(ret);
+=======
+
+    exit (ret);
+>>>>>>> .mesclagem-direita.r67
 }
 
 int main (int argc, char **argv)
 {
-    um_atomo at;
-    uma_fila fila;
-    char *pos, *dados;
-    int i, ids, fim;
+    char *dados, *pos;
+    int erro;
 
     if (argc == 1)
+<<<<<<< .trabalho
         sair(1, "Uso: teste <arquivo>\n");
+=======
+        sair (FIM_ERRO_PARAMETRO);
+>>>>>>> .mesclagem-direita.r67
 
     dados = le_arquivo (argv[1]);
     
     if (dados == NULL)
+<<<<<<< .trabalho
 	{
 		char msg[100]="";
 		strcat(msg, argv[1]);
@@ -77,7 +112,11 @@ int main (int argc, char **argv)
         } else {
             // L� novo �tomo sem look-ahead
             at = analisadorLexico(&pos, FALSO, &fila);
+=======
+        sair (FIM_ERRO_ARQUIVO);
+>>>>>>> .mesclagem-direita.r67
 
+<<<<<<< .trabalho
             printf ("%20s ", nomeClasse (at->classe));
             if (at->classe == C_REAL)
                 printf("%5.10g", at->real);
@@ -93,7 +132,12 @@ int main (int argc, char **argv)
                 fim = 1;
             if (at->classe == C_INVALIDA)
                 fim = 2;
+=======
+    pos = dados;
+    erro = analisadorSintatico (&pos);
+>>>>>>> .mesclagem-direita.r67
 
+<<<<<<< .trabalho
             // Limpa �tomo
             free(at);
         }
@@ -102,23 +146,18 @@ int main (int argc, char **argv)
     
     // Mostra linha do erro, quando ocorrer
     if (fim == 2)
+=======
+    if (erro >= FIM_ERRO_LEXICO)
+>>>>>>> .mesclagem-direita.r67
     {
-        printf ("\nToken desconhecido na seguinte linha:\n");
+#ifdef DEBUG        
+        printf ("\n");
+#endif        
+        printf ("Linha Atual:\n");
+        mostra_posicao_erro (pos);
+        printf ("\n");
+    }
         
-        mostra_linha_atual (pos, coluna_atual());
-        mostra_posicao_erro (pos, coluna_atual());
-    }
-
-    // Mostra tabela de identificadores
-    ids = tam_tabelaID();
-    printf ("\nIdentificadores (%d):\n", ids);
-    for (i = 0; i < ids; i++)
-    {
-        printf ("%3d: %s\n", i,  busca_nome_ID (i));
-    }
-    
-    
-    
-    sair (0, "\nFim.");
-    return 0;
+    sair (erro);
+    return erro;
 }

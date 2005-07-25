@@ -21,8 +21,6 @@
 #ifndef __ARQUIVO_H__
 #define __ARQUIVO_H__
 
-#define MAX_BLOCO               200
-
-char * le_arquivo (char *);
+char *le_arquivo (char *);
 
 #endif // __ARQUIVO_H__
