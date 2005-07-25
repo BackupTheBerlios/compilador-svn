@@ -24,8 +24,9 @@
 
 #define __DEFS_H__
 
-// Versão de depuração
-#define DEBUG
+// Depurações
+#define DEBUG_SINTATICO
+//#define DEBUG_ARQUIVO
 
 // Booleanos
 #define VERDADE                 1

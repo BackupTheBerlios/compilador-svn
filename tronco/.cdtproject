@@ -4,7 +4,7 @@
 <cdtproject id="org.eclipse.cdt.make.core.make">
 <extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 <extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
-<extension id="org.eclipse.cdt.core.nullindexer" point="org.eclipse.cdt.core.CIndexer"/>
+<extension id="org.eclipse.cdt.core.domsourceindexer" point="org.eclipse.cdt.core.CIndexer"/>
 <data>
 <item id="scannerConfiguration">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
@@ -63,10 +63,17 @@
 <stopOnError>false</stopOnError>
 <useDefaultCommand>true</useDefaultCommand>
 </target>
-<target name="Reconstrói" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="Reconstruir" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>make</buildCommand>
 <buildArguments></buildArguments>
 <buildTarget>clean all</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>true</useDefaultCommand>
+</target>
+<target name="Construir" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>make</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>all</buildTarget>
 <stopOnError>false</stopOnError>
 <useDefaultCommand>true</useDefaultCommand>
 </target>

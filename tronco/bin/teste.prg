@@ -2,11 +2,11 @@
 % Programa de Teste
 %
 
-program nada;
+program
 
 
 %
-% Calcula um número elevado ao quadrado
+% Calcula um nï¿½mero elevado ao quadrado
 %
 function quadrado(integer val) returns integer;
 declare
@@ -21,7 +21,7 @@ declare
 	real r;
 begin
     num:=10;
-    output quadrado(num)=30;   % Esse "igual" é uma comparação
+    output quadrado(num)=30;   % Esse "igual" ï¿½ uma comparaï¿½ï¿½o
 	output 2.5*r;
 	while num > 0
 	declare

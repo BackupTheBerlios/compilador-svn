@@ -32,7 +32,7 @@
 #include "lexico.h"
 #include "erro.h"
 
-// NumeraÁ„o das sub-m·quinas
+// Numera√ß√£o das sub-m√°quinas
 enum submaquinas {
 	 			  SM_PROGRAMA,		/* 0 */
 	 			  SM_TIPO,			/* 1 */
@@ -50,10 +50,10 @@ char *submaquinas_nomes[TOTAL_SUBMAQUINAS] = {"SM_PROGRAMA", "SM_TIPO", "SM_COMA
 // Vetor com todas as m√°quinas
 static automato maquinas[TOTAL_SUBMAQUINAS];
 
-// Estado e m·quina atuais
+// Estado e m√°quina atuais
 static estado atual; 
 
-// Quantidade e pilha de retornos de sub-m·quina
+// Quantidade e pilha de retornos de sub-mÔøΩquina
 static int retornos;
 static estado *pilha_retornos;
     
@@ -128,87 +128,100 @@ void converteCodigoFuncao(int codigo, void (*funcao)()) {
 void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
 	FILE* arqSM;
 
-	if ((arqSM = fopen(arqTabelaDeTransicoes, "r")) == NULL) {
- 	   printf("Erro ao tentar abrir arquivo contendo tabela de transicoes!\n\n");
- 	   return;
- 	
-	 } else {
-  	   int entradas;
-  	   int estados;
-  	   int estadosFinais;
-  	   int funcao;
-  	   int i, j;
-  	   // LÍ numero de entradas e estados (dimensıes da tabela), 
-	   // alÈm do n˙mero de estados finais.
-	   fscanf(arqSM, "%d\n", entradas);
-	   fscanf(arqSM, "%d\n", estados);
-	   fscanf(arqSM, "%d\n", estadosFinais);
+	if ((arqSM = fopen(arqTabelaDeTransicoes, "r")) == NULL)
+    {
+        printf("Erro ao tentar abrir arquivo contendo tabela de transicoes!\n\n");
+        return;
+	}
+    
+    int entradas;
+    int estados;
+    int estadosFinais;
+    int funcao;
+    int i, j;
+   int *SM_entradas;
+   int *SM_finais;
+   transicao **SM_transicoes;
+   
+   // L√™ numero de entradas e estados (dimens√µes da tabela), 
+   // al√©m do n√∫mero de estados finais.
+   fscanf(arqSM, "%d", &entradas);
+   fscanf(arqSM, "%d", &estados);
+   fscanf(arqSM, "%d", &estadosFinais);
 
-	   // LÍ tipos de entradas
-	   int* SM_entradas = (int*) calloc(entradas, sizeof(int));
-	   for (i = 0; i < entradas; ++i) {
-	      fscanf(arqSM, "%d ", SM_entradas[i]);
-	   }
-	   fscanf(arqSM, "\n");
+#ifdef DEBUG_ARQUIVO    
+       printf ("entradas=%d estados=%d finais=%d\n", entradas, estados, estadosFinais);
+#endif    
 
-	   // LÍ transiÁıes 
-	   transicao** SM_transicoes = (transicao**) calloc(estados, sizeof (transicao*));
-	   for (i = 0; i < estados; ++i) {
-	      SM_transicoes[i] = (transicao*) calloc(entradas, sizeof(transicao));
-	      for (j = 0; j < entradas; ++j) {
-		     fscanf(arqSM, "%d, %d ", (SM_transicoes[i][j]).estado, funcao);
-		     converteCodigoFuncao(funcao, SM_transicoes[i][j].acao);
-		  }
-		  fscanf(arqSM, "\n");
-	   }
+#ifdef DEBUG_ARQUIVO    
+       printf ("entradas:");
+#endif    
 
-	   // LÍ estados finais
-	   int* SM_finais = (int*) malloc(estadosFinais);
-	   for (i = 0; i < estadosFinais; ++i) {
-	      fscanf(arqSM, "%d ", SM_finais[i]);
-	   }
-  	   maquinas[SM].entradas          = entradas;
-       maquinas[SM].estados           = estados;
-       maquinas[SM].tipo_entradas     = (int *) &SM_entradas;
-       maquinas[SM].transicoes        = (transicao **) &SM_transicoes;
-       maquinas[SM].estados_finais    = (int *) &SM_finais;
-       
-       fclose(arqSM);
-   }
+
+    // L√™ tipos de entradas
+    SM_entradas = (int*) calloc(entradas, sizeof(int));
+    for (i = 0; i < entradas; ++i) {
+        fscanf(arqSM, "%d ", &SM_entradas[i]);
+#ifdef DEBUG_ARQUIVO    
+        printf (" %d", SM_entradas[i]);
+#endif    
+    }
+
+#ifdef DEBUG_ARQUIVO    
+    printf ("\n");
+#endif    
+
+#ifdef DEBUG_ARQUIVO    
+    printf ("transi√ß√µes:");
+#endif    
+	   // L√™ transi√ß√µes 
+    SM_transicoes = (transicao**) calloc(estados, sizeof (transicao*));
+    for (i = 0; i < estados; ++i)
+    {
+        SM_transicoes[i] = (transicao*) calloc(entradas, sizeof(transicao));
+        for (j = 0; j < entradas; ++j)
+        {
+            fscanf(arqSM, "%d,%d", &SM_transicoes[i][j].estado, &funcao);
+            converteCodigoFuncao(funcao, SM_transicoes[i][j].acao);
+#ifdef DEBUG_ARQUIVO    
+            printf (" (%d:%d)", SM_transicoes[i][j].estado, funcao);
+#endif    
+        }
+//		  fscanf(arqSM, "\n");
+#ifdef DEBUG_ARQUIVO    
+        printf ("\n");
+#endif    
+    }
+
+#ifdef DEBUG_ARQUIVO    
+    printf ("finais:");
+#endif    
+
+
+    // L√™ estados finais
+    SM_finais = (int*) calloc(estadosFinais, sizeof (int));
+    for (i = 0; i < estadosFinais; ++i)
+    {
+        fscanf(arqSM, "%d", &SM_finais[i]);
+#ifdef DEBUG_ARQUIVO    
+        printf (" %d", SM_finais[i]);
+#endif
+    }
+
+#ifdef DEBUG_ARQUIVO    
+       printf ("\n");
+#endif    
+
+   maquinas[SM].entradas          = entradas;
+   maquinas[SM].estados           = estados;
+   maquinas[SM].estados_finais    = estadosFinais;
+   maquinas[SM].tipo_entradas     = SM_entradas;
+   maquinas[SM].transicoes        = SM_transicoes;
+   maquinas[SM].estado_final      = SM_finais;
+   
+   fclose(arqSM);
 }
 
-//
-// Defini√ß√£o das M√°quinas
-//
-
-/* M√°quina programa (P): */
-#define P_ENTRADAS          12
-#define P_ESTADOS           1
-#define P_ESTADOS_FINAIS    1
-int P_entradas[P_ENTRADAS] = 
-    { C_INVALIDA, PR_PROGRAM, PR_PROCEDURE, PR_FUNCTION, PR_RETURNS, S_ABRE_PARENTESES, S_FECHA_PARENTESES, S_VIRGULA, S_PONTO_E_VIRGULA, -SM_TIPO, C_IDENTIFICADOR, -SM_COMANDO};
-transicao P_transicoes[P_ESTADOS][P_ENTRADAS] = {
-//    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
-//    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
-//    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
-    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}}
-};
-int P_finais[P_ESTADOS_FINAIS] = { 3 };
-    
-/* Sub-m√°quina tipo (T): */
-#define T_ENTRADAS          8
-#define T_ESTADOS           5
-#define T_ESTADOS_FINAIS    1
-static int T_entradas[T_ENTRADAS] = 
-    { C_INVALIDA, PR_REAL, PR_INTEGER, PR_BOOLEAN, S_ABRE_CHAVE, S_FECHA_CHAVE, S_VIRGULA, C_INTEIRO };
-static transicao T_transicoes[T_ESTADOS][T_ENTRADAS] = {
-    {{ND, NULL}, { 1, NULL}, { 1, NULL}, { 1, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-    {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 3, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-    {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-    {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 4, NULL}},
-    {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 2, NULL}, { 3, NULL}, {ND, NULL}}
-};
-static int T_finais[T_ESTADOS_FINAIS] = { 2 };
 
 
 transicao ** aloca_transicoes (transicao *t, int estados, int entradas)
@@ -230,10 +243,43 @@ transicao ** aloca_transicoes (transicao *t, int estados, int entradas)
 
 /* inicia_submaquinas
  * 
- * FunÁ„o que define o vetor de m·quinas, bem como a m·quina e estado iniciais
+ * Fun√ß√£o que define o vetor de mÔøΩquinas, bem como a mÔøΩquina e estado iniciais
  */
 void inicia_submaquinas_hardcoded()
 {
+    //
+    // Defini√ß√£o das M√°quinas
+    //
+    
+    /* M√°quina programa (P): */
+    #define P_ENTRADAS          12
+    #define P_ESTADOS           1
+    #define P_ESTADOS_FINAIS    1
+    int P_entradas[P_ENTRADAS] = 
+        { C_INVALIDA, PR_PROGRAM, PR_PROCEDURE, PR_FUNCTION, PR_RETURNS, S_ABRE_PARENTESES, S_FECHA_PARENTESES, S_VIRGULA, S_PONTO_E_VIRGULA, -SM_TIPO, C_IDENTIFICADOR, -SM_COMANDO};
+    transicao P_transicoes[P_ESTADOS][P_ENTRADAS] = {
+    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
+    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
+    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
+        {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}}
+    };
+    int P_finais[P_ESTADOS_FINAIS] = { 3 };
+        
+    /* Sub-m√°quina tipo (T): */
+    #define T_ENTRADAS          8
+    #define T_ESTADOS           5
+    #define T_ESTADOS_FINAIS    1
+    static int T_entradas[T_ENTRADAS] = 
+        { C_INVALIDA, PR_REAL, PR_INTEGER, PR_BOOLEAN, S_ABRE_CHAVE, S_FECHA_CHAVE, S_VIRGULA, C_INTEIRO };
+    static transicao T_transicoes[T_ESTADOS][T_ENTRADAS] = {
+        {{ND, NULL}, { 1, NULL}, { 1, NULL}, { 1, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
+        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 3, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
+        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
+        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 4, NULL}},
+        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 2, NULL}, { 3, NULL}, {ND, NULL}}
+    };
+    static int T_finais[T_ESTADOS_FINAIS] = { 2 };
+    
 	//
     // Cria√ß√£o das m√°quinas no vetor
     //
@@ -252,11 +298,11 @@ void inicia_submaquinas_hardcoded()
     maquinas[SM_TIPO].transicoes        = aloca_transicoes ((transicao *) T_transicoes, T_ESTADOS, T_ENTRADAS);
     maquinas[SM_TIPO].estado_final      = (int *) &T_finais;
 
-    // M·quina e estado iniciais
+    // MÔøΩquina e estado iniciais
     atual.estado = 0;
     atual.maquina = SM_PROGRAMA;
     
-    // No inÌcio, n„o h· retornos
+    // No inÔøΩcio, nÔøΩo hÔøΩ retornos
     retornos = 0;
     pilha_retornos = (estado *) NULL;
 }
@@ -265,37 +311,37 @@ void inicia_submaquinas()
 {
  	char* arqSM;
 
-	// DefiniÁ„o das M·quinas:
+	// DefiniÔøΩÔøΩo das MÔøΩquinas:
 
-	// Sub-m·quina programa (P):
+	// Sub-mÔøΩquina programa (P):
 	arqSM = "subMaquina_Programa.dat";
 	defineSubMaquina(arqSM, SM_PROGRAMA);
 	
-	// Sub-m·quina tipo (T):
+	// Sub-mÔøΩquina tipo (T):
 	arqSM = "subMaquina_Tipo.dat";
 	defineSubMaquina(arqSM, SM_TIPO);
 
-	// Sub-m·quina comando (C):
+	// Sub-mÔøΩquina comando (C):
 	arqSM = "subMaquina_Comando.dat";
 	defineSubMaquina(arqSM, SM_COMANDO);
 
-	// Sub-m·quina express„o (E):
+	// Sub-mÔøΩquina expressÔøΩo (E):
 	arqSM = "subMaquina_Expressao.dat";
 	defineSubMaquina(arqSM, SM_EXPRESSAO);
 	
-	// Sub-m·quina fator (F):
+	// Sub-mÔøΩquina fator (F):
 	arqSM = "subMaquina_Fator.dat";
 	defineSubMaquina(arqSM, SM_FATOR);
 	
-	// Sub-m·quina express„o booleana (O):
+	// Sub-mÔøΩquina expressÔøΩo booleana (O):
 	arqSM = "subMaquina_ExpressaoBooleana.dat";
 	defineSubMaquina(arqSM, SM_EXP_BOOLEANA);
 
-    // M·quina e estado iniciais
+    // MÔøΩquina e estado iniciais
     atual.estado = 0;
     atual.maquina = SM_PROGRAMA;
     
-    // No inÌcio, n„o h· retornos
+    // No inÔøΩcio, nÔøΩo hÔøΩ retornos
     retornos = 0;
     pilha_retornos = (estado *) NULL;
 }
@@ -304,11 +350,20 @@ int busca_coluna (enum submaquinas maq, int tipo_entrada)
 {
     int i, col;
 //    enum submaquinas opcoes[TOTAL_SUBMAQUINAS];
+
+#ifdef DEBUG_SINTATICO
+    printf ("..maq=%d tipo=%d", maq, tipo_entrada);
+#endif    
     
     // Procura por uma classe
     for (i=0; i < maquinas[maq].entradas; i++)
         if (tipo_entrada == maquinas[maq].tipo_entradas[i])
+        {
+#ifdef DEBUG_SINTATICO
+            printf (" col=%d..", i);
+#endif    
             return i;
+        }
         
     // Se n√£o encontrar, v√™ se alguma entrada √© sub-m√°quina
     for (i=0; i < maquinas[maq].entradas; i++)
@@ -335,39 +390,55 @@ int maquina_sintatico (char **entrada, uma_fila fila)
     // L√™ novo √°tomo sem look-ahead
     at = analisadorLexico (entrada, FALSO, &fila);
 
-#ifdef DEBUG    
+#ifdef DEBUG_SINTATICO
     printf ("%s,%d:\n", submaquinas_nomes[atual.maquina], atual.estado);    
     printf (" leu %s\n", nomeClasse (at->classe));
 #endif    
     
     // Interrompe em caso de erro ou fim do arquivo
     if (at->classe == C_INVALIDA)
+    {
+#ifdef DEBUG_SINTATICO
+        printf (" token desconhecido\n");
+#endif    
         return FIM_ERRO_LEXICO;
+    }
     else if (at->classe == C_FIM)
+    {
+#ifdef DEBUG_SINTATICO
+        printf (" fim\n");
+#endif    
         return FIM_ERRO_LEXICO;
+    }
     
     // Procura a coluna referente ao √°tomo lido
     col = busca_coluna (atual.maquina, at->classe);
 
-#ifdef DEBUG    
+#ifdef DEBUG_SINTATICO
     printf (" coluna %d\n", col);
 #endif    
 
     if (atual.estado > (maquinas[atual.maquina].estados-1))
+    {
+#ifdef DEBUG_SINTATICO
+        printf (" estado %d/%d\n", atual.estado, maquinas[atual.maquina].estados);
+#endif    
         return FIM_ERRO_MAQUINAS;
+    }
     
     // Executa a√ß√£o sem√¢ntica
     acao = maquinas[atual.maquina].transicoes[atual.estado][col].acao;
     if (acao)
     {
-#ifdef DEBUG    
-        printf (" a√ß√£o\n");
+#ifdef DEBUG_SINTATICO
+        printf (" acao\n");
 #endif    
         (*acao) ();
     }
     
     // Verifica se o pr√≥ximo estado √© inv√°lido
     prox_estado = maquinas[atual.maquina].transicoes[atual.estado][col].estado;
+
     if (prox_estado == ND)
     {
         // O estado atual √© final?
@@ -378,6 +449,7 @@ int maquina_sintatico (char **entrada, uma_fila fila)
         }
         else // Erro de sintaxe
         {
+            printf ("Erro de sintaxe: '%s' n√£o era esperado.\n", nomeClasse (at->classe));
             return FIM_ERRO_SINTATICO;
         }
     }
@@ -395,7 +467,14 @@ int maquina_sintatico (char **entrada, uma_fila fila)
             // Vai para subm√°quina
             atual.estado = 0;
             atual.maquina = -tipo_entrada;
+#ifdef DEBUG_SINTATICO
+            printf (" prox. m√°quina %d\n", -tipo_entrada);
+#endif    
         }
+#ifdef DEBUG_SINTATICO
+        printf (" prox. estado %d\n", prox_estado);
+#endif    
+
     }            
 
     free (at);
