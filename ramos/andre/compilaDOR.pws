@@ -6,14 +6,17 @@ RunInTerminal=true
 clean before build=false
 
 [filenumbers]
-0=1
-1=39
-2=70
-3=73
-4=163
-5=64
-6=107
-7=267
+0=29
+1=24
+2=347
+3=27
+4=31
+5=24
+6=54
+7=52
+8=47
+9=74
+10=31
 
 [filemarkers]
 0=
@@ -24,6 +27,9 @@ clean before build=false
 5=
 6=
 7=
+8=
+9=
+10=
 
 [File View]
 filter.file.unmatch=*.so *.o *.a *.la
@@ -31,12 +37,17 @@ filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
 
 [filelist]
-0=/home/acdcp/projetos/compilador/src/atomo.h
-1=/home/acdcp/projetos/compilador/src/defs.h
-2=/home/acdcp/projetos/compilador/src/lexico.c
-3=/home/acdcp/projetos/compilador/src/sintatico.h
-4=/home/acdcp/projetos/compilador/src/sintatico.c
-5=/home/acdcp/projetos/compilador/src/compilador.c
+0=/home/acdcp/projetos/compilador-andre/src/erro.h
+1=/home/acdcp/projetos/compilador-andre/src/atomo.h
+2=/home/acdcp/projetos/compilador-andre/src/lexico.c
+3=/home/acdcp/projetos/compilador-andre/src/lexico.h
+4=/home/acdcp/projetos/compilador-andre/src/arquivo.c
+5=/home/acdcp/projetos/compilador-andre/src/arquivo.h
+6=/home/acdcp/projetos/compilador-andre/src/erro.c
+7=/home/acdcp/projetos/compilador-andre/src/compilador.c
+8=/home/acdcp/projetos/compilador-andre/src/defs.h
+9=/home/acdcp/projetos/compilador-andre/src/sintatico.h
+10=/home/acdcp/projetos/compilador-andre/src/sintatico.c
 
 [Project Tree]
 0=0
@@ -51,5 +62,5 @@ filter.dir.ignore.hidden=0
 
 [executer args]
 0=bin/teste.prg
-1=bin/errado.prg
-2=teste.prg
+1=teste.prg
+2=bin/errado.prg

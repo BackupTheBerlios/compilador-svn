@@ -26,6 +26,9 @@
 #include <stdlib.h>
 #include "arquivo.h"
 
+#define MAX_BLOCO               200
+
+
 char * le_arquivo (char *nome)
 {
     char *dados;

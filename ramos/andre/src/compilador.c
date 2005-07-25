@@ -23,46 +23,66 @@
  */
  
 #include <stdio.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "defs.h"
 #include "arquivo.h"
 #include "sintatico.h"
+#include "erro.h"
 
 //#define ESPERA_TECLA
 
-void sair (int ret, const char * msg)
+void sair (int ret)
 {
-    printf ("%s\n", msg);
+    char *msg[] = {
+        "Execução bem sucedida!", 
+
+        "Uso: teste <arquivo>",
+        "Arquivo nao encontrado!", 
+
+        "Token desconhecido!", 
+        "Erro de sintaxe.", 
+        "Erro interno na construção das máquinas!"
+    };
+        
+    printf ("%s\n", msg[ret]);
+
 #ifdef ESPERA_TECLA
-    printf ("Pressione algo para continuar...\n");
+    printf ("\nPressione algo para continuar...\n");
     fflush(stdout);
     getchar();
 #endif
+
     exit (ret);
 }
 
 int main (int argc, char **argv)
 {
-    char *dados;
+    char *dados, *pos;
     int erro;
 
     if (argc == 1)
-        sair (FIM_ERRO_PARAMETRO, "Uso: teste <arquivo>\n");
+        sair (FIM_ERRO_PARAMETRO);
 
     dados = le_arquivo (argv[1]);
     
     if (dados == NULL)
-    {
-        char msg[101]="";
-        strncat (msg, argv[1], 100);
-        strncat (msg, " nao encontrado!\n", 100 - strlen (msg));
-        sair (FIM_ERRO_ARQUIVO, msg);
-    }
+        sair (FIM_ERRO_ARQUIVO);
 
-    erro = analisadorSintatico (dados);
+    pos = dados;
+    erro = analisadorSintatico (&pos);
+
+    if (erro >= FIM_ERRO_LEXICO)
+    {
+#ifdef DEBUG        
+        printf ("\n");
+#endif        
+        printf ("Linha Atual:\n");
+        mostra_posicao_erro (pos);
+        printf ("\n");
+    }
         
-    sair (erro, "");
+    sair (erro);
     return erro;
 }
