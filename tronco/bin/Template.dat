@@ -1,0 +1,19 @@
+1º linha - Numero de entradas (n)
+2º linha - Numero de estados (m)
+3º linha - Numero de estados finais
+4º linha - Lista das possíveis entradas
+5º linha - Inicio da matriz de transições
+   ....
+   .... Obs: veja comentários no final*
+   ....
+
+mº linha - Fim da matriz de transições
+(m+1)º linha - Lista dos estados finais
+
+
+* A partir da 5º linha representa-se a tabela de transições de estados do automato,
+ou seja, haverá m linhas contendo n pares ordenados separados por espaços (uma matriz mxn).
+Cada linha representa um estado atual e cada coluna uma entrada recebida: o par ordenado
+x,y que se encontra em dada posição da matriz representa uma transição, ou seja, x representa
+o valor do próximo estado e y o valor associado a uma ação semântica definida para essa 
+transição (função definida programaticamente).
