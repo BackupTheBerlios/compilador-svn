@@ -6,14 +6,14 @@ RunInTerminal=false
 clean before build=false
 
 [filenumbers]
-0=9
-1=1
-2=24
-3=96
-4=10
-5=522
-6=54
-7=52
+0=402
+1=31
+2=9
+3=1
+4=24
+5=96
+6=10
+7=376
 8=47
 9=74
 10=31
@@ -36,21 +36,21 @@ filter.file.unmatch=*.so *.o *.a *.la
 filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
 
-[breakpoints]
-0=1,,1,1022,0,,sintatico.c,421,3,0,maquina_sintatico,,1122356217,
-
 [filelist]
-0=/home/acdcp/projetos/compilador-tronco/bin/SubMaquina_Comando.dat
-1=/home/acdcp/projetos/compilador-tronco/src/sintatico.h
-2=/home/acdcp/projetos/compilador-tronco/bin/teste.prg
-3=/home/acdcp/projetos/compilador-tronco/src/compilador.c
-4=/home/acdcp/projetos/compilador-tronco/bin/SubMaquina_Tipo.dat
-5=/home/acdcp/projetos/compilador-tronco/src/sintatico.c
+0=/home/acdcp/projetos/compilador-tronco/src/lexico.c
+1=/home/acdcp/projetos/compilador-tronco/src/atomo.c
+2=/home/acdcp/projetos/compilador-tronco/bin/SubMaquina_Comando.dat
+3=/home/acdcp/projetos/compilador-tronco/src/sintatico.h
+4=/home/acdcp/projetos/compilador-tronco/bin/teste.prg
+5=/home/acdcp/projetos/compilador-tronco/src/compilador.c
+6=/home/acdcp/projetos/compilador-tronco/bin/SubMaquina_Tipo.dat
+7=/home/acdcp/projetos/compilador-tronco/src/sintatico.c
 
 [Project Tree]
 0=0
 1=0:0
-2=0:2
+2=0:1
+3=0:2
 
 [Symbol Tree]
 0=3

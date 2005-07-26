@@ -28,22 +28,24 @@ typedef enum   e_classe     uma_classe;
 
 /* e_classe
  *
- * Todas as classes possíveis (incluindo símbolos e palavras reservadas)
+ * Todas as classes possÃ­veis (incluindo sÃ­mbolos e palavras reservadas)
  */
 enum e_classe {
 
-/* 0  */ C_INVALIDA,
+/* 0  */ C_INVALIDA=0,
 /* 1  */ C_FIM,
 /* 2  */ C_IDENTIFICADOR,
 /* 3  */ C_INTEIRO,
 /* 4  */ C_REAL,
 
-// S�mbolos
+// Símbolos
 /* 5  */ S_VIRGULA,
 /* 6  */ S_PONTO_E_VIRGULA,
-/* 7  */ S_ABRE_CHAVE,
-/* 8  */ S_FECHA_CHAVE,
-/* 9  */ S_ABRE_PARENTESES,
+/* 7  */ S_ABRE_COLCHETE,
+/* 8  */ S_FECHA_COLCHETE,
+/* 46 */ S_ABRE_CHAVE=46,
+/* 47 */ S_FECHA_CHAVE,
+/* 9  */ S_ABRE_PARENTESES=9,
 /* 10 */ S_FECHA_PARENTESES,
 /* 11 */ S_ADICAO,
 /* 12 */ S_SUBTRACAO,
@@ -83,12 +85,12 @@ enum e_classe {
 /* 44 */ PR_TRUE,
 /* 45 */ PR_FALSE,
 
-/* 46 */ TOTAL_CLASSES
+/* 48 */ TOTAL_CLASSES=48
 };
 
 /* s_fila
  * 
- * Estrutura que representa uma fila de átomos
+ * Estrutura que representa uma fila de Ã¡tomos
  */
 struct s_fila {
     int tamanho;
@@ -97,7 +99,7 @@ struct s_fila {
 
 /* s_atomo
  *
- * Estrutura que representa um átomo
+ * Estrutura que representa um Ã¡tomo
  */
 struct s_atomo {
     uma_classe classe;
@@ -109,8 +111,8 @@ struct s_atomo {
 
 /* s_reservado
  *
- * Uma estrutura representando um Átomo reservado
- * (palavra reservada ou símbolo)
+ * Uma estrutura representando um Ãtomo reservado
+ * (palavra reservada ou sÃ­mbolo)
  */
 struct s_reservado {
     uma_classe classe; 
@@ -118,7 +120,7 @@ struct s_reservado {
 };
 
 /*
- * Protótipos de funções
+ * ProtÃ³tipos de funÃ§Ãµes
  */
 char * nomeClasse (uma_classe);
 um_atomo novoAtomo (uma_classe);
@@ -128,7 +130,7 @@ uma_classe busca_simbolo (char *);
 uma_classe busca_palavra_reservada (char *);
 // char * busca_nome_da_classe (uma_classe);
 
-// Funções com fila (para look-ahead)
+// FunÃ§Ãµes com fila (para look-ahead)
 void fila_inicia        (uma_fila *);
 int fila_eh_vazia       (uma_fila *);
 int fila_adiciona       (uma_fila *, um_atomo);

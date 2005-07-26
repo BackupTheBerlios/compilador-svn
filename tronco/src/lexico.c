@@ -398,9 +398,9 @@ int ehSimbolo (char e)
         case ']':
         case '^':
 //        case '`':
-//        case '{':
+        case '{':
 //        case '|':
-//        case '}':
+        case '}':
 //        case '~':
             return VERDADE;
     }

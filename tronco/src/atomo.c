@@ -26,14 +26,16 @@
  *
  * Tabela "hardcoded" de símbolos
  */
-#define TOTAL_SIMBOLOS    18
+#define TOTAL_SIMBOLOS    20
 static um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
     // Diversos
     { S_ABRE_PARENTESES,    "("     },
     { S_FECHA_PARENTESES,   ")"     },
     { S_VIRGULA,            ","     },
-    { S_ABRE_CHAVE,         "["     },
-    { S_FECHA_CHAVE,        "]"     },
+    { S_ABRE_COLCHETE,      "["     },
+    { S_FECHA_COLCHETE,     "]"     },
+    { S_ABRE_CHAVE,         "{"     },
+    { S_FECHA_CHAVE,        "}"     },
     { S_PONTO_E_VIRGULA,    ";"     },
     { S_ATRIBUICAO,         ":="    },
     
