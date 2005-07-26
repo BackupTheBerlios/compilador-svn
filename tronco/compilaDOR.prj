@@ -51,7 +51,7 @@ project.configure.options=
 anjuta.program.arguments=
 preferences.build.option.jobs=0
 preferences.build.option.silent=0
-preferences.build.option.autosave=0
+preferences.build.option.autosave=1
 preferences.make=make
 preferences.build.option.keep.going=1
 preferences.build.option.warn.undef=0
@@ -96,7 +96,14 @@ module.data.files=\
 	bin/teste.prg\
 	bin/errado.prg\
 	Makefile\
-	src/Makefile
+	src/Makefile\
+	bin/SubMaquina_Comando.dat\
+	bin/SubMaquina_Expressao.dat\
+	bin/SubMaquina_ExpressaoBooleana.dat\
+	bin/SubMaquina_Fator.dat\
+	bin/SubMaquina_Programa.dat\
+	bin/SubMaquina_Tipo.dat\
+	bin/Template.dat
 
 module.help.name=.
 module.help.type=

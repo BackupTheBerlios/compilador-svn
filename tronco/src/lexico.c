@@ -57,11 +57,11 @@ um_atomo analisadorLexico(char **entrada, int look_ahead, uma_fila *fila)
 {
     um_atomo a;
 
-    // Se houver um átomo na fila, retorna esse Ã¡tomo
+    // Se houver um atomo na fila, retorna esse Ã¡tomo
     if (! (fila_eh_vazia (fila) || look_ahead))
         return fila_retira (fila);
 
-    // Roda a máquina de estados até pegar um átomo
+    // Roda a maquina de estados ate pegar um atomo
     do
         a = maquina_lexico(entrada);
     while (!a);
@@ -107,13 +107,13 @@ um_atomo maquina_lexico (char **entrada)
 }
 
 
-/* As funções estado_xxx retornam um átomo */
+/* As funÃ§Ãµes estado_xxx retornam um atomo */
 
 um_atomo estado_branco (char **entrada)
 {
     um_atomo a = NULL;
     
-    // Excetuando o caso de brancos, as entradas só serão consumidas dentro
+    // Excetuando o caso de brancos, as entradas so serao consumidas dentro
     // de seus respectivos estados
     if (ehBranco(**entrada))
         consome_entrada(entrada, 1);

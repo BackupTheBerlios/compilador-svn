@@ -28,4 +28,7 @@
 void mostra_linha_atual  (char *);
 void mostra_posicao_erro (char *);
 
+//void imprime (const char *msg);
+//void depura  (const char *msg);
+
 #endif /* _ERRO_H */

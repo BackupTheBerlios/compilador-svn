@@ -33,12 +33,17 @@
 
 //#define ESPERA_TECLA
 
+// Flags
+int falante   = FALSO;
+int depurando = FALSO;
+int espacado  = FALSO;
+
 void sair (int ret)
 {
     char *msg[] = {
         "Execução bem sucedida!", 
 
-        "Uso: teste <arquivo>",
+        "Uso: teste -[v|d|e] <arquivo>",
         "Arquivo nao encontrado!",
 
         "Token desconhecido!", 
@@ -57,15 +62,39 @@ void sair (int ret)
     exit (ret);
 }
 
+int le_param (int argc, char **argv)
+{
+    int arq = 1;
+    
+    if (argc == 1)
+        sair (FIM_ERRO_PARAMETRO);
+    
+    while ((arq < argc) && argv[arq][0]=='-')
+    {
+        switch (argv[arq][1])
+        {
+            case 'e':
+                espacado = VERDADE;
+            case 'd':
+                depurando = VERDADE;
+            case 'v':
+                falante = VERDADE;
+                break;
+        }
+        arq++;
+    }
+    
+        
+    return arq;
+}
+
 int main (int argc, char **argv)
 {
     char *dados, *pos;
-    int erro;
+    int erro, arq;
 
-    if (argc == 1)
-        sair (FIM_ERRO_PARAMETRO);
-
-    dados = le_arquivo (argv[1]);
+    arq = le_param (argc, argv);
+    dados = le_arquivo (argv[arq]);
     
     if (dados == NULL)
         sair (FIM_ERRO_ARQUIVO);

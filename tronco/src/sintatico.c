@@ -32,6 +32,13 @@
 #include "lexico.h"
 #include "erro.h"
 
+// Flags
+/*
+extern int falante;
+extern int depurando;
+extern int espacado;
+*/
+
 // Numeração das sub-máquinas
 enum submaquinas {
 	 			  SM_PROGRAMA,		/* 0 */
@@ -88,9 +95,26 @@ int estado_final (enum submaquinas maq, int estado)
 {
     int i;
     
-    for (i=0; i<maquinas[maq].estados_finais ; i++)
+#ifdef DEBUG_SINTATICO1
+    printf ("..estado=%d finais=(%d)", estado, maquinas[maq].estados_finais);
+#endif    
+
+    for (i=0; i<maquinas[maq].estados_finais; i++)
+    {
+#ifdef DEBUG_SINTATICO1
+        printf (" %d", maquinas[maq].estado_final[i]);
+#endif    
         if (estado == maquinas[maq].estado_final[i])
+        {
+#ifdef DEBUG_SINTATICO1
+            printf (" achou..");
+#endif    
             return VERDADE;
+        }
+    }
+#ifdef DEBUG_SINTATICO1
+    printf (" xii..");
+#endif    
         
     return FALSO;
 }
@@ -311,118 +335,116 @@ void inicia_submaquinas()
 {
  	char* arqSM;
 
-	// Defini��o das M�quinas:
+	// Definição das Máquinas:
 
-	// Sub-m�quina programa (P):
-	arqSM = "subMaquina_Programa.dat";
+	// Sub-máquina programa (P):
+	arqSM = "SubMaquina_Programa.dat";
 	defineSubMaquina(arqSM, SM_PROGRAMA);
 	
-	// Sub-m�quina tipo (T):
-	arqSM = "subMaquina_Tipo.dat";
+	// Sub-máquina tipo (T):
+	arqSM = "SubMaquina_Tipo.dat";
 	defineSubMaquina(arqSM, SM_TIPO);
 
-	// Sub-m�quina comando (C):
-	arqSM = "subMaquina_Comando.dat";
+	// Sub-máquina comando (C):
+	arqSM = "SubMaquina_Comando.dat";
 	defineSubMaquina(arqSM, SM_COMANDO);
 
-	// Sub-m�quina express�o (E):
-	arqSM = "subMaquina_Expressao.dat";
+	// Sub-máquina express�o (E):
+	arqSM = "SubMaquina_Expressao.dat";
 	defineSubMaquina(arqSM, SM_EXPRESSAO);
 	
-	// Sub-m�quina fator (F):
-	arqSM = "subMaquina_Fator.dat";
+	// Sub-máquina fator (F):
+	arqSM = "SubMaquina_Fator.dat";
 	defineSubMaquina(arqSM, SM_FATOR);
 	
-	// Sub-m�quina express�o booleana (O):
-	arqSM = "subMaquina_ExpressaoBooleana.dat";
+	// Sub-máquina express�o booleana (O):
+	arqSM = "SubMaquina_ExpressaoBooleana.dat";
 	defineSubMaquina(arqSM, SM_EXP_BOOLEANA);
 
-    // M�quina e estado iniciais
+    // Máquina e estado iniciais
     atual.estado = 0;
     atual.maquina = SM_PROGRAMA;
     
-    // No in�cio, n�o h� retornos
+    // No início, não há retornos
     retornos = 0;
     pilha_retornos = (estado *) NULL;
 }
 
-int busca_coluna (enum submaquinas maq, int tipo_entrada)
+int busca_coluna (enum submaquinas maq, int tipo_entrada, int profundidade)
 {
-    int i, col;
-//    enum submaquinas opcoes[TOTAL_SUBMAQUINAS];
+    int i, estado_atual;
 
-#ifdef DEBUG_SINTATICO
-    printf ("..maq=%d tipo=%d", maq, tipo_entrada);
-#endif    
+    DEPURA (" %*sbuscando em %s", espacado?profundidade:0, "", submaquinas_nomes[maq]);
     
+    if (profundidade == 1)
+        estado_atual = atual.estado;
+    else
+        estado_atual = 0;
+
     // Procura por uma classe
-    for (i=0; i < maquinas[maq].entradas; i++)
-        if (tipo_entrada == maquinas[maq].tipo_entradas[i])
+    for (i=1; i < maquinas[maq].entradas; i++)
+        if (maquinas[maq].tipo_entradas[i] == tipo_entrada)
         {
-#ifdef DEBUG_SINTATICO
-            printf (" col=%d..", i);
-#endif    
-            return i;
+            // Transição válida?
+            int prox_estado = maquinas[maq].transicoes[estado_atual][i].estado;
+            if (prox_estado >= 0 || estado_final (maq, estado_atual))
+            {
+                DEPURA (" %*scol=%d", espacado?profundidade:0, "", i);
+                return i;
+            }
         }
         
-    // Se não encontrar, vê se alguma entrada é sub-máquina
-    for (i=0; i < maquinas[maq].entradas; i++)
-    {
+    for (i=1; i < maquinas[maq].entradas; i++)
         // É sub-máquina? (entrada negativa)
         if (maquinas[maq].tipo_entradas[i] < 0)
         {
-            enum submaquinas s = -maquinas[maq].tipo_entradas[i];
-            col = busca_coluna (s, tipo_entrada); 
-            if (col > 0)
-                return col;
+            // Transição válida?
+            int prox_estado = maquinas[maq].transicoes[estado_atual][i].estado;
+            if (prox_estado >= 0)
+            {
+                // Procura dentro da submáquina
+                enum submaquinas s = -maquinas[maq].tipo_entradas[i];
+                if (busca_coluna (s, tipo_entrada, profundidade+1) > 0)
+                    return i;
+            }
         }
-    }
         
     return 0;
 }
 
-int maquina_sintatico (char **entrada, uma_fila fila)
+int maquina_sintatico (char **entrada, uma_fila *fila)
 {
     um_atomo at;
     int col, tipo_entrada, prox_estado;
     void (*acao)();
 
     // Lê novo átomo sem look-ahead
-    at = analisadorLexico (entrada, FALSO, &fila);
+    at = analisadorLexico (entrada, FALSO, fila);
 
-#ifdef DEBUG_SINTATICO
-    printf ("%s,%d:\n", submaquinas_nomes[atual.maquina], atual.estado);    
-    printf (" leu %s\n", nomeClasse (at->classe));
-#endif    
+    DEPURA ("%s(%d)", submaquinas_nomes[atual.maquina], atual.estado);    
+    DEPURA (" leu %s", nomeClasse (at->classe));
     
     // Interrompe em caso de erro ou fim do arquivo
     if (at->classe == C_INVALIDA)
     {
-#ifdef DEBUG_SINTATICO
-        printf (" token desconhecido\n");
-#endif    
+        DEPURA(" token"); DEPURA_FIM();
         return FIM_ERRO_LEXICO;
     }
     else if (at->classe == C_FIM)
     {
-#ifdef DEBUG_SINTATICO
-        printf (" fim\n");
-#endif    
+        DEPURA(" fim"); DEPURA_FIM();
         return FIM_ERRO_LEXICO;
     }
     
     // Procura a coluna referente ao átomo lido
-    col = busca_coluna (atual.maquina, at->classe);
+    col = busca_coluna (atual.maquina, at->classe, 1);
 
-#ifdef DEBUG_SINTATICO
-    printf (" coluna %d\n", col);
-#endif    
+    DEPURA (" coluna %d", col);
 
     if (atual.estado > (maquinas[atual.maquina].estados-1))
     {
-#ifdef DEBUG_SINTATICO
-        printf (" estado %d/%d\n", atual.estado, maquinas[atual.maquina].estados);
-#endif    
+        DEPURA (" estado %d/%d\n", atual.estado, maquinas[atual.maquina].estados);
+        DEPURA_FIM();
         return FIM_ERRO_MAQUINAS;
     }
     
@@ -430,9 +452,7 @@ int maquina_sintatico (char **entrada, uma_fila fila)
     acao = maquinas[atual.maquina].transicoes[atual.estado][col].acao;
     if (acao)
     {
-#ifdef DEBUG_SINTATICO
-        printf (" acao\n");
-#endif    
+        DEPURA (" acao");
         (*acao) ();
     }
     
@@ -441,15 +461,21 @@ int maquina_sintatico (char **entrada, uma_fila fila)
 
     if (prox_estado == ND)
     {
+        fila_adiciona (fila, at);
+        
         // O estado atual é final?
         if (estado_final (atual.maquina, atual.estado))
         {
             // Retorna FIM caso a submáquina anterior caso exista
-            return !le_retorno ();
+            int fim = !le_retorno ();
+            DEPURA (" volta p/ máquina %s, estado %d", submaquinas_nomes[atual.maquina], atual.estado);
+            DEPURA_FIM();
+            return fim;
         }
         else // Erro de sintaxe
         {
-            printf ("Erro de sintaxe: '%s' não era esperado.\n", nomeClasse (at->classe));
+            DEPURA_FIM ();
+            IMPRIME ("Erro de sintaxe: '%s' não era esperado.\n", nomeClasse (at->classe));
             return FIM_ERRO_SINTATICO;
         }
     }
@@ -463,22 +489,23 @@ int maquina_sintatico (char **entrada, uma_fila fila)
         if (tipo_entrada < 0)
         {
             adiciona_retorno ();
+        
+            fila_adiciona (fila, at);
             
             // Vai para submáquina
             atual.estado = 0;
             atual.maquina = -tipo_entrada;
-#ifdef DEBUG_SINTATICO
-            printf (" prox. máquina %d\n", -tipo_entrada);
-#endif    
+            DEPURA (" vai p/ máquina %s", submaquinas_nomes[atual.maquina]);
         }
-#ifdef DEBUG_SINTATICO
-        printf (" prox. estado %d\n", prox_estado);
-#endif    
+        else
+        {
+            free (at);
+            DEPURA (" prox. estado %d", atual.estado);
+        }
 
     }            
 
-    free (at);
-    
+    DEPURA_FIM();
     return 0;
 }
 
@@ -496,7 +523,7 @@ int analisadorSintatico (char **entrada)
         if (**entrada == '\0')
             break;
         else
-            erro = maquina_sintatico(entrada, fila);
+            erro = maquina_sintatico(entrada, &fila);
     
     return erro;
 }

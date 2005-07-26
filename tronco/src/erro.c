@@ -63,3 +63,25 @@ void mostra_posicao_erro (char * pos)
             printf ("-");
     printf ("^\n");
 }
+
+/*
+void imprime (const char *msg)
+{
+    if (falante)
+    {
+        printf ("%s", msg);
+    }    
+}
+
+void depura (const char *msg)
+{
+    if (depurando)
+    {
+        if (!espacado && msg[0]==' ')
+            imprime (",");
+        imprime (msg);
+        if (!(espacado ^^ msg))
+            imprime ("\n");
+    }    
+}
+*/
