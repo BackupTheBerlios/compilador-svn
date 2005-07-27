@@ -66,7 +66,7 @@ static estado atual;
 // Quantidade e pilha de retornos de sub-m�quina
 static int retornos;
 static estado *pilha_retornos;
-    
+	       
 void adiciona_retorno ()
 {
     retornos++;
@@ -184,7 +184,6 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
     printf ("entradas:");
 #endif    
 
-
     // Lê tipos de entradas
     SM_entradas = (int*) calloc(entradas, sizeof(int));
     for (i = 0; i < entradas; ++i) {
@@ -201,7 +200,7 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
 #ifdef DEBUG_ARQUIVO    
     printf ("transições:");
 #endif    
-	   // Lê transições 
+    // Lê transições 
     SM_transicoes = (transicao**) calloc(estados, sizeof (transicao*));
     for (i = 0; i < estados; ++i)
     {
@@ -223,7 +222,6 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
 #ifdef DEBUG_ARQUIVO    
     printf ("finais:");
 #endif    
-
 
     // Lê estados finais
     SM_finais = (int*) calloc(estadosFinais, sizeof (int));
