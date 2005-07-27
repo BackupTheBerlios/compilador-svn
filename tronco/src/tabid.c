@@ -34,7 +34,7 @@ int adicionaID (char * nome)
     
     if (tabelaID == NULL)
     {
-        tabelaID = malloc (sizeof (um_id));
+        tabelaID = (um_id*) malloc (sizeof (um_id));
         total_IDs = 1;
     }
     else

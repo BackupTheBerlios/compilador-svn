@@ -50,10 +50,13 @@ enum submaquinas {
 				  TOTAL_SUBMAQUINAS /* 6 */
 				 };
 
-char *submaquinas_nomes[TOTAL_SUBMAQUINAS] = {"SM_PROGRAMA", "SM_TIPO", "SM_COMANDO", "SM_EXPRESSAO",
-    "SM_FATOR", "SM_EXP_BOOLEANA"};
-    
-    
+char *submaquinas_nomes[TOTAL_SUBMAQUINAS] = {"SM_PROGRAMA",
+	 									      "SM_TIPO",
+											  "SM_COMANDO",
+											  "SM_EXPRESSAO",
+											  "SM_FATOR",
+											  "SM_EXP_BOOLEANA"
+											 };    
 // Vetor com todas as máquinas
 static automato maquinas[TOTAL_SUBMAQUINAS];
 
@@ -162,23 +165,23 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
     int estados;
     int estadosFinais;
     int funcao;
-    int i, j;
-   int *SM_entradas;
-   int *SM_finais;
-   transicao **SM_transicoes;
-   
-   // Lê numero de entradas e estados (dimensões da tabela), 
-   // além do número de estados finais.
-   fscanf(arqSM, "%d", &entradas);
-   fscanf(arqSM, "%d", &estados);
-   fscanf(arqSM, "%d", &estadosFinais);
+	int i, j;
+	int *SM_entradas;
+	int *SM_finais;
+	transicao **SM_transicoes;
+	
+	// Lê numero de entradas e estados (dimensões da tabela), 
+	// além do número de estados finais.
+	fscanf(arqSM, "%d", &entradas);
+	fscanf(arqSM, "%d", &estados);
+	fscanf(arqSM, "%d", &estadosFinais);
 
 #ifdef DEBUG_ARQUIVO    
-       printf ("entradas=%d estados=%d finais=%d\n", entradas, estados, estadosFinais);
+    printf ("entradas=%d estados=%d finais=%d\n", entradas, estados, estadosFinais);
 #endif    
 
 #ifdef DEBUG_ARQUIVO    
-       printf ("entradas:");
+    printf ("entradas:");
 #endif    
 
 
@@ -269,67 +272,6 @@ transicao ** aloca_transicoes (transicao *t, int estados, int entradas)
  * 
  * Função que define o vetor de m�quinas, bem como a m�quina e estado iniciais
  */
-void inicia_submaquinas_hardcoded()
-{
-    //
-    // Definição das Máquinas
-    //
-    
-    /* Máquina programa (P): */
-    #define P_ENTRADAS          12
-    #define P_ESTADOS           1
-    #define P_ESTADOS_FINAIS    1
-    int P_entradas[P_ENTRADAS] = 
-        { C_INVALIDA, PR_PROGRAM, PR_PROCEDURE, PR_FUNCTION, PR_RETURNS, S_ABRE_PARENTESES, S_FECHA_PARENTESES, S_VIRGULA, S_PONTO_E_VIRGULA, -SM_TIPO, C_IDENTIFICADOR, -SM_COMANDO};
-    transicao P_transicoes[P_ESTADOS][P_ENTRADAS] = {
-    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
-    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
-    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
-        {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}}
-    };
-    int P_finais[P_ESTADOS_FINAIS] = { 3 };
-        
-    /* Sub-máquina tipo (T): */
-    #define T_ENTRADAS          8
-    #define T_ESTADOS           5
-    #define T_ESTADOS_FINAIS    1
-    static int T_entradas[T_ENTRADAS] = 
-        { C_INVALIDA, PR_REAL, PR_INTEGER, PR_BOOLEAN, S_ABRE_CHAVE, S_FECHA_CHAVE, S_VIRGULA, C_INTEIRO };
-    static transicao T_transicoes[T_ESTADOS][T_ENTRADAS] = {
-        {{ND, NULL}, { 1, NULL}, { 1, NULL}, { 1, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 3, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
-        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 4, NULL}},
-        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 2, NULL}, { 3, NULL}, {ND, NULL}}
-    };
-    static int T_finais[T_ESTADOS_FINAIS] = { 2 };
-    
-	//
-    // Criação das máquinas no vetor
-    //
-    
-    maquinas[SM_PROGRAMA].entradas          = P_ENTRADAS;
-    maquinas[SM_PROGRAMA].estados           = P_ESTADOS;
-    maquinas[SM_PROGRAMA].estados_finais    = P_ESTADOS_FINAIS;
-    maquinas[SM_PROGRAMA].tipo_entradas     = (int *) &P_entradas;
-    maquinas[SM_PROGRAMA].transicoes        = aloca_transicoes ((transicao *) P_transicoes, P_ESTADOS, P_ENTRADAS);
-    maquinas[SM_PROGRAMA].estado_final      = (int *) &P_finais;
-    
-    maquinas[SM_TIPO].entradas          = T_ENTRADAS;
-    maquinas[SM_TIPO].estados           = T_ESTADOS;
-    maquinas[SM_TIPO].estados_finais    = T_ESTADOS_FINAIS;
-    maquinas[SM_TIPO].tipo_entradas     = (int *) &T_entradas;
-    maquinas[SM_TIPO].transicoes        = aloca_transicoes ((transicao *) T_transicoes, T_ESTADOS, T_ENTRADAS);
-    maquinas[SM_TIPO].estado_final      = (int *) &T_finais;
-
-    // M�quina e estado iniciais
-    atual.estado = 0;
-    atual.maquina = SM_PROGRAMA;
-    
-    // No in�cio, n�o h� retornos
-    retornos = 0;
-    pilha_retornos = (estado *) NULL;
-}
 
 void inicia_submaquinas()
 {
@@ -519,11 +461,75 @@ int analisadorSintatico (char **entrada)
     inicia_submaquinas ();
 
     // Fica consumindo átomos até ocorrer um erro ou acabar o buffer
-    while (!erro)
+    while (!erro) {
         if (**entrada == '\0')
             break;
         else
             erro = maquina_sintatico(entrada, &fila);
+    }
     
     return erro;
 }
+/*
+void inicia_submaquinas_hardcoded()
+{
+    //
+    // Definição das Máquinas
+    //
+    
+    // Máquina programa (P):
+    #define P_ENTRADAS          12
+    #define P_ESTADOS           1
+    #define P_ESTADOS_FINAIS    1
+    int P_entradas[P_ENTRADAS] = 
+        { C_INVALIDA, PR_PROGRAM, PR_PROCEDURE, PR_FUNCTION, PR_RETURNS, S_ABRE_PARENTESES, S_FECHA_PARENTESES, S_VIRGULA, S_PONTO_E_VIRGULA, -SM_TIPO, C_IDENTIFICADOR, -SM_COMANDO};
+    transicao P_transicoes[P_ESTADOS][P_ENTRADAS] = {
+    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
+    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
+    //    {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}},
+        {{ND, NULL},  { 1, NULL},   {ND, NULL},  {ND, NULL}, {ND, NULL},        {ND, NULL},         {ND, NULL}, {ND, NULL},     {ND, NULL}, {ND, NULL},      {ND, NULL},  {ND, NULL}}
+    };
+    int P_finais[P_ESTADOS_FINAIS] = { 3 };
+        
+    // Sub-máquina tipo (T):
+    #define T_ENTRADAS          8
+    #define T_ESTADOS           5
+    #define T_ESTADOS_FINAIS    1
+    static int T_entradas[T_ENTRADAS] = 
+        { C_INVALIDA, PR_REAL, PR_INTEGER, PR_BOOLEAN, S_ABRE_CHAVE, S_FECHA_CHAVE, S_VIRGULA, C_INTEIRO };
+    static transicao T_transicoes[T_ESTADOS][T_ENTRADAS] = {
+        {{ND, NULL}, { 1, NULL}, { 1, NULL}, { 1, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
+        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 3, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
+        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}},
+        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 4, NULL}},
+        {{ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, {ND, NULL}, { 2, NULL}, { 3, NULL}, {ND, NULL}}
+    };
+    static int T_finais[T_ESTADOS_FINAIS] = { 2 };
+    
+	//
+    // Criação das máquinas no vetor
+    //
+    
+    maquinas[SM_PROGRAMA].entradas          = P_ENTRADAS;
+    maquinas[SM_PROGRAMA].estados           = P_ESTADOS;
+    maquinas[SM_PROGRAMA].estados_finais    = P_ESTADOS_FINAIS;
+    maquinas[SM_PROGRAMA].tipo_entradas     = (int *) &P_entradas;
+    maquinas[SM_PROGRAMA].transicoes        = aloca_transicoes ((transicao *) P_transicoes, P_ESTADOS, P_ENTRADAS);
+    maquinas[SM_PROGRAMA].estado_final      = (int *) &P_finais;
+    
+    maquinas[SM_TIPO].entradas          = T_ENTRADAS;
+    maquinas[SM_TIPO].estados           = T_ESTADOS;
+    maquinas[SM_TIPO].estados_finais    = T_ESTADOS_FINAIS;
+    maquinas[SM_TIPO].tipo_entradas     = (int *) &T_entradas;
+    maquinas[SM_TIPO].transicoes        = aloca_transicoes ((transicao *) T_transicoes, T_ESTADOS, T_ENTRADAS);
+    maquinas[SM_TIPO].estado_final      = (int *) &T_finais;
+
+    // M�quina e estado iniciais
+    atual.estado = 0;
+    atual.maquina = SM_PROGRAMA;
+    
+    // No in�cio, n�o h� retornos
+    retornos = 0;
+    pilha_retornos = (estado *) NULL;
+}
+*/

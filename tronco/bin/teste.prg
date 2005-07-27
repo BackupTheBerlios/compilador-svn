@@ -12,7 +12,7 @@ function quadrado(integer val) returns integer
 declare
     integer temp;
 begin
-    temp := val*val;
+    temp := val * val;
     quadrado := temp;
 end;
 
@@ -20,9 +20,9 @@ declare
 	integer num;
 	real r;
 begin
-    num:=10;
+    num := 10;
     output quadrado(num);   % chama a função
-	output 2.5*r;
+	output 2.5 * r;
 	while { num > 0 }
 	declare
 		boolean maior;

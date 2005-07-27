@@ -75,16 +75,16 @@ int le_param (int argc, char **argv)
         {
             case 'e':
                 espacado = VERDADE;
+                //break;
             case 'd':
                 depurando = VERDADE;
+                //break;
             case 'v':
                 falante = VERDADE;
                 break;
         }
         arq++;
     }
-    
-        
     return arq;
 }
 

@@ -27,7 +27,7 @@
  * Tabela "hardcoded" de símbolos
  */
 #define TOTAL_SIMBOLOS    20
-static um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
+static const um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
     // Diversos
     { S_ABRE_PARENTESES,    "("     },
     { S_FECHA_PARENTESES,   ")"     },
@@ -60,7 +60,7 @@ static um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
  * Tabela "hardcoded" de palavras reservadas
  */
 #define TOTAL_PALAVRAS_RESERVADAS    23
-static um_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
+static const um_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
     // (Sub)programa
     { PR_PROGRAM,       "program"   },
     { PR_PROCEDURE,     "procedure" },
@@ -183,7 +183,7 @@ um_atomo novoAtomoInteiro (uma_classe c, int v)
     um_atomo a = novoAtomo (c);
 	
     if (a != NULL)
-        a->valor  = v;
+        a->valor = v;
 
     return a;
 }
@@ -259,11 +259,11 @@ int fila_adiciona (uma_fila *fila, um_atomo atomo)
     
     if (fila->atomo == NULL)
     {
-        fila->atomo = (um_atomo *) malloc (sizeof (um_atomo));
+        fila->atomo = (um_atomo *) malloc(sizeof(um_atomo));
         fila->tamanho = 1;
     }
     else
-        fila->atomo = (um_atomo *) realloc (fila->atomo, (++fila->tamanho) * sizeof (um_atomo));
+        fila->atomo = (um_atomo *) realloc(fila->atomo, (++fila->tamanho) * sizeof (um_atomo));
 
     if (fila->atomo == NULL)
     {
@@ -273,7 +273,7 @@ int fila_adiciona (uma_fila *fila, um_atomo atomo)
     else
     {
         ultimo = fila->tamanho - 1;
-        fila->atomo [ultimo] = atomo;
+        fila->atomo[ultimo] = atomo;
     }
     
     return ultimo;

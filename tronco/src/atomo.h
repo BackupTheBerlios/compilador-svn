@@ -22,7 +22,7 @@
  * Tipos
  */
 typedef struct s_fila       uma_fila;
-typedef struct s_atomo     *um_atomo;
+typedef struct s_atomo*		um_atomo;
 typedef struct s_reservado  um_reservado;
 typedef enum   e_classe     uma_classe;
 

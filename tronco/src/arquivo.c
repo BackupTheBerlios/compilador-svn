@@ -29,7 +29,7 @@
 #define MAX_BLOCO               200
 
 
-char * le_arquivo (char *nome)
+char* le_arquivo (char* nome)
 {
     char *dados;
     int tamanho, lido;
@@ -40,15 +40,15 @@ char * le_arquivo (char *nome)
     if (arq == NULL)
         return NULL;
 
-    dados = malloc(MAX_BLOCO * sizeof (char));
+    dados = malloc(MAX_BLOCO * sizeof(char));
     tamanho = 0;
 
     while (! feof(arq))
     {
-        lido = fread(dados + tamanho, sizeof (char), MAX_BLOCO, arq);
+        lido = fread(dados + tamanho, sizeof(char), MAX_BLOCO, arq);
         tamanho += lido;
         if (lido == MAX_BLOCO)
-            dados = realloc(dados, (tamanho + MAX_BLOCO) * sizeof (char));
+            dados = realloc(dados, (tamanho + MAX_BLOCO) * sizeof(char));
     }
     
     dados [tamanho] = '\0';
