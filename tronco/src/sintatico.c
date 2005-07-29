@@ -247,25 +247,6 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
    fclose(arqSM);
 }
 
-
-
-transicao ** aloca_transicoes (transicao *t, int estados, int entradas)
-{
-    transicao ** tabela;
-    
-    tabela = (transicao **) malloc (estados * sizeof (transicao *));
-    
-    if (tabela)
-    {
-        int i;
-        
-        for (i=0; i<estados; i++)
-            tabela[i] = &t[i*entradas];
-    }
-    
-    return tabela;
-}
-
 /* inicia_submaquinas
  * 
  * Função que define o vetor de m�quinas, bem como a m�quina e estado iniciais
@@ -469,6 +450,24 @@ int analisadorSintatico (char **entrada)
     return erro;
 }
 /*
+
+transicao ** aloca_transicoes (transicao *t, int estados, int entradas)
+{
+    transicao ** tabela;
+    
+    tabela = (transicao **) malloc (estados * sizeof (transicao *));
+    
+    if (tabela)
+    {
+        int i;
+        
+        for (i=0; i<estados; i++)
+            tabela[i] = &t[i*entradas];
+    }
+    
+    return tabela;
+}
+
 void inicia_submaquinas_hardcoded()
 {
     //
