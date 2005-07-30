@@ -46,6 +46,25 @@ void gen_function_prepare(const char * funcName) {
 	fprintf(fpSaida, "\n");
 }
 
+void gen_function_add_param(const char paramName[MAX_STRING_SIZE]) {
+
+}
+
+void gen_function_begin(void) {
+}
+
+void gen_function_end(void) {
+	fprintf(fpSaida, "_$prepare_end_%s:\n", m_currentFunction);
+	fprintf(fpSaida, "\tpopl	%%edi\n");
+	fprintf(fpSaida, "\tpopl	%%ebp\n");
+
+	fprintf(fpSaida, "\tret\n");
+	fprintf(fpSaida, "_$end_%s:\n", m_currentFunction);
+	fprintf(fpSaida, "\t.globl	_%s\n", m_currentFunction);
+}
+
+
+
 void gen_prepare_call(const char * funcName) {
 	m_currentFunctionParams = 0;
 	strcpy(m_functionToCall, funcName);
@@ -119,16 +138,6 @@ void gen_end(void) {
 	fclose(fpSaida);
 }
 
-void gen_end_function(void) {
-	fprintf(fpSaida, "_$prepare_end_%s:\n", m_currentFunction);
-	fprintf(fpSaida, "\tpopl	%%edi\n");
-	fprintf(fpSaida, "\tpopl	%%ebp\n");
-
-	fprintf(fpSaida, "\tret\n");
-	fprintf(fpSaida, "_$end_%s:\n", m_currentFunction);
-	fprintf(fpSaida, "\t.globl	_%s\n", m_currentFunction);
-}
-
 void gen_declare_var(char p_name[MAX_STRING_SIZE]) {
 	// TODO: symbol table
 	StringQueue_insert(globals, p_name);
@@ -144,13 +153,6 @@ void gen_assign_int(char p_name[MAX_STRING_SIZE], int p_value) {
 }
 
 
-
-void gen_function_add_param(const char paramName[MAX_STRING_SIZE]) {
-
-}
-
-void gen_function_begin(void) {
-}
 
 void gen_exp_eval_var(int memPos) {
 	char * instr;
@@ -260,7 +262,7 @@ int main(void) {
 		gen_add_param_int(555);
 		gen_execute_call();
 
-	gen_end_function();
+	gen_function_end();
 
 	gen_function_prepare("display");
 	gen_function_begin();
@@ -276,7 +278,7 @@ int main(void) {
 		gen_add_param_mem(8);
 		gen_add_param_char("[%d  %s  %d %d]");
 		gen_execute_call();
-	gen_end_function();
+	gen_function_end();
 
 	gen_function_prepare("fatorial");
 		// TODO: symbol table
@@ -306,7 +308,7 @@ int main(void) {
 		gen_execute_call();
 
 		fprintf(fpSaida, "\timull	8(%%ebp),%%eax\n");
-	gen_end_function();
+	gen_function_end();
 
 	gen_function_prepare("fatorial2");
 		// TODO: symbol table
@@ -350,7 +352,7 @@ int main(void) {
 		gen_exp_eval_var(-4);
 		gen_return_execute();
 
-	gen_end_function();
+	gen_function_end();
 
 	gen_end();
 	printf("Gerando codigo");
