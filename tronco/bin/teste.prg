@@ -24,16 +24,18 @@ begin
 	r := 1.0
 	output quadrado(num);	% chama a função
 	output 2.5 * r;
-	while { num > 0 }
+	while num > 0
 	declare
 		boolean maior;
     	begin
         	output num;
-		maior = {num > 5}
-		if maior
+		maior = (num > 5);
+		output maior;
+
+		if num > 5
 			output 1;
 
-		output maior;
+
 		num := num - 1;
 	end;
 end;
