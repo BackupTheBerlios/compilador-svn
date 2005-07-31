@@ -215,7 +215,9 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
         for (j = 0; j < entradas; ++j)
         {
             fscanf(arqSM, "%d,%d", &SM_transicoes[i][j].estado, &funcao);
-            converteCodigoFuncao(funcao, SM_transicoes[i][j].acao);
+			SM_transicoes[i][j].acao = funcao;
+//            converteCodigoFuncao(funcao, SM_transicoes[i][j].acao);
+            
 #ifdef DEBUG_ARQUIVO    
             printf (" (%d:%d)", SM_transicoes[i][j].estado, funcao);
 #endif    
@@ -383,7 +385,8 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     {
         DEPURA (" acao");
         converteCodigoFuncao(codigo_acao, acao);
-        (*acao) ();
+		if (acao)
+			(*acao) ();
     }
     
     // Verifica se o próximo estado é inválido

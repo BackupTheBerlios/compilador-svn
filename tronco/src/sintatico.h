@@ -43,7 +43,8 @@ typedef struct s_automato   automato;
  */
 struct s_transicao {
     int estado;         // Próximo estado
-    void (*acao)();     // Ação semântica
+	int acao;
+//    void (*acao)();     // Ação semântica
 };
 
 /* s_estado
