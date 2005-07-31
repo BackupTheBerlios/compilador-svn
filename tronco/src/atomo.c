@@ -80,7 +80,9 @@ static const um_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
     // Comandos
     { PR_WHILE,         "while"     },
     { PR_LOOP,          "loop"      },
+    { PR_LOOP,          "end_loop"  },
     { PR_IF,            "if"        },
+    { PR_IF,            "end_if"    },
     { PR_THEN,          "then"      },
     { PR_ELSE,          "else"      },
     { PR_INPUT,         "input"     },
@@ -88,11 +90,7 @@ static const um_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
     
     // Booleanos
     { PR_TRUE,          "true"      },
-    { PR_FALSE,         "false"     },
-    { PR_NOT,           "not"       },
-    { PR_AND,           "and"       },
-    { PR_OR,            "or"        },
-    { PR_XOR,           "xor"       }
+    { PR_FALSE,         "false"     }
 };
 
 /* busca_nome_nas_tabelas

@@ -128,6 +128,13 @@ int estado_final (enum submaquinas maq, int estado)
 void nada() {}
 
 void converteCodigoFuncao(int codigo, void (*funcao)()) {
+/* 
+ * Depois de declaradas as funções semanticas,
+ * basta passar seus endereços para o ponteiro
+ * denominado "funcao" no switch abaixo;
+ * Ex: funcao = funcaoDeclarada; (o nome é o ponteiro, como em vetores)
+ *
+*/
 
    switch(codigo) {
       case 0:
@@ -160,7 +167,7 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
         printf("Erro ao tentar abrir arquivo contendo tabela de transicoes!\n\n");
         return;
 	}
-    
+
     int entradas;
     int estados;
     int estadosFinais;
@@ -338,6 +345,7 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     um_atomo at;
     int col, tipo_entrada, prox_estado;
     void (*acao)();
+    int codigo_acao;
 
     // LÃª novo Ã¡tomo sem look-ahead
     at = analisadorLexico (entrada, FALSO, fila);
@@ -370,10 +378,11 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     }
     
     // Executa aÃ§Ã£o semÃ¢ntica
-    acao = maquinas[atual.maquina].transicoes[atual.estado][col].acao;
-    if (acao)
+    codigo_acao = maquinas[atual.maquina].transicoes[atual.estado][col].acao;
+    if (codigo_acao)
     {
         DEPURA (" acao");
+        converteCodigoFuncao(codigo_acao, acao);
         (*acao) ();
     }
     
