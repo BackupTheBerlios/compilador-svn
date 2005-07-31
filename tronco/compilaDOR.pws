@@ -36,16 +36,6 @@ filter.file.unmatch=*.so *.o *.a *.la
 filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
 
-[filelist]
-0=/home/acdcp/projetos/compilador-tronco/src/lexico.c
-1=/home/acdcp/projetos/compilador-tronco/src/atomo.c
-2=/home/acdcp/projetos/compilador-tronco/bin/SubMaquina_Comando.dat
-3=/home/acdcp/projetos/compilador-tronco/src/sintatico.h
-4=/home/acdcp/projetos/compilador-tronco/bin/teste.prg
-5=/home/acdcp/projetos/compilador-tronco/src/compilador.c
-6=/home/acdcp/projetos/compilador-tronco/bin/SubMaquina_Tipo.dat
-7=/home/acdcp/projetos/compilador-tronco/src/sintatico.c
-
 [Project Tree]
 0=0
 1=0:0
