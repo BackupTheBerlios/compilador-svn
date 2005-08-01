@@ -112,7 +112,6 @@ int main (int argc, char **argv)
         printf ("\n");
     }
 
-    printf ("\nAcabei processamento. E nois na fita mano!!!\n");
     system("PAUSE");
     sair (erro);
     return erro;
