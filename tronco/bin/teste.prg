@@ -21,7 +21,7 @@ declare
 	real r;
 begin
 	num := 10;
-	r := 1.0
+	r := 1.0;
 	output quadrado(num);
 	output 2.5 * r;
 	while num > 0
