@@ -29,14 +29,14 @@
 #define TOTAL_SIMBOLOS    20
 static const um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
     // Diversos
+    { S_VIRGULA,            ","     },
+    { S_PONTO_E_VIRGULA,    ";"     },
     { S_ABRE_PARENTESES,    "("     },
     { S_FECHA_PARENTESES,   ")"     },
-    { S_VIRGULA,            ","     },
     { S_ABRE_COLCHETE,      "["     },
     { S_FECHA_COLCHETE,     "]"     },
     { S_ABRE_CHAVE,         "{"     },
     { S_FECHA_CHAVE,        "}"     },
-    { S_PONTO_E_VIRGULA,    ";"     },
     { S_ATRIBUICAO,         ":="    },
     
     // Operadores
@@ -59,7 +59,7 @@ static const um_reservado SIMBOLOS [TOTAL_SIMBOLOS] = {
  *
  * Tabela "hardcoded" de palavras reservadas
  */
-#define TOTAL_PALAVRAS_RESERVADAS    23
+#define TOTAL_PALAVRAS_RESERVADAS    21
 static const um_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
     // (Sub)programa
     { PR_PROGRAM,       "program"   },
@@ -80,9 +80,9 @@ static const um_reservado PALAVRAS_RESERVADAS [TOTAL_PALAVRAS_RESERVADAS] = {
     // Comandos
     { PR_WHILE,         "while"     },
     { PR_LOOP,          "loop"      },
-    { PR_LOOP,          "end_loop"  },
+    { PR_END_LOOP,      "end_loop"  },
     { PR_IF,            "if"        },
-    { PR_IF,            "end_if"    },
+    { PR_END_IF,        "end_if"    },
     { PR_THEN,          "then"      },
     { PR_ELSE,          "else"      },
     { PR_INPUT,         "input"     },
@@ -208,13 +208,11 @@ um_atomo novoAtomoReal (uma_classe c, double v)
 uma_classe busca_palavra_reservada (char * nome)
 {
     int i;
-
     for (i=0; i < TOTAL_PALAVRAS_RESERVADAS; i++)
     {
         if (strcmp (nome, PALAVRAS_RESERVADAS[i].nome) == 0)
             return PALAVRAS_RESERVADAS[i].classe;
     }
-
     return C_INVALIDA;
 }
 

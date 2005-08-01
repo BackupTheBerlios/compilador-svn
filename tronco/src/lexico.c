@@ -56,16 +56,16 @@ int ehBranco (char);
 um_atomo analisadorLexico(char **entrada, int look_ahead, uma_fila *fila)
 {
     um_atomo a;
-
+    
     // Se houver um atomo na fila, retorna esse átomo
     if (! (fila_eh_vazia (fila) || look_ahead))
         return fila_retira (fila);
 
     // Roda a maquina de estados ate pegar um atomo
-    do
+    do {
         a = maquina_lexico(entrada);
-    while (!a);
-        
+    } while (!a);
+    
     if (look_ahead)
         fila_adiciona (fila, a);
 
@@ -179,7 +179,7 @@ um_atomo estado_identificador (char **entrada)
         else // Não é palavra reservada
         {
             int cod;
-            
+
             cod = busca_cod_ID (nome);
             if (cod == ERRO)
                 cod = adicionaID (nome);
@@ -372,13 +372,6 @@ int ehSimbolo (char e)
 {
     switch (e)
     {
-//        case '!':
-//        case '"':
-//        case '#':
-//        case '$':
-//        case '%':
-//        case '&':
-//        case '\'':
         case '(':
         case ')':
         case '*':
@@ -392,16 +385,11 @@ int ehSimbolo (char e)
         case '<':
         case '=':
         case '>':
-//        case '?':
         case '[':
-//        case '\\':
         case ']':
         case '^':
-//        case '`':
         case '{':
-//        case '|':
         case '}':
-//        case '~':
             return VERDADE;
     }
     return FALSO;

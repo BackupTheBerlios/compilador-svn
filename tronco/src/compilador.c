@@ -111,7 +111,9 @@ int main (int argc, char **argv)
         mostra_posicao_erro (pos);
         printf ("\n");
     }
-        
+
+    printf ("\nAcabei processamento. E nois na fita mano!!!\n");
+    system("PAUSE");
     sair (erro);
     return erro;
 }
