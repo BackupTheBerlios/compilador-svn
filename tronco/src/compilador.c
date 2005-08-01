@@ -31,7 +31,7 @@
 #include "sintatico.h"
 #include "erro.h"
 
-//#define ESPERA_TECLA
+#define ESPERA_TECLA
 
 // Flags
 int falante   = FALSO;
@@ -112,7 +112,6 @@ int main (int argc, char **argv)
         printf ("\n");
     }
 
-    system("PAUSE");
     sair (erro);
     return erro;
 }
