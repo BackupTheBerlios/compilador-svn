@@ -305,11 +305,13 @@ int busca_coluna (enum submaquinas maq, int tipo_entrada, int profundidade)
     int i, estado_atual;
 
     DEPURA (" %*sbuscando em %s", espacado?profundidade:0, "", submaquinas_nomes[maq]);
-    
-    if (profundidade == 1)
+	    
+    if (profundidade == 1) {
         estado_atual = atual.estado;
-    else
+    }
+    else {
         estado_atual = 0;
+    }
 
     // Procura por uma classe
     for (i=1; i < maquinas[maq].entradas; i++)
@@ -347,7 +349,6 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     um_atomo at;
     int col, tipo_entrada, prox_estado;
     void (*acao)();
-    int codigo_acao;
 
     // Lê novo átomo sem look-ahead
     at = analisadorLexico (entrada, FALSO, fila);
@@ -366,7 +367,7 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
         DEPURA(" fim"); DEPURA_FIM();
         return FIM_ERRO_LEXICO;
     }
-    
+
     // Procura a coluna referente ao átomo lido
     col = busca_coluna (atual.maquina, at->classe, 1);
 
@@ -378,20 +379,18 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
         DEPURA_FIM();
         return FIM_ERRO_MAQUINAS;
     }
-    
+
     // Executa ação semântica
-    codigo_acao = maquinas[atual.maquina].transicoes[atual.estado][col].acao;
-    if (codigo_acao)
+    acao = maquinas[atual.maquina].transicoes[atual.estado][col].acao;
+    if (acao)
     {
         DEPURA (" acao");
-        converteCodigoFuncao(codigo_acao, acao);
 		if (acao)
 			(*acao) ();
     }
-    
+
     // Verifica se o próximo estado é inválido
     prox_estado = maquinas[atual.maquina].transicoes[atual.estado][col].estado;
-
     if (prox_estado == ND)
     {
         fila_adiciona (fila, at);
@@ -453,10 +452,13 @@ int analisadorSintatico (char **entrada)
 
     // Fica consumindo átomos até ocorrer um erro ou acabar o buffer
     while (!erro) {
-        if (**entrada == '\0')
+        if (**entrada == '\0') {
             break;
+        }
         else
-            erro = maquina_sintatico(entrada, &fila);
+        {
+		    erro = maquina_sintatico(entrada, &fila);
+        }
     }
     
     return erro;
