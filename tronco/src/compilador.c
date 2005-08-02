@@ -23,44 +23,20 @@
  */
  
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+//#include <stdlib.h>
+//#include <string.h>
 
 #include "defs.h"
 #include "arquivo.h"
 #include "sintatico.h"
+#include "semantico.h"
 #include "erro.h"
 
-#define ESPERA_TECLA
-
 // Flags
-int falante   = FALSO;
-int depurando = FALSO;
-int espacado  = FALSO;
-
-void sair (int ret)
-{
-    char *msg[] = {
-        "Execução bem sucedida!", 
-
-        "Uso: teste -[v|d|e] <arquivo>",
-        "Arquivo nao encontrado!",
-
-        "Token desconhecido!", 
-        "Erro de sintaxe.", 
-        "Erro interno na construção das máquinas!"
-    };
-        
-    printf ("Erro %d: %s\n", ret, msg[ret]);
-
-#ifdef ESPERA_TECLA
-    printf ("\nPressione algo para continuar...\n");
-    fflush(stdout);
-    getchar();
-#endif
-
-    exit (ret);
-}
+extern int falante;
+extern int depurando;
+extern int espacado;
+extern int tecla;
 
 int le_param (int argc, char **argv)
 {
@@ -73,12 +49,14 @@ int le_param (int argc, char **argv)
     {
         switch (argv[arq][1])
         {
+            case 't':
+                tecla = VERDADE;
+                break;
+
             case 'e':
                 espacado = VERDADE;
-                //break;
             case 'd':
                 depurando = VERDADE;
-                //break;
             case 'v':
                 falante = VERDADE;
                 break;
@@ -95,22 +73,14 @@ int main (int argc, char **argv)
 
     arq = le_param (argc, argv);
     dados = le_arquivo (argv[arq]);
-    
+
     if (dados == NULL)
         sair (FIM_ERRO_ARQUIVO);
 
+    ajusta_nome_arquivo (argv[arq]);
+
     pos = dados;
     erro = analisadorSintatico (&pos);
-
-    if (erro >= FIM_ERRO_LEXICO)
-    {
-#ifdef DEBUG        
-        printf ("\n");
-#endif        
-        printf ("Linha Atual:\n");
-        mostra_posicao_erro (pos);
-        printf ("\n");
-    }
 
     sair (erro);
     return erro;

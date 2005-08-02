@@ -23,7 +23,17 @@
  */
  
 #include <stdio.h>
- 
+#include <stdlib.h>
+
+#include "defs.h"
+#include "erro.h"
+
+// Flags
+int falante   = FALSO;
+int depurando = FALSO;
+int espacado  = FALSO;
+int tecla     = FALSO;
+
 int mostra_linha_atual (char * pos)
 {
     int col;
@@ -39,15 +49,18 @@ int mostra_linha_atual (char * pos)
     while (*pos != '\n')
     {
         if (*pos == '\t')
-            printf ("    ");
+        {
+            IMPRIME ("    ");
+        }
         else
-			printf ("%c", *pos);
+        {
+			IMPRIME ("%c", *pos);
+        }
         
         pos++;
     }
         
-    printf ("\n");
-    
+    IMPRIME ("\n");
     return col;
 }
 
@@ -57,31 +70,31 @@ void mostra_posicao_erro (char * pos)
     
     col = mostra_linha_atual (pos);
     for (; col > 0; col--)
-        if (*(pos-col) == '\t')
-            printf ("----");
-        else
-            printf ("-");
-    printf ("^\n");
+        IMPRIME ("%*s", *(pos-col) == '\t'? 4: 1, "-");
+
+    IMPRIME ("^\n");
 }
 
-/*
-void imprime (const char *msg)
-{
-    if (falante)
-    {
-        printf ("%s", msg);
-    }    
-}
 
-void depura (const char *msg)
+void sair (int ret)
 {
-    if (depurando)
+    char *msg[] = {
+        "Execução bem sucedida!", 
+
+        "Uso: teste -[v|d|e] [-t] <arquivo>",
+        "Arquivo nao encontrado!",
+
+        "Compilação interrompida!"
+    };
+        
+    printf ("%s\n", msg[ret>FIM_ERRO_LEXICO? FIM_ERRO_LEXICO: ret]);
+
+    if (tecla)
     {
-        if (!espacado && msg[0]==' ')
-            imprime (",");
-        imprime (msg);
-        if (!(espacado ^^ msg))
-            imprime ("\n");
-    }    
+        printf ("\nPressione algo para continuar...\n");
+        fflush(stdout);
+        getchar();
+    }
+
+    exit (ret);
 }
-*/

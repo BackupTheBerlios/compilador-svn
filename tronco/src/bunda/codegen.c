@@ -22,6 +22,12 @@ void gen_if_prepare(void) {
 	i_if = c_if;
 }
 
+void gen_if_condition_end(void) {
+	fprintf(fpSaida, "\tmovl	%%eax,%%edi\n");
+	fprintf(fpSaida, "\tcmpl	%%esi,%%edi\n");
+	fprintf(fpSaida, "\tjne		_$else_%d\n", i_if);
+}
+
 void gen_init(const char * fileName) {
 	stringsInSourceFile = (StringQueue *)malloc(sizeof(StringQueue));
 	stringsInSourceFile->queueEnd = -1;
@@ -38,7 +44,8 @@ void gen_init(const char * fileName) {
 
 void gen_function_prepare(const char * funcName) {
 	strcpy(m_currentFunction, funcName);
-	fprintf(fpSaida, "\t.type _%s, function\n", funcName);
+//	fprintf(fpSaida, "\t.type _%s, function\n", funcName);
+	fprintf(fpSaida, "\t.globl	_%s\n", m_currentFunction);
 	fprintf(fpSaida, "_%s:\n", funcName);
 	fprintf(fpSaida, "\tpushl	%%ebp\n");
 	fprintf(fpSaida, "\tmovl	%%esp,%%ebp\n");
@@ -54,20 +61,18 @@ void gen_function_begin(void) {
 }
 
 void gen_function_end(void) {
-	fprintf(fpSaida, "_$prepare_end_%s:\n", m_currentFunction);
+//	fprintf(fpSaida, "_$prepare_end_%s:\n", m_currentFunction);
 	fprintf(fpSaida, "\tpopl	%%edi\n");
 	fprintf(fpSaida, "\tpopl	%%ebp\n");
-
 	fprintf(fpSaida, "\tret\n");
-	fprintf(fpSaida, "_$end_%s:\n", m_currentFunction);
-	fprintf(fpSaida, "\t.globl	_%s\n", m_currentFunction);
+//	fprintf(fpSaida, "_$end_%s:\n", m_currentFunction);
 }
 
 
 
 void gen_prepare_call(const char * funcName) {
 	m_currentFunctionParams = 0;
-	strcpy(m_functionToCall, funcName);
+	strncpy(m_functionToCall, funcName, MAX_STRING_SIZE);
 }
 
 void gen_add_param_var(const char varName[MAX_STRING_SIZE]) {
@@ -82,7 +87,7 @@ void gen_add_param_mem(const int memPos) {
 
 void gen_add_param_int(const int p_value) {
 	m_currentFunctionParams += 4;
-	fprintf(fpSaida, "\tpushl $ %d\n", p_value);
+	fprintf(fpSaida, "\tpushl $%d\n", p_value);
 }
 
 void gen_add_param_generic(const char paramChar[MAX_STRING_SIZE]) {
@@ -185,12 +190,6 @@ void gen_exp_eval_int(int intValue) {
 	}
 
 	fprintf(fpSaida, "\t%s	$%d,%%eax\n", instr,intValue);
-}
-
-void gen_if_condition_end(void) {
-	fprintf(fpSaida, "\tmovl	%%eax,%%edi\n");
-	fprintf(fpSaida, "\tcmpl	%%esi,%%edi\n");
-	fprintf(fpSaida, "\tjne		_$else_%d\n", i_if);
 }
 
 void gen_return_prepare(void) {

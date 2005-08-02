@@ -63,7 +63,7 @@ static automato maquinas[TOTAL_SUBMAQUINAS];
 // Estado e máquina atuais
 static estado atual; 
 
-// Quantidade e pilha de retornos de sub-m�quina
+// Quantidade e pilha de retornos de sub-máquina
 static int retornos;
 static estado *pilha_retornos;
 	       
@@ -122,17 +122,13 @@ int estado_final (enum submaquinas maq, int estado)
     return FALSO;
 }
 
-//
-// Ações Semânticas
-//
-void nada() {}
 
 void converteCodigoFuncao(int codigo, void (*funcao)()) {
 /* 
- * Depois de declaradas as fun��es semanticas,
- * basta passar seus endere�os para o ponteiro
+ * Depois de declaradas as funcoes semanticas,
+ * basta passar seus enderecos para o ponteiro
  * denominado "funcao" no switch abaixo;
- * Ex: funcao = funcaoDeclarada; (o nome � o ponteiro, como em vetores)
+ * Ex: funcao = funcaoDeclarada; (o nome e o ponteiro, como em vetores)
  *
 */
 
@@ -215,8 +211,8 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
         for (j = 0; j < entradas; ++j)
         {
             fscanf(arqSM, "%d,%d", &SM_transicoes[i][j].estado, &funcao);
-			SM_transicoes[i][j].acao = funcao;
-//            converteCodigoFuncao(funcao, SM_transicoes[i][j].acao);
+//			SM_transicoes[i][j].acao = funcao;
+            converteCodigoFuncao(funcao, SM_transicoes[i][j].acao);
             
 #ifdef DEBUG_ARQUIVO    
             printf (" (%d:%d)", SM_transicoes[i][j].estado, funcao);
@@ -258,7 +254,7 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
 
 /* inicia_submaquinas
  * 
- * Função que define o vetor de m�quinas, bem como a m�quina e estado iniciais
+ * Função que define o vetor de maquinas, bem como a maquina e estado iniciais
  */
 
 void inicia_submaquinas()
@@ -279,7 +275,7 @@ void inicia_submaquinas()
 	arqSM = "SubMaquina_Comando.dat";
 	defineSubMaquina(arqSM, SM_COMANDO);
 
-	// Sub-máquina express�o (E):
+	// Sub-máquina expressao (E):
 	arqSM = "SubMaquina_Expressao.dat";
 	defineSubMaquina(arqSM, SM_EXPRESSAO);
 	
@@ -287,7 +283,7 @@ void inicia_submaquinas()
 	arqSM = "SubMaquina_Fator.dat";
 	defineSubMaquina(arqSM, SM_FATOR);
 	
-	// Sub-máquina express�o booleana (O):
+	// Sub-máquina expressao booleana (O):
 	arqSM = "SubMaquina_ExpressaoBooleana.dat";
 	defineSubMaquina(arqSM, SM_EXP_BOOLEANA);
 
@@ -360,12 +356,15 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     if (at->classe == C_INVALIDA)
     {
         DEPURA(" token"); DEPURA_FIM();
+        IMPRIME ("Erro lexico! Token desconhecido:\n");
+        mostra_posicao_erro (*entrada);
+        IMPRIME ("\n");
         return FIM_ERRO_LEXICO;
     }
     else if (at->classe == C_FIM)
     {
         DEPURA(" fim"); DEPURA_FIM();
-        return FIM_ERRO_LEXICO;
+        return FIM_OK;
     }
 
     // Procura a coluna referente ao átomo lido
@@ -377,6 +376,9 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     {
         DEPURA (" estado %d/%d\n", atual.estado, maquinas[atual.maquina].estados);
         DEPURA_FIM();
+        IMPRIME ("Erro interno na construcao das maquinas:\n");
+        mostra_posicao_erro (*entrada);
+        IMPRIME ("\n");
         return FIM_ERRO_MAQUINAS;
     }
 
@@ -385,8 +387,7 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     if (acao)
     {
         DEPURA (" acao");
-		if (acao)
-			(*acao) ();
+		(*acao) (at);
     }
 
     // Verifica se o próximo estado é inválido
@@ -407,7 +408,9 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
         else // Erro de sintaxe
         {
             DEPURA_FIM ();
-            IMPRIME ("Erro de sintaxe: '%s' não era esperado.\n", nomeClasse (at->classe));
+            IMPRIME ("Erro de sintaxe! '%s' não era esperado:\n", nomeClasse (at->classe));
+            mostra_posicao_erro (*entrada);
+            IMPRIME ("\n");
             return FIM_ERRO_SINTATICO;
         }
     }

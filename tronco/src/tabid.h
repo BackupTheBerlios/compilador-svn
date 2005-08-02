@@ -24,7 +24,7 @@ typedef struct s_id um_id;
 struct s_id {
    int cod;
    char * nome;
-//   int linha; // primeira ocorrência (opcional)
+//   int linha; // primeira ocorrÃªncia (opcional)
 };
 
 int adicionaID (char * nome);

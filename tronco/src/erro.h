@@ -25,10 +25,56 @@
 #ifndef _ERRO_H
 #define _ERRO_H
 
-void mostra_linha_atual  (char *);
+#include <stdio.h>
+
+// Flags
+extern int falante;
+extern int depurando;
+extern int espacado;
+
+// Modos de encerramento
+enum fins {
+    FIM_OK,
+    
+    FIM_ERRO_PARAMETRO,
+    FIM_ERRO_ARQUIVO,
+    
+    FIM_ERRO_LEXICO,
+    FIM_ERRO_SINTATICO,
+    FIM_ERRO_MAQUINAS
+};
+
+
+// Macro que imprime apenas quando o flag falante está setado
+#define IMPRIME(x...)                       \
+    if (falante)                            \
+    {                                       \
+        printf(x);                          \
+    };
+
+// Macros para depuração
+#define DEPURA(fmt,...)                     \
+    if (depurando)                          \
+    {                                       \
+        if (!espacado && fmt[0]==' ')       \
+            IMPRIME(",");                   \
+        IMPRIME (fmt, ##__VA_ARGS__);       \
+        if (espacado)                       \
+            IMPRIME ("\n");                 \
+    };
+#define DEPURA_FIM()                        \
+    if (depurando && !espacado)             \
+    {                                       \
+        IMPRIME ("\n");                     \
+    };
+
+
+
+//
+// Funções públicas
+//
+int mostra_linha_atual  (char *);
 void mostra_posicao_erro (char *);
-
-//void imprime (const char *msg);
-//void depura  (const char *msg);
-
+void sair (int);
+    
 #endif /* _ERRO_H */

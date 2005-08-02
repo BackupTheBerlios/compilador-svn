@@ -26,7 +26,7 @@
 #include <stdio.h>
 
 // Depurações
-#define DEBUG_SINTATICO
+//#define DEBUG_SINTATICO
 //#define DEBUG_SINTATICO1
 //#define DEBUG_ARQUIVO
 
@@ -34,32 +34,8 @@
 #define VERDADE 1
 #define FALSO   0
 
-// Flags
-extern int falante;
-extern int depurando;
-extern int espacado;
-
-
-#define IMPRIME(x...)       if (falante) {printf(x);}
-
-//#define DEPURA_INICIO(x...) if (depurando) IMPRIME (x)
-#define DEPURA(fmt,...)     if (depurando) { if (!espacado && fmt[0]==' ') {IMPRIME(",");} IMPRIME (fmt, ##__VA_ARGS__); if (espacado) {IMPRIME ("\n");} }
-#define DEPURA_FIM()        if (depurando) { if(!espacado) {IMPRIME ("\n");} }
-
 // Códigos de erro (busca, adições etc.)
 #define ERRO                    -1
 
-
-// Modos de encerramento
-enum fins {
-    FIM_OK,
-    
-    FIM_ERRO_PARAMETRO,
-    FIM_ERRO_ARQUIVO,
-    
-    FIM_ERRO_LEXICO,
-    FIM_ERRO_SINTATICO,
-    FIM_ERRO_MAQUINAS
-};
 
 #endif // __DEFS_H__

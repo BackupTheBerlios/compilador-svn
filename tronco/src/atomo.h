@@ -22,13 +22,13 @@
  * Tipos
  */
 typedef struct s_fila       uma_fila;
-typedef struct s_atomo*		um_atomo;
+typedef struct s_atomo      *um_atomo;
 typedef struct s_reservado  um_reservado;
 typedef enum   e_classe     uma_classe;
 
 /* e_classe
  *
- * Todas as classes possÃ­veis (incluindo sÃ­mbolos e palavras reservadas)
+ * Todas as classes possíveis (incluindo símbolos e palavras reservadas)
  */
 enum e_classe {
 
@@ -88,7 +88,7 @@ enum e_classe {
 
 /* s_fila
  * 
- * Estrutura que representa uma fila de Ã¡tomos
+ * Estrutura que representa uma fila de átomos
  */
 struct s_fila {
     int tamanho;
@@ -97,7 +97,7 @@ struct s_fila {
 
 /* s_atomo
  *
- * Estrutura que representa um Ã¡tomo
+ * Estrutura que representa um átomo
  */
 struct s_atomo {
     uma_classe classe;
@@ -109,8 +109,8 @@ struct s_atomo {
 
 /* s_reservado
  *
- * Uma estrutura representando um Ãtomo reservado
- * (palavra reservada ou sÃ­mbolo)
+ * Uma estrutura representando um Átomo reservado
+ * (palavra reservada ou símbolo)
  */
 struct s_reservado {
     uma_classe classe; 
@@ -118,7 +118,7 @@ struct s_reservado {
 };
 
 /*
- * ProtÃ³tipos de funÃ§Ãµes
+ * Protótipos de funções
  */
 char * nomeClasse (uma_classe);
 um_atomo novoAtomo (uma_classe);
@@ -128,7 +128,7 @@ uma_classe busca_simbolo (char *);
 uma_classe busca_palavra_reservada (char *);
 // char * busca_nome_da_classe (uma_classe);
 
-// FunÃ§Ãµes com fila (para look-ahead)
+// Funções com fila (para look-ahead)
 void fila_inicia        (uma_fila *);
 int fila_eh_vazia       (uma_fila *);
 int fila_adiciona       (uma_fila *, um_atomo);

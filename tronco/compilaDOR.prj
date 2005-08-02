@@ -73,7 +73,8 @@ module.include.files=\
 	src/arquivo.h\
 	src/erro.h\
 	src/lexico.h\
-	src/sintatico.h
+	src/sintatico.h\
+	src/semantico.h
 
 module.source.name=.
 module.source.type=
@@ -84,7 +85,8 @@ module.source.files=\
 	src/arquivo.c\
 	src/erro.c\
 	src/lexico.c\
-	src/sintatico.c
+	src/sintatico.c\
+	src/semantico.c
 
 module.pixmap.name=.
 module.pixmap.type=

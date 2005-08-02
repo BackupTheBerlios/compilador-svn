@@ -6,16 +6,16 @@ RunInTerminal=false
 clean before build=false
 
 [filenumbers]
-0=402
-1=31
-2=9
-3=1
-4=24
-5=96
-6=10
-7=376
-8=47
-9=74
+0=1
+1=1
+2=66
+3=5
+4=1
+5=1
+6=100
+7=35
+8=105
+9=3
 10=31
 
 [filemarkers]
@@ -35,6 +35,18 @@ clean before build=false
 filter.file.unmatch=*.so *.o *.a *.la
 filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
+
+[filelist]
+0=/home/acdcp/projetos/compilador-tronco/src/sintatico.c
+1=/home/acdcp/projetos/compilador-tronco/src/atomo.h
+2=/home/acdcp/projetos/compilador-tronco/src/atomo.c
+3=/home/acdcp/projetos/compilador-tronco/bin/SubMaquina_Programa.dat
+4=/home/acdcp/projetos/compilador-tronco/bin/teste.prg
+5=/home/acdcp/projetos/compilador-tronco/src/bunda/teste.prg.s
+6=/home/acdcp/projetos/compilador-tronco/src/bunda/codegen.c
+7=/home/acdcp/projetos/compilador-tronco/src/semantico.c
+8=/home/acdcp/projetos/compilador-tronco/src/bunda/teste.s
+9=/home/acdcp/projetos/compilador-tronco/src/bunda/teste.prg.c
 
 [Project Tree]
 0=0

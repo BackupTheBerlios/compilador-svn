@@ -10,8 +10,8 @@ nome=$1
 echo ".c -> .s"
 gcc -S -march=i386 -fverbose-asm -O0 $nome.c 
 
-echo ".s -> .o"
-as $nome.s -o $nome.o
+#echo ".s -> .o"
+#as $nome.s -o $nome.o
 
-echo ".o -> exe"
-ld -lc $nome.o -o $nome
+echo ".s -> exe"
+gcc $nome.s -o $nome

@@ -16,7 +16,6 @@
  
 
 #ifndef __ANALISADOR_LEXICO_H__
-
 #define __ANALISADOR_LEXICO_H__
 
 #include "atomo.h"
