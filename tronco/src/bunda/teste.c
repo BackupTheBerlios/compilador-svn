@@ -11,6 +11,18 @@
 
 int currentYear;
 
+int ret_dois_local_dois_param (int a, int b)
+{
+    int c;
+    int d;
+    c = a+1;
+    d = 2*c+b;
+    return d;
+}
+
+
+
+
 
 void display (int n)
 {
@@ -43,10 +55,12 @@ int main ()
 {
 	int ano;
 	int num;
+    int i, j, k;
 
 	ano = 2005;
 	num = 555;
 
 	currentYear = ano;
 	display (num);
+    i = j = k = 50;
 }

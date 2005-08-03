@@ -6,7 +6,8 @@ _$init:
 _main:
 	pushl	%ebp
 	movl	%esp,%ebp
-	pushl	%edi
+    
+//	pushl	%edi
 
 	movl	$_$str_0,_name
 	movl	$2005,_currentYear
@@ -30,6 +31,7 @@ _display:
 	pushl $ 8
 	call _fatorial2
 	addl $4,%esp
+    
 	pushl %eax
 	pushl _currentYear
 	pushl _name
@@ -37,6 +39,7 @@ _display:
 	pushl $_$str_1
 	call _printf
 	addl $20,%esp
+    
 _$prepare_end_display:
 	popl	%edi
 	popl	%ebp

@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include "defs.h"
+#include "semantico.h"
 #include "atomo.h"
 #include "tabid.h"
 
@@ -39,10 +40,13 @@ static uma_pilha locais;
 static int tamanho_var;
 static char *nome_entrada;
 static char *nome_saida;
+static char *nome_funcao;
 static enum tipo_var escopo = VAR_GLOBAL;
+static int alocacao_locais;
 
 
-/*
+/* ajusta_nome_arquivo
+ *
  * Acerta o nome dos arquivos de entrada e saída
  */
 void ajusta_nome_arquivo (char * n)
@@ -65,27 +69,69 @@ void ajusta_nome_arquivo (char * n)
 }
 
 
-//
-// Ações semânticas
-//
+//////////////////////
+// Ações semânticas //
+//////////////////////
 
-void acao_inicio (um_atomo a)
+//
+// Máquina programa
+//
+void acao_programa_inicio (um_atomo a)
 {
     pilha_inicia (&globais, VAR_GLOBAL);
+    pilha_inicia (&locais, VAR_GLOBAL);
 
 //	m_operator = 0;
+    alocacao_locais = 0;
+    nome_funcao = NULL;
 
 	saida = fopen (nome_saida, "w");
 	fprintf (saida, "\t.file\t\"%s\"\n\n", nome_entrada);
     
 	fprintf (saida, "\t.section\t.rodata\n");
 	fprintf (saida, ".INTEIRO:\n");
-	fprintf (saida, "\t.string\t\"%d\\n\"\n\n");
+	fprintf (saida, "\t.string\t\"%%d\\n\"\n\n");
 
 	fprintf (saida, "\t.text\n\n");
 }
 
-void acao_fim (um_atomo a)
+void acao_programa_funcao (um_atomo a)
+{
+    if (a->classe == C_IDENTIFICADOR)
+        nome_funcao = busca_nome_ID (a->valor);
+}
+void acao_programa_comando (um_atomo a)
+{
+    if (nome_funcao == NULL)
+        nome_funcao = "main";
+    // Define rótulo da função
+    fprintf(saida, "\t.globl\t%s\n", nome_funcao);
+    fprintf(saida, "%s:\n", nome_funcao);
+    
+    // Salva %ebp e %esp atuais
+    fprintf(saida, "\tpushl\t%%ebp\n");
+    fprintf(saida, "\tmovl\t%%esp,%%ebp\n");
+    fprintf(saida, "\n");
+
+    // O gcc gera esse "alinhamento" do %esp no main()
+    if (escopo == VAR_GLOBAL)
+    {
+        fprintf(saida, "\tsubl\t$8,%%esp\n");
+        fprintf(saida, "\tandl\t$-16,%%esp\n");
+        fprintf(saida, "\tmovl\t$0,%%eax\n");
+        fprintf(saida, "\tsubl\t%%eax,%%esp\n");
+    }
+    else if (locais.tamanho)   // Aloca espaço das variáveis locais
+        fprintf(saida, "\tsubl\t$%d,%%esp\n",
+            locais.variavel[locais.tamanho-1]->posicao);
+    
+    fprintf(saida, "\n");
+
+}
+
+
+
+void acao_programa_fim (um_atomo a)
 {
     uma_variavel v;
     
@@ -93,7 +139,7 @@ void acao_fim (um_atomo a)
 
     while (!pilha_eh_vazia (&globais))
     {
-        v = pilha_retira (&global);
+        v = pilha_retira (&globais);
         fprintf (saida, "\t.comm\t%s,%d\n", v->nome, v->tamanho);
         free (v);
     }
@@ -104,40 +150,29 @@ void acao_fim (um_atomo a)
     fclose (saida);
 }
 
-void acao_ajusta_tamanho_var (um_atomo a)
+//
+// Máquina tipo: Tamanho da variável
+//
+void acao_tipo_tamanho_var (um_atomo a)
 {
     if (a->classe == PR_INTEGER)
         tamanho_var = 4;
 }
 
-void acao_adiciona_global (um_atomo a)
+//
+// Máquina comando: Declaração de variáveis
+//
+void acao_comando_adiciona_var (um_atomo a)
 {
-    if (a->classe == C_IDENTIFICADOR)
-        pilha_adiciona (&globais, tamanho_var, busca_nome_ID (a->valor));
-}
-
-void acao_funcao_inicio (um_atomo a)
-{
-    if (a->classe == C_IDENTIFICADOR)
-    {
-        char * nome;
-        nome = busca_nome_ID (a->valor);
-        
-        strcpy(m_currentFunction, funcName);
-        fprintf(saida, "\t.globl\t%s\n", nome);
-        fprintf(saida, "%s:\n", nome);
-        fprintf(saida, "\tpushl\t%%ebp\n");
-        fprintf(saida, "\tmovl\t%%esp,%%ebp\n");
-        
-//        fprintf(saida, "\tpushl	%%edi\n");
-        fprintf(saida, "\n");
-    }
+    if (escopo == VAR_GLOBAL)
+        if (a->classe == C_IDENTIFICADOR)
+            pilha_adiciona (&globais, tamanho_var, busca_nome_ID (a->valor));
 }
 
 
-/*
- * Funções de manipulação da pilha
- */
+/////////////////////////////////////
+// Funções de manipulação da pilha //
+/////////////////////////////////////
 void pilha_inicia (uma_pilha * pilha, enum tipo_var t)
 {
     pilha->variavel = (uma_variavel *) NULL;

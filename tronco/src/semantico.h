@@ -25,6 +25,8 @@
 #ifndef _SEMANTICO_H
 #define _SEMANTICO_H
 
+#include "atomo.h"
+
 //
 // Tipos privados
 //
