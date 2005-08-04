@@ -30,10 +30,12 @@
 //
 // Tipos privados
 //
-enum tipo_var {VAR_GLOBAL, VAR_LOCAL};
+enum tipo_var {VAR_GLOBAL, VAR_LOCAL, VAR_PARAM};
+enum tipo_operando {O_NOME, O_VALOR};
 
-typedef struct s_variavel    *uma_variavel;
-typedef struct s_pilha_var   uma_pilha;
+typedef struct s_variavel   *uma_variavel;
+typedef struct s_pilha_var  uma_pilha;
+typedef struct s_operando   um_operando;
     
 struct s_variavel
 {
@@ -48,6 +50,14 @@ struct s_pilha_var
     enum tipo_var tipo;
 	int tamanho;
 	uma_variavel *variavel;
+};
+struct s_operando
+{
+    enum tipo_operando tipo;
+    union {
+        int valor;
+        char *nome;
+    };
 };
 
 

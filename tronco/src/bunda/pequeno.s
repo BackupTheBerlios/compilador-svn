@@ -24,16 +24,16 @@ main:
 	subl	%eax, %esp
     
 	movl	$2, a	#  a
-    
 	movl	$4, b	#  b
-    
-	movl	$0, %eax
     
 	leave
 	ret
 	.size	main, .-main
     
+    
 	.comm	a,4,4
 	.comm	b,4,4
+    
+    
 	.section	.note.GNU-stack,"",@progbits
 	.ident	"GCC: (GNU) 3.3.5 (Debian 1:3.3.5-8ubuntu2)"
