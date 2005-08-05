@@ -99,7 +99,7 @@ int main (int argc, char **argv)
         
         free (comando);
     }
-
+	
     sair (erro);
     return erro;
 }

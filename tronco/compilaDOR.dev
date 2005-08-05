@@ -1,7 +1,7 @@
 [Project]
-FileName=compilaDOR.dev
+FileName=..\..\Subjects\Compiladores\CompilaDOR\compilaDOR.dev
 Name=CompilaDOR
-UnitCount=19
+UnitCount=18
 Type=1
 Ver=1
 ObjFiles=
@@ -20,7 +20,7 @@ ObjectOutput=obj
 OverrideOutput=0
 OverrideOutputName=compilaDOR.exe
 HostApplication=
-Folders="Analisador Léxico","Analisador Sintático",Diversos,Exemplos
+Folders="Analisador Léxico","Analisador Semântico","Analisador Sintático",Diversos,Exemplos
 CommandLine=teste.prg
 IncludeVersionInfo=0
 SupportXPThemes=0
@@ -30,7 +30,7 @@ UseCustomMakefile=0
 CustomMakefile=Makefile.win
 
 [Unit1]
-FileName=src\atomo.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\atomo.c
 CompileCpp=0
 Folder=Analisador Léxico
 Compile=1
@@ -40,7 +40,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=src\atomo.h
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\atomo.h
 CompileCpp=0
 Folder=Analisador Léxico
 Compile=1
@@ -50,7 +50,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit3]
-FileName=src\tabid.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\tabid.c
 CompileCpp=0
 Folder=Analisador Léxico
 Compile=1
@@ -60,7 +60,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit4]
-FileName=src\compilador.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\compilador.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -70,7 +70,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit8]
-FileName=bin\errado.prg
+FileName=..\..\Subjects\Compiladores\CompilaDOR\bin\errado.prg
 CompileCpp=0
 Folder=Exemplos
 Compile=0
@@ -98,7 +98,7 @@ ProductVersion=
 AutoIncBuildNr=0
 
 [Unit5]
-FileName=src\defs.h
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\defs.h
 CompileCpp=0
 Folder=
 Compile=1
@@ -108,7 +108,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit6]
-FileName=src\tabid.h
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\tabid.h
 CompileCpp=0
 Folder=Analisador Léxico
 Compile=1
@@ -118,7 +118,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=src\arquivo.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\arquivo.c
 CompileCpp=0
 Folder=Diversos
 Compile=1
@@ -128,7 +128,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit10]
-FileName=src\arquivo.h
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\arquivo.h
 Folder=Diversos
 Compile=1
 Link=1
@@ -138,7 +138,7 @@ BuildCmd=
 CompileCpp=0
 
 [Unit11]
-FileName=src\erro.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\erro.c
 Folder=Diversos
 Compile=1
 Link=1
@@ -190,7 +190,7 @@ BuildCmd=
 =======
 
 [Unit12]
-FileName=src\erro.h
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\erro.h
 CompileCpp=0
 Folder=Diversos
 Compile=1
@@ -200,7 +200,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit13]
-FileName=src\lexico.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\lexico.c
 CompileCpp=0
 Folder=Analisador Léxico
 Compile=1
@@ -210,7 +210,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit14]
-FileName=src\lexico.h
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\lexico.h
 CompileCpp=0
 Folder=Analisador Léxico
 Compile=1
@@ -220,7 +220,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit15]
-FileName=src\sintatico.h
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\sintatico.h
 CompileCpp=0
 Folder=Analisador Sintático
 Compile=1
@@ -231,7 +231,7 @@ BuildCmd=
 >>>>>>> .r43
 
 [Unit7]
-FileName=bin\teste.prg
+FileName=..\..\Subjects\Compiladores\CompilaDOR\bin\teste.prg
 CompileCpp=0
 Folder=Exemplos
 Compile=0
@@ -241,7 +241,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit16]
-FileName=src\sintatico.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\sintatico.c
 CompileCpp=0
 Folder=Analisador Sintático
 Compile=1
@@ -251,9 +251,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit17]
-FileName=src\bunda\codegen.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\semantico.h
 CompileCpp=0
-Folder=Analisador Sintático
+Folder=Analisador Semântico
 Compile=1
 Link=1
 Priority=1000
@@ -261,9 +261,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit18]
-FileName=src\bunda\stringqueue.c
+FileName=..\..\Subjects\Compiladores\CompilaDOR\src\semantico.c
 CompileCpp=0
-Folder=Analisador Sintático
+Folder=Analisador Semântico
 Compile=1
 Link=1
 Priority=1000

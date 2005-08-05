@@ -419,7 +419,7 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
         // O estado atual é final?
         if (estado_final (atual.maquina, atual.estado))
         {
-            // Retorna FIM caso a submáquina anterior caso exista
+            // Retorna FIM caso a submáquina anterior exista
             int fim = !le_retorno ();
             DEPURA (" volta p/ máquina %s, estado %d", submaquinas_nomes[atual.maquina], atual.estado);
             DEPURA_FIM();

@@ -5,8 +5,8 @@ CPP  = g++.exe -D__DEBUG__
 CC   = gcc.exe -D__DEBUG__
 WINDRES = windres.exe
 RES  = 
-OBJ  = obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o obj/lexico.o obj/sintatico.o $(RES)
-LINKOBJ  = obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o obj/lexico.o obj/sintatico.o $(RES)
+OBJ  = obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o obj/lexico.o obj/sintatico.o obj/semantico.o $(RES)
+LINKOBJ  = obj/atomo.o obj/tabid.o obj/compilador.o obj/arquivo.o obj/erro.o obj/lexico.o obj/sintatico.o obj/semantico.o $(RES)
 LIBS =  -L"C:/Dev-Cpp/lib"  -g3 
 INCS =  -I"C:/Dev-Cpp/include" 
 CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
@@ -26,23 +26,26 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CC) $(LINKOBJ) -o "bin\compilaDOR.exe" $(LIBS)
 
-obj/atomo.o: src/atomo.c
-	$(CC) -c src/atomo.c -o obj/atomo.o $(CFLAGS)
+obj/atomo.o: ../../Subjects/Compiladores/CompilaDOR/src/atomo.c
+	$(CC) -c ../../Subjects/Compiladores/CompilaDOR/src/atomo.c -o obj/atomo.o $(CFLAGS)
 
-obj/tabid.o: src/tabid.c
-	$(CC) -c src/tabid.c -o obj/tabid.o $(CFLAGS)
+obj/tabid.o: ../../Subjects/Compiladores/CompilaDOR/src/tabid.c
+	$(CC) -c ../../Subjects/Compiladores/CompilaDOR/src/tabid.c -o obj/tabid.o $(CFLAGS)
 
-obj/compilador.o: src/compilador.c
-	$(CC) -c src/compilador.c -o obj/compilador.o $(CFLAGS)
+obj/compilador.o: ../../Subjects/Compiladores/CompilaDOR/src/compilador.c
+	$(CC) -c ../../Subjects/Compiladores/CompilaDOR/src/compilador.c -o obj/compilador.o $(CFLAGS)
 
-obj/arquivo.o: src/arquivo.c
-	$(CC) -c src/arquivo.c -o obj/arquivo.o $(CFLAGS)
+obj/arquivo.o: ../../Subjects/Compiladores/CompilaDOR/src/arquivo.c
+	$(CC) -c ../../Subjects/Compiladores/CompilaDOR/src/arquivo.c -o obj/arquivo.o $(CFLAGS)
 
-obj/erro.o: src/erro.c
-	$(CC) -c src/erro.c -o obj/erro.o $(CFLAGS)
+obj/erro.o: ../../Subjects/Compiladores/CompilaDOR/src/erro.c
+	$(CC) -c ../../Subjects/Compiladores/CompilaDOR/src/erro.c -o obj/erro.o $(CFLAGS)
 
-obj/lexico.o: src/lexico.c
-	$(CC) -c src/lexico.c -o obj/lexico.o $(CFLAGS)
+obj/lexico.o: ../../Subjects/Compiladores/CompilaDOR/src/lexico.c
+	$(CC) -c ../../Subjects/Compiladores/CompilaDOR/src/lexico.c -o obj/lexico.o $(CFLAGS)
 
-obj/sintatico.o: src/sintatico.c
-	$(CC) -c src/sintatico.c -o obj/sintatico.o $(CFLAGS)
+obj/sintatico.o: ../../Subjects/Compiladores/CompilaDOR/src/sintatico.c
+	$(CC) -c ../../Subjects/Compiladores/CompilaDOR/src/sintatico.c -o obj/sintatico.o $(CFLAGS)
+
+obj/semantico.o: ../../Subjects/Compiladores/CompilaDOR/src/semantico.c
+	$(CC) -c ../../Subjects/Compiladores/CompilaDOR/src/semantico.c -o obj/semantico.o $(CFLAGS)
