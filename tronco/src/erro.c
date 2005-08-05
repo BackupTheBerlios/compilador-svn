@@ -80,11 +80,9 @@ void sair (int ret)
 {
     char *msg[] = {
         "Execução bem sucedida!", 
-
         "Uso: teste -[v|d|e] [-t] <arquivo>",
-        "Arquivo nao encontrado!",
-
-        "Compilação interrompida!"
+        "Arquivo não encontrado!",
+        "Erro na compilação!"
     };
         
     printf ("%s\n", msg[ret>FIM_ERRO_LEXICO? FIM_ERRO_LEXICO: ret]);

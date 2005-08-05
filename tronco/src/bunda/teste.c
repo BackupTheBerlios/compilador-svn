@@ -15,8 +15,8 @@ int ret_dois_local_dois_param (int a, int b)
 {
     int c;
     int d;
-    c = a+1;
-    d = 2*c+b;
+    c = -a;
+    d = c*(2*c+b*(5*c+4-1*a));
     return d;
 }
 

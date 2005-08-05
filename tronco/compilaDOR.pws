@@ -1,21 +1,21 @@
 
 [executer]
-RunInTerminal=false
+RunInTerminal=true
 
 [Project State]
 clean before build=false
 
 [filenumbers]
-0=21
-1=151
-2=65
-3=31
-4=42
-5=56
-6=9
-7=11
-8=28
-9=79
+0=19
+1=85
+2=410
+3=27
+4=31
+5=42
+6=79
+7=4
+8=4
+9=396
 10=126
 
 [filemarkers]
@@ -36,18 +36,22 @@ filter.file.unmatch=*.so *.o *.a *.la
 filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
 
+[breakpoints]
+0=1,,0,1818322996,0,,semantico.c,135,191,0,gera_codigo_expressao,,1123234530,
+1=2,,0,97,0,,semantico.c,463,192,0,acao_comando_atrib,,1123234530,
+2=4,,1,52,0,,semantico.c,383,193,0,acao_programa_funcao_fim,,1123234530,
+
 [filelist]
-0=/home/acdcp/projetos/compilador-tronco/src/bunda/pequeno.s
-1=/home/acdcp/projetos/compilador-tronco/src/bunda/teste.s
-2=/home/acdcp/projetos/compilador-tronco/src/bunda/teste.c
-3=/home/acdcp/projetos/compilador-tronco/src/bunda/teste.prg.s
-4=/home/acdcp/projetos/compilador-tronco/src/bunda/gerado.asm
-5=/home/acdcp/projetos/compilador-tronco/src/compilador.c
-6=/home/acdcp/projetos/compilador-tronco/bin/pequeno.prg
-7=/home/acdcp/projetos/compilador-tronco/src/bunda/pequeno.c
-8=/home/acdcp/projetos/compilador-tronco/src/semantico.h
-9=/home/acdcp/projetos/compilador-tronco/src/bunda/codegen.c
-10=/home/acdcp/projetos/compilador-tronco/src/semantico.c
+0=/home/acdcp/projetos/compilador-tronco/bin/teste.prg
+1=/home/acdcp/projetos/compilador-tronco/src/tabid.c
+2=/home/acdcp/projetos/compilador-tronco/src/sintatico.c
+3=/home/acdcp/projetos/compilador-tronco/src/bunda/teste.s
+4=/home/acdcp/projetos/compilador-tronco/src/bunda/pequeno.s
+5=/home/acdcp/projetos/compilador-tronco/src/bunda/gerado.asm
+6=/home/acdcp/projetos/compilador-tronco/src/compilador.c
+7=/home/acdcp/projetos/compilador-tronco/bin/pequeno.prg
+8=/home/acdcp/projetos/compilador-tronco/src/bunda/pequeno.c
+9=/home/acdcp/projetos/compilador-tronco/src/semantico.c
 
 [Project Tree]
 0=0

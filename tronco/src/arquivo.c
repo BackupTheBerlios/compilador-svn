@@ -24,10 +24,30 @@
  
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "arquivo.h"
 
 #define MAX_BLOCO               200
 
+char *muda_extensao (char *nome, char *ext)
+{
+    char *pos;
+    char *novo;
+    int tam;
+    
+    pos = strrchr (nome, '.');
+    if (pos)
+        tam = pos - nome;
+    else
+        tam = strlen (nome);
+    
+    novo = calloc (tam + strlen(ext) + 1, sizeof (char));
+    strncpy (novo, nome, tam);
+    strcat (novo, ".");
+    strcat (novo, ext);
+    
+    return novo;
+}
 
 char* le_arquivo (char* nome)
 {

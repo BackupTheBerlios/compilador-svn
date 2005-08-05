@@ -21,6 +21,7 @@
 #ifndef __ARQUIVO_H__
 #define __ARQUIVO_H__
 
+char *muda_extensao (char *nome, char *ext);
 char *le_arquivo (char *);
 
 #endif // __ARQUIVO_H__

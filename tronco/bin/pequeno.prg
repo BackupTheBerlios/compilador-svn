@@ -5,7 +5,7 @@ declare
     integer b;
     
 begin
-    a = 2;
-    b = 4;
+    input a;
+    b := 4*a;
     output a+b;
 end;

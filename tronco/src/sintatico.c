@@ -29,6 +29,7 @@
 
 #include "defs.h"
 #include "sintatico.h"
+#include "semantico.h"
 #include "lexico.h"
 #include "erro.h"
 
@@ -123,7 +124,7 @@ int estado_final (enum submaquinas maq, int estado)
 }
 
 
-void converteCodigoFuncao(int codigo, void (*funcao)()) {
+void converteCodigoFuncao(int codigo, void (**funcao)()) {
 /* 
  * Depois de declaradas as funcoes semanticas,
  * basta passar seus enderecos para o ponteiro
@@ -133,26 +134,42 @@ void converteCodigoFuncao(int codigo, void (*funcao)()) {
 */
 
    switch(codigo) {
-      case 0:
-	  	 funcao = NULL;  
-   	     break;
+      case  0: *funcao = NULL; break;
+
+      case  1: *funcao = acao_programa_inicio; break;
+      case  2: *funcao = acao_programa_funcao_inicio; break;
+      case  3: *funcao = acao_programa_funcao_nome; break;
+      case  4: *funcao = acao_programa_funcao_adiciona_param; break;
+      case  5: *funcao = acao_programa_comando; break;
+      case  6: *funcao = acao_programa_funcao_fim; break;
+
+      case  7: *funcao = acao_tipo_tamanho_var; break;
+
+      case  8: *funcao = acao_comando_declara_adiciona; break;
+      case  9: *funcao = acao_comando_declara_fim; break;
+      case 10: *funcao = acao_comando_id; break;
+      case 11: *funcao = acao_comando_atrib; break;
+      case 12: *funcao = acao_comando_chamada; break;
+      case 13: *funcao = acao_comando_fim; break;
+      case 16: *funcao = acao_comando_param; break;
+      case 23: *funcao = acao_comando_output; break;
+      case 24: *funcao = acao_comando_input; break;
+      case 25: *funcao = acao_comando_fecha_paren; break;
+
+      case 14: *funcao = acao_fator_operando; break;
+      case 17: *funcao = acao_fator_id; break;
+      case 18: *funcao = acao_fator_chamada; break;
+      case 19: *funcao = acao_fator_param; break;
+      case 20: *funcao = acao_fator_abre_paren; break;
+      case 21: *funcao = acao_fator_fecha_paren; break;
+      case 22: *funcao = acao_fator_nega; break;
+
+      case 15: *funcao = acao_expressao_operador; break;
       
-	  case 1:
-	  	 funcao = NULL;
-   	     break;
-   
-      case 2:
-	  	 funcao = NULL;
-   	     break;
-      
-      case 3:
-   	     funcao = NULL;
-		 break;
-   
-      default:
-	  	 funcao = NULL;
-	     break;
+      default: *funcao = NULL; break;
    }
+//   if (*funcao)
+//       DEPURA (" funcao:%p", *funcao);
 }
 
 void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
@@ -212,8 +229,11 @@ void defineSubMaquina(char* arqTabelaDeTransicoes, const int SM) {
         {
             fscanf(arqSM, "%d,%d", &SM_transicoes[i][j].estado, &funcao);
 //			SM_transicoes[i][j].acao = funcao;
-            converteCodigoFuncao(funcao, SM_transicoes[i][j].acao);
-            
+            if (funcao)
+            {
+                converteCodigoFuncao(funcao, &SM_transicoes[i][j].acao);
+//                DEPURA (" acao:%p", SM_transicoes[i][j].acao);
+            }
 #ifdef DEBUG_ARQUIVO    
             printf (" (%d:%d)", SM_transicoes[i][j].estado, funcao);
 #endif    
@@ -302,7 +322,7 @@ int busca_coluna (enum submaquinas maq, int tipo_entrada, int profundidade)
 
     DEPURA (" %*sbuscando em %s", espacado?profundidade:0, "", submaquinas_nomes[maq]);
 	    
-    if (profundidade == 1) {
+    if (profundidade == 0) {
         estado_atual = atual.estado;
     }
     else {
@@ -315,7 +335,7 @@ int busca_coluna (enum submaquinas maq, int tipo_entrada, int profundidade)
         {
             // Transição válida?
             int prox_estado = maquinas[maq].transicoes[estado_atual][i].estado;
-            if (prox_estado >= 0 || estado_final (maq, estado_atual))
+            if (prox_estado >= 0) // || estado_final (maq, estado_atual))
             {
                 DEPURA (" %*scol=%d", espacado?profundidade:0, "", i);
                 return i;
@@ -356,7 +376,7 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     if (at->classe == C_INVALIDA)
     {
         DEPURA(" token"); DEPURA_FIM();
-        IMPRIME ("Erro lexico! Token desconhecido:\n");
+        IMPRIME ("Erro lexico na linha %d: Token desconhecido.\n", linha_atual());
         mostra_posicao_erro (*entrada);
         IMPRIME ("\n");
         return FIM_ERRO_LEXICO;
@@ -368,7 +388,7 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     }
 
     // Procura a coluna referente ao átomo lido
-    col = busca_coluna (atual.maquina, at->classe, 1);
+    col = busca_coluna (atual.maquina, at->classe, 0);
 
     DEPURA (" coluna %d", col);
 
@@ -376,7 +396,7 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
     {
         DEPURA (" estado %d/%d\n", atual.estado, maquinas[atual.maquina].estados);
         DEPURA_FIM();
-        IMPRIME ("Erro interno na construcao das maquinas:\n");
+        IMPRIME ("Erro interno na construcao das maquinas na linha %d.\n", linha_atual());
         mostra_posicao_erro (*entrada);
         IMPRIME ("\n");
         return FIM_ERRO_MAQUINAS;
@@ -408,7 +428,7 @@ int maquina_sintatico (char **entrada, uma_fila *fila)
         else // Erro de sintaxe
         {
             DEPURA_FIM ();
-            IMPRIME ("Erro de sintaxe! '%s' não era esperado:\n", nomeClasse (at->classe));
+            IMPRIME ("Erro de sintaxe na linha %d: '%s' não era esperado.\n", linha_atual(), nomeClasse (at->classe));
             mostra_posicao_erro (*entrada);
             IMPRIME ("\n");
             return FIM_ERRO_SINTATICO;

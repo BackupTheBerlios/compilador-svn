@@ -23,8 +23,8 @@
  */
  
 #include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "defs.h"
 #include "arquivo.h"
@@ -37,6 +37,7 @@ extern int falante;
 extern int depurando;
 extern int espacado;
 extern int tecla;
+int monta_exe = FALSO;
 
 int le_param (int argc, char **argv)
 {
@@ -51,6 +52,10 @@ int le_param (int argc, char **argv)
         {
             case 't':
                 tecla = VERDADE;
+                break;
+
+            case 'm':
+                monta_exe = VERDADE;
                 break;
 
             case 'e':
@@ -68,19 +73,32 @@ int le_param (int argc, char **argv)
 
 int main (int argc, char **argv)
 {
-    char *dados, *pos;
+    char *dados, *pos, *nome_arq;
     int erro, arq;
 
     arq = le_param (argc, argv);
-    dados = le_arquivo (argv[arq]);
+    nome_arq = argv[arq];
+    dados = le_arquivo (nome_arq);
 
     if (dados == NULL)
         sair (FIM_ERRO_ARQUIVO);
 
-    ajusta_nome_arquivo (argv[arq]);
+    ajusta_nomes_arquivos (nome_arq, muda_extensao (nome_arq, "s"));
 
     pos = dados;
     erro = analisadorSintatico (&pos);
+    
+    if (erro == FIM_OK && monta_exe)
+    {
+        char *comando;
+        
+        comando = calloc (15 + 2*strlen (nome_arq), sizeof (char));
+        
+        sprintf (comando, "gcc -o %s %s", muda_extensao (nome_arq, "exe"),  muda_extensao (nome_arq, "s"));
+        system (comando);
+        
+        free (comando);
+    }
 
     sair (erro);
     return erro;
